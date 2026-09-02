@@ -3,6 +3,7 @@
   "version": "0.6.6",
   "author": "Deforay",
   "homepage": "https://vlsm.app/",
+  "license": "AGPL-3.0-only",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
