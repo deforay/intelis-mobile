@@ -2,6 +2,8 @@
 
 Android and iOS companion app for [InteLIS](https://github.com/deforay/intelis), the open-source lab information system by Deforay.
 
+![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue)
+
 The app lets field and lab staff register Viral Load (VL), Early Infant Diagnosis (EID) and Covid-19 test requests on a phone or tablet. It stores requests in a local SQLite database, so it works without a network connection. When a connection is available, it syncs pending requests to an InteLIS server and pulls back test results. Access to the app is protected by a PIN, with optional fingerprint unlock.
 
 Built with Ionic 8, Angular 21 and Apache Cordova.
@@ -18,6 +20,7 @@ Built with Ionic 8, Angular 21 and Apache Cordova.
 - [Project layout](#project-layout)
 - [Server compatibility](#server-compatibility)
 - [Privacy policy and terms](#privacy-policy-and-terms)
+- [Funding and partners](#funding-and-partners)
 - [License](#license)
 
 ## Prerequisites
@@ -158,6 +161,12 @@ The privacy policy and terms of use are published from the `docs/` folder throug
 
 The privacy policy URL is the one entered in the Google Play Console listing. When the app's data handling changes, update `docs/privacy.html` and its effective date in the same commit.
 
+## Funding and partners
+
+InteLIS Mobile is developed with funding from the United States Government (USG). Over the years, the project has benefited from the support and collaboration of partners including the African Society for Laboratory Medicine (ASLM), the American Society for Microbiology (ASM), the African Field Epidemiology Network (AFENET), Emory University, and the Maryland Global Initiatives Corporation (MGIC), among others.
+
 ## License
 
-This project is licensed under the GNU Affero General Public License, version 3. See [LICENSE](LICENSE) for the full text.
+InteLIS Mobile is free and open-source software released under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+Read the full text in [LICENSE.md](LICENSE.md).
