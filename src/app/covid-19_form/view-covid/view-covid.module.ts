@@ -4,7 +4,6 @@ import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MaterialModule } from 'src/app/material.module';
 import { MomentModule } from 'src/app/moment.module';
@@ -19,7 +18,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MaterialModule,
     ReactiveFormsModule,
     MomentModule,
-    Ng2SearchPipeModule,
     NgxPaginationModule,
     SharedModule,
   ],

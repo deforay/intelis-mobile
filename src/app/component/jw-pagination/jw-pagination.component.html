@@ -1,344 +1,389 @@
 <div>
   <!-- | filter:search  -->
-  <div *ngFor="let item of itemsArray | paginate: { itemsPerPage: 5, currentPage: cp }">
-
-    <mat-card class="vlsm_mat_card">
-      <mat-card-header class="mat-card-header-text" [ngStyle]="{'background':getColor(item.result ,item.isSampleRejected)}">
-        <span text-wrap class="headerName" *ngIf="item.sampleCode || item.remoteSampleCode">
-          {{item.sampleCode || item.remoteSampleCode}}
-          <span class="material-icons" *ngIf="item.isSynced=='false'"
-          style="float: right; font-weight: 600;color: black !important; font-size: 20px; margin-right: 2%;">cloud_off</span>
-          <!-- <span class="material-icons">cloud_off</span> -->
-          <!-- <ion-icon 
-          ></ion-icon> -->
-        </span>
-        <span text-wrap class="headerName" *ngIf="item.appSampleCode && (item.sampleCode=='' || !item.sampleCode) && (item.remoteSampleCode=='' || !item.remoteSampleCode)">
-          {{item.appSampleCode}}
-          <ion-icon *ngIf="item.isSynced==='false'"
-            class="matIcons firstLevelLeftIcon vlIcon"
+  @for (item of itemsArray | paginate: { itemsPerPage: 5, currentPage: cp }; track item) {
+    <div>
+      <mat-card class="vlsm_mat_card">
+        <mat-card-header class="mat-card-header-text" [ngStyle]="{'background':getColor(item.result ,item.isSampleRejected)}">
+          @if (item.sampleCode || item.remoteSampleCode) {
+            <span text-wrap class="headerName">
+              {{item.sampleCode || item.remoteSampleCode}}
+              @if (item.isSynced=='false') {
+                <span class="material-icons"
+                style="float: right; font-weight: 600;color: black !important; font-size: 20px; margin-right: 2%;">cloud_off</span>
+              }
+              <!-- <span class="material-icons">cloud_off</span> -->
+              <!-- <ion-icon
+            ></ion-icon> -->
+          </span>
+        }
+        @if (item.appSampleCode && (item.sampleCode=='' || !item.sampleCode) && (item.remoteSampleCode=='' || !item.remoteSampleCode)) {
+          <span text-wrap class="headerName">
+            {{item.appSampleCode}}
+            @if (item.isSynced==='false') {
+              <ion-icon
+                class="matIcons firstLevelLeftIcon vlIcon"
             name="cloud-offline-outline" style="float: right;
             font-weight: 600;color: black !important;
             font-size: 20px !important;"
-          ></ion-icon>
-        </span>
+              ></ion-icon>
+            }
+          </span>
+        }
         <!-- <ion-icon name=“cloud-offline-outline”></ion-icon> -->
       </mat-card-header>
-
-      <mat-card-content class="matContent" fxLayout="row" fxLayout.xs="column" fxFlex="100%" fxFlex.xs="100%"
-        fxFlex.sm="50%">
+      <mat-card-content class="matContent">
         <ion-grid class="viewGrid">
           <div style="width:100%">
-
-            <ion-row *ngIf="item.createdOn || item.updatedOn">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Last Modified On</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span>{{item.updatedOn ? (item.updatedOn | date :'d MMM y h:mm a') : (item.createdOn | date :'d MMM y h:mm a')
-                 }} </span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-            <ion-row *ngIf="item.sampleCode || item.remoteSampleCode || item.appSampleCode">
-              <ion-col size="5" class="grid-input-col">
-                <p text-wrap>
-                  <span class="text-title-color" *ngIf="item.sampleCode || item.remoteSampleCode">Sample Code</span>
-                  <span class="text-title-color"
-                    *ngIf="(item.sampleCode=='' || !item.sampleCode) && (item.remoteSampleCode=='' || !item.remoteSampleCode) && item.appSampleCode">Offline Test Request</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues" *ngIf="item.sampleCode || item.remoteSampleCode">
-                  <span> {{item.sampleCode || item.remoteSampleCode}}</span>
-                </p>
-                <p text-wrap class="patientValues"
-                  *ngIf="item.appSampleCode && (item.sampleCode=='' || !item.sampleCode) && (item.remoteSampleCode=='' || !item.remoteSampleCode)">
-                  <span *ngIf="item.appSampleCode!=null && item.appSampleCode!='null'"> {{item.appSampleCode}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-            <ion-row *ngIf="item.patientId">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Case ID</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span *ngIf="item.patientId!='null' && item.patientId!=null">{{item.patientId}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-            <ion-row *ngIf="item.firstName">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Patient Name</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues" >
-                  <span *ngIf="!item.lastName && item.firstName != null && item.firstName != 'null'">{{item.firstName}}</span>
-                  <span *ngIf="item.lastName && item.lastName != null && item.lastName != 'null'">{{item.firstName +' '
+            @if (item.createdOn || item.updatedOn) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Last Modified On</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    <span>{{item.updatedOn ? (item.updatedOn | date :'d MMM y h:mm a') : (item.createdOn | date :'d MMM y h:mm a')
+                    }} </span>
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.sampleCode || item.remoteSampleCode || item.appSampleCode) {
+              <ion-row>
+                <ion-col size="5" class="grid-input-col">
+                  <p text-wrap>
+                    @if (item.sampleCode || item.remoteSampleCode) {
+                      <span class="text-title-color">Sample Code</span>
+                    }
+                    @if ((item.sampleCode=='' || !item.sampleCode) && (item.remoteSampleCode=='' || !item.remoteSampleCode) && item.appSampleCode) {
+                      <span class="text-title-color"
+                      >Offline Test Request</span>
+                    }
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  @if (item.sampleCode || item.remoteSampleCode) {
+                    <p text-wrap class="patientValues">
+                      <span> {{item.sampleCode || item.remoteSampleCode}}</span>
+                    </p>
+                  }
+                  @if (item.appSampleCode && (item.sampleCode=='' || !item.sampleCode) && (item.remoteSampleCode=='' || !item.remoteSampleCode)) {
+                    <p text-wrap class="patientValues"
+                      >
+                      @if (item.appSampleCode!=null && item.appSampleCode!='null') {
+                        <span> {{item.appSampleCode}}</span>
+                      }
+                    </p>
+                  }
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.patientId) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Case ID</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    @if (item.patientId!='null' && item.patientId!=null) {
+                      <span>{{item.patientId}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.firstName) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Patient Name</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues" >
+                    @if (!item.lastName && item.firstName != null && item.firstName != 'null') {
+                      <span>{{item.firstName}}</span>
+                    }
+                    @if (item.lastName && item.lastName != null && item.lastName != 'null') {
+                      <span>{{item.firstName +' '
                       + item.lastName}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-            <ion-row *ngIf="item.patientAge">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Age</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span *ngIf="item.patientAge != null && item.patientAge!='null'">{{item.patientAge}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-
-            <ion-row *ngIf="item.patientGender">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Gender</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues resultValue">
-                  <span *ngIf="item.patientGender != null&& item.patientGender!='null'">{{item.patientGender}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.patientAge) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Age</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    @if (item.patientAge != null && item.patientAge!='null') {
+                      <span>{{item.patientAge}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.patientGender) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Gender</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues resultValue">
+                    @if (item.patientGender != null&& item.patientGender!='null') {
+                      <span>{{item.patientGender}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
           </div>
         </ion-grid>
-
-
         <ion-grid class="viewGrid last">
           <div style="width:100%">
-            <ion-row *ngIf="item.patientAddress">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Address</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span *ngIf="item.patientAddress != null && item.patientAddress!='null'">{{item.patientAddress}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-            <ion-row *ngIf="item.patientPhoneNumber">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Phone Number</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span *ngIf="item.patientPhoneNumber != null&& item.patientPhoneNumber!='null'">{{item.patientPhoneNumber}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-            <ion-row *ngIf="item.sampleCollectionDate">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Sample Collection Date</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span *ngIf="item.sampleCollectionDate!='null' && item.sampleCollectionDate!='0000-00-00 00:00:00' && item.sampleCollectionDate!=null"> {{item.sampleCollectionDate | date :'d MMM y h:mm a'}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-            <ion-row *ngIf="item.labName">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Laboratory Name</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span *ngIf="item.labName!=null && item.labName!='null'">{{item.labName}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-
-            <ion-row *ngIf="item.result || item.result=='' && item.isSampleRejected=='yes'"
-              [ngStyle]="{'background':item.result === 'negative' ? '#bbe4bb' : '#ff6961' }">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Result</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues resultValue">
-                  <span *ngIf="item.result">{{ item.result }}</span>
-                  <span *ngIf="item.result=='' && item.isSampleRejected=='yes'">Rejected</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-            <ion-row *ngIf="item.rejectionReason">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Rejected Reason</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span *ngIf="item.rejectionReason !='null' && item.rejectionReason!=null">{{item.rejectionReason}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
-
-            <ion-row *ngIf="item.resultStatusName">
-              <ion-col size="5">
-                <p text-wrap>
-                  <span class="text-title-color">Status</span>
-                </p>
-              </ion-col>
-              <ion-col size="1">
-                <p text-wrap>
-                  <span class="text-title-color">:</span>
-                </p>
-              </ion-col>
-              <ion-col size="6">
-                <p text-wrap class="patientValues">
-                  <span *ngIf="item.resultStatusName!=null && item.resultStatusName!='null'">{{item.resultStatusName}}</span>
-                </p>
-              </ion-col>
-            </ion-row>
-
+            @if (item.patientAddress) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Address</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    @if (item.patientAddress != null && item.patientAddress!='null') {
+                      <span>{{item.patientAddress}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.patientPhoneNumber) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Phone Number</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    @if (item.patientPhoneNumber != null&& item.patientPhoneNumber!='null') {
+                      <span>{{item.patientPhoneNumber}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.sampleCollectionDate) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Sample Collection Date</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    @if (item.sampleCollectionDate!='null' && item.sampleCollectionDate!='0000-00-00 00:00:00' && item.sampleCollectionDate!=null) {
+                      <span> {{item.sampleCollectionDate | date :'d MMM y h:mm a'}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.labName) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Laboratory Name</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    @if (item.labName!=null && item.labName!='null') {
+                      <span>{{item.labName}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.result || item.result=='' && item.isSampleRejected=='yes') {
+              <ion-row
+                [ngStyle]="{'background':item.result === 'negative' ? '#bbe4bb' : '#ff6961' }">
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Result</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues resultValue">
+                    @if (item.result) {
+                      <span>{{ item.result }}</span>
+                    }
+                    @if (item.result=='' && item.isSampleRejected=='yes') {
+                      <span>Rejected</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.rejectionReason) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Rejected Reason</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    @if (item.rejectionReason !='null' && item.rejectionReason!=null) {
+                      <span>{{item.rejectionReason}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
+            @if (item.resultStatusName) {
+              <ion-row>
+                <ion-col size="5">
+                  <p text-wrap>
+                    <span class="text-title-color">Status</span>
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap>
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="patientValues">
+                    @if (item.resultStatusName!=null && item.resultStatusName!='null') {
+                      <span>{{item.resultStatusName}}</span>
+                    }
+                  </p>
+                </ion-col>
+              </ion-row>
+            }
             <!-- <ion-row *ngIf="item.isSynced=='false'">
-              <ion-col size="12">
-                <p text-wrap>
-                  <span class="text-title-color unSynced"> Unsynced Test Request </span>
-                </p>
-              </ion-col>
-            </ion-row> -->
-
-          </div>
-        </ion-grid>
-
-      </mat-card-content>
-      
-      <mat-card-actions class="cardActions">
-        <mat-divider></mat-divider>
-        <ion-row>
-          <ion-col size="6" *ngIf="showView && showEdit">
+            <ion-col size="12">
+              <p text-wrap>
+                <span class="text-title-color unSynced"> Unsynced Test Request </span>
+              </p>
+            </ion-col>
+          </ion-row> -->
+        </div>
+      </ion-grid>
+    </mat-card-content>
+    <mat-card-actions class="cardActions">
+      <mat-divider></mat-divider>
+      <ion-row>
+        @if (showView && showEdit) {
+          <ion-col size="6">
             <button mat-raised-button class="viewButton" (click)="actionTestReqForm(item,'view')">
               <span class="material-icons">visibility</span>
               View
             </button>
           </ion-col>
-          <ion-col size="6" *ngIf="showEdit && showView">
+        }
+        @if (showEdit && showView) {
+          <ion-col size="6">
             <button mat-raised-button class="editButton" (click)="actionTestReqForm(item,'edit')">
               <span class="material-icons">mode_edit</span>
               Edit
             </button>
           </ion-col>
-           <ion-col size="12" *ngIf="showView &&!showEdit" style="text-align: center;">
+        }
+        @if (showView &&!showEdit) {
+          <ion-col size="12" style="text-align: center;">
             <button mat-raised-button class="viewButton1" (click)="actionTestReqForm(item,'view')">
               <span class="material-icons">visibility</span>
               View
             </button>
           </ion-col>
-          <ion-col size="12" *ngIf="showEdit && !showView" style="text-align: center;">
+        }
+        @if (showEdit && !showView) {
+          <ion-col size="12" style="text-align: center;">
             <button mat-raised-button class="editButton1" (click)="actionTestReqForm(item,'edit')">
               <span class="material-icons">mode_edit</span>
               Edit
             </button>
           </ion-col>
-        </ion-row>
-      </mat-card-actions>
+        }
+      </ion-row>
+    </mat-card-actions>
+  </mat-card>
+</div>
+}
 
-    </mat-card>
-
-  </div>
-
-  <pagination-controls (pageChange)="cp = $event"></pagination-controls>
+<pagination-controls (pageChange)="cp = $event"></pagination-controls>
 
 </div>
 

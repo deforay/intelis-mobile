@@ -14,7 +14,7 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   Observable,
 } from 'rxjs';
@@ -59,9 +59,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 @Component({
-  selector: 'app-add-new-request',
-  templateUrl: './add-new-request.page.html',
-  styleUrls: ['./add-new-request.page.scss'],
+    selector: 'app-add-new-request',
+    templateUrl: './add-new-request.page.html',
+    styleUrls: ['./add-new-request.page.scss'],
+    standalone: false
 })
 export class AddNewRequestPage implements OnInit {
   reason:any;

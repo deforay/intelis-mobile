@@ -5,14 +5,15 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   Events
 } from '../../../../app/service/providers';
 @Component({
-  selector: 'app-enter-result-drc',
-  templateUrl: './enter-result-drc.page.html',
-  styleUrls: ['./enter-result-drc.page.scss'],
+    selector: 'app-enter-result-drc',
+    templateUrl: './enter-result-drc.page.html',
+    styleUrls: ['./enter-result-drc.page.scss'],
+    standalone: false
 })
 export class EnterResultDrcPage implements OnInit {
   isNoRecord: boolean = false;

@@ -5,14 +5,15 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   Events
 } from '../../../../app/service/providers';
 @Component({
-  selector: 'app-enter-test-result',
-  templateUrl: './enter-test-result.page.html',
-  styleUrls: ['./enter-test-result.page.scss'],
+    selector: 'app-enter-test-result',
+    templateUrl: './enter-test-result.page.html',
+    styleUrls: ['./enter-test-result.page.scss'],
+    standalone: false
 })
 export class EnterTestResultPage implements OnInit {
 

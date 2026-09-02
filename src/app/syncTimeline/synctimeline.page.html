@@ -19,17 +19,19 @@
         </ion-col>
       </ion-row>
       <!-- <ion-row *ngFor="let item of syncTimelineArray;let index = index;" style="border-bottom:1px dashed #3b8cbb;"> -->
-      <ion-row *ngFor="let item of syncTimelineArray | slice:0:30; let i=index">
-        <ion-col class="table" size="2" style="text-align: center">
-          <p>{{i+1}}</p>
-        </ion-col>
-        <ion-col class="table" size="4">
-          <p>{{item['syncedOn']| date:'medium' }}</p>
-        </ion-col>
-        <ion-col class="table" size="6">
-          <p>{{item['syncMessage'] }}</p>
-        </ion-col>
-      </ion-row>
+      @for (item of syncTimelineArray | slice:0:30; track item; let i = $index) {
+        <ion-row>
+          <ion-col class="table" size="2" style="text-align: center">
+            <p>{{i+1}}</p>
+          </ion-col>
+          <ion-col class="table" size="4">
+            <p>{{item['syncedOn']| date:'medium' }}</p>
+          </ion-col>
+          <ion-col class="table" size="6">
+            <p>{{item['syncMessage'] }}</p>
+          </ion-col>
+        </ion-row>
+      }
     </ion-grid>
   </ion-card>
 </ion-content>

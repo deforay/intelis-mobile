@@ -5,9 +5,10 @@ import {SyncTestRequestsService,
 } from '../../app/service/providers';
 import {Storage} from '@ionic/storage-angular';
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.page.html',
-  styleUrls: ['./profile.page.scss'],
+    selector: 'app-profile',
+    templateUrl: './profile.page.html',
+    styleUrls: ['./profile.page.scss'],
+    standalone: false
 })
 export class ProfilePage implements OnInit {
 

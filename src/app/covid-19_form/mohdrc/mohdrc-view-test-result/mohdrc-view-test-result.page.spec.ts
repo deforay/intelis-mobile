@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MohdrcViewTestResultPage } from './mohdrc-view-test-result.page';
 
 describe('MohdrcViewTestResultPage', () => {
   let component: MohdrcViewTestResultPage;
   let fixture: ComponentFixture<MohdrcViewTestResultPage>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(MohdrcViewTestResultPage);
     component = fixture.componentInstance;
     fixture.detectChanges();

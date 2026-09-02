@@ -9,7 +9,6 @@ import { EnterTestResultPageRoutingModule } from './enter-test-result-routing.mo
 import { EnterTestResultPage } from './enter-test-result.page';
 import { MaterialModule } from '../../../material.module';
 import { MomentModule } from '../../../moment.module';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from 'src/app/shared/shared.module';
 // import { JwPaginationComponent } from 'src/app/component/jw-pagination/jw-pagination.component';
@@ -21,7 +20,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     IonicModule,
     MaterialModule,
     MomentModule,
-    Ng2SearchPipeModule,
     EnterTestResultPageRoutingModule,
     NgxPaginationModule, SharedModule
   ],

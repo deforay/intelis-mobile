@@ -6,9 +6,10 @@ import _ from 'lodash';
 import { Events } from '../../../app/service/providers';
 import { CommonService } from '../../service/common/common.service';
 @Component({
-  selector: 'app-jw-pagination',
-  templateUrl: './jw-pagination.component.html',
-  styleUrls: ['./jw-pagination.component.scss'],
+    selector: 'app-jw-pagination',
+    templateUrl: './jw-pagination.component.html',
+    styleUrls: ['./jw-pagination.component.scss'],
+    standalone: false
 })
 export class JwPaginationComponent implements OnInit {
   @Input() items: Array<any>;

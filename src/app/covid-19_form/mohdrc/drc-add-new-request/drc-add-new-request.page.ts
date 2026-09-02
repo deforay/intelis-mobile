@@ -1,7 +1,7 @@
 import { ViewChild } from '@angular/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { UntypedFormControl, FormGroupDirective, NgForm, Validators, FormBuilder, UntypedFormGroup, FormArray, FormControl, ControlValueAccessor, NgControl, FormGroup, } from '@angular/forms';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Observable } from 'rxjs';
 import { CrudOperationsService, ToastService, LoaderService, Events, AlertService, } from '../../../service/providers';
 import { Router } from '@angular/router';
@@ -32,12 +32,13 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 @Component({
-  selector: 'drc-app-add-new-request',
-  templateUrl: './drc-add-new-request.page.html',
-  styleUrls: ['./drc-add-new-request.page.scss'],
-  providers: [
-    { provide: MatFormFieldControl, useExisting: DRCAddNewRequestPage },
-  ],
+    selector: 'drc-app-add-new-request',
+    templateUrl: './drc-add-new-request.page.html',
+    styleUrls: ['./drc-add-new-request.page.scss'],
+    providers: [
+        { provide: MatFormFieldControl, useExisting: DRCAddNewRequestPage },
+    ],
+    standalone: false
 })
 export class DRCAddNewRequestPage implements OnInit {
   matcher = new MyErrorStateMatcher();

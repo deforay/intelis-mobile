@@ -33,7 +33,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatNativeDateModule } from '@angular/material/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 const materialModules = [
   CdkTreeModule,
@@ -69,7 +68,6 @@ const materialModules = [
   MatDatepickerModule,
   MatTooltipModule,
   MatNativeDateModule,
-  FlexLayoutModule,
 
 ];
 

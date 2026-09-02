@@ -5,15 +5,16 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   Events
 } from '../../../../app/service/providers';
 
 @Component({
-  selector: 'app-mohdrc-enter-test-result',
-  templateUrl: './mohdrc-enter-test-result.page.html',
-  styleUrls: ['./mohdrc-enter-test-result.page.scss'],
+    selector: 'app-mohdrc-enter-test-result',
+    templateUrl: './mohdrc-enter-test-result.page.html',
+    styleUrls: ['./mohdrc-enter-test-result.page.scss'],
+    standalone: false
 })
 export class MohdrcEnterTestResultPage implements OnInit {
   isNoRecord: boolean = false;

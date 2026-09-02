@@ -4,12 +4,13 @@ import { ToastService, LoaderService } from '../../../../app/service/providers';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { Events } from 'src/app/service/providers';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 
 @Component({
-  selector: 'app-vl-select-patient-details',
-  templateUrl: './vl-select-patient-details.page.html',
-  styleUrls: ['./vl-select-patient-details.page.scss'],
+    selector: 'app-vl-select-patient-details',
+    templateUrl: './vl-select-patient-details.page.html',
+    styleUrls: ['./vl-select-patient-details.page.scss'],
+    standalone: false
 })
 export class VlSelectPatientDetailsPage implements OnInit {
   search: string = ''; // Search string bound to the ion-searchbar

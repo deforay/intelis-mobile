@@ -7,7 +7,6 @@ import { EidViewResultPage } from './eid-view-result.page';
 
 import { MaterialModule } from '../../../material.module';
 import { MomentModule } from '../../../moment.module';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxPaginationModule } from 'ngx-pagination';
 // import { JwPaginationComponent } from '../../../component/jw-pagination/jw-pagination.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -22,7 +21,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     IonicModule,
     MaterialModule,
     MomentModule,
-    Ng2SearchPipeModule,
     NgxPaginationModule,
     SharedModule,
     // JwPaginationComponent

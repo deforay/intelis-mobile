@@ -6,7 +6,7 @@ describe('AutoCloseOverlayService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: AutoCloseOverlayService = TestBed.get(AutoCloseOverlayService);
+    const service: AutoCloseOverlayService = TestBed.inject(AutoCloseOverlayService);
     expect(service).toBeTruthy();
   });
 });

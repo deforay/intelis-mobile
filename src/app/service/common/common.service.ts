@@ -5,7 +5,7 @@ import { Platform } from '@ionic/angular';
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   Storage
 } from '@ionic/storage-angular';

@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { MohdrcViewTestResultPageRoutingModule } from './mohdrc-view-test-result-routing.module';
 import { MaterialModule } from '../../../material.module';
 import { MomentModule } from '../../../moment.module';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MohdrcViewTestResultPage } from './mohdrc-view-test-result.page';
@@ -20,7 +19,6 @@ import { MohdrcViewTestResultPage } from './mohdrc-view-test-result.page';
     IonicModule,
     MaterialModule,
     MomentModule,
-    Ng2SearchPipeModule,
     NgxPaginationModule, SharedModule,
     MohdrcViewTestResultPageRoutingModule
   ],

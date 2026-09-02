@@ -6,7 +6,7 @@ describe('LocalShipmentFormService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: LocalTestRequestFormService = TestBed.get(LocalTestRequestFormService);
+    const service: LocalTestRequestFormService = TestBed.inject(LocalTestRequestFormService);
     expect(service).toBeTruthy();
   });
 });

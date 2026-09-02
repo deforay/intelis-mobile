@@ -8,7 +8,6 @@ import { EidSelectPatientDetailsPageRoutingModule } from './eid-select-patient-d
 
 import { EidSelectPatientDetailsPage } from './eid-select-patient-details.page';
 import { MaterialModule } from '../../../material.module';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
@@ -17,7 +16,6 @@ import { SharedModule } from '../../../shared/shared.module';
     FormsModule,
     IonicModule,
     MaterialModule,
-    Ng2SearchPipeModule,
     SharedModule,
     EidSelectPatientDetailsPageRoutingModule
   ],

@@ -21,9 +21,10 @@ import {
 } from '../../../component/sorting-popover/sorting-popover.component';
 import { CommonService } from '../../../service/common/common.service';
 @Component({
-  selector: 'app-eid-view-result',
-  templateUrl: './eid-view-result.page.html',
-  styleUrls: ['./eid-view-result.page.scss'],
+    selector: 'app-eid-view-result',
+    templateUrl: './eid-view-result.page.html',
+    styleUrls: ['./eid-view-result.page.scss'],
+    standalone: false
 })
 export class EidViewResultPage implements OnInit {
 

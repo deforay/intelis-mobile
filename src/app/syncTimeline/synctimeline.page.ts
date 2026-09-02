@@ -3,9 +3,10 @@ import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
 @Component({
-  selector: 'app-synctimeline',
-  templateUrl: './synctimeline.page.html',
-  styleUrls: ['./synctimeline.page.scss'],
+    selector: 'app-synctimeline',
+    templateUrl: './synctimeline.page.html',
+    styleUrls: ['./synctimeline.page.scss'],
+    standalone: false
 })
 export class SynctimelinePage implements OnInit {
 syncTimelineArray:any=[];

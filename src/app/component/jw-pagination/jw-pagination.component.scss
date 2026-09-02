@@ -14,3 +14,22 @@
   color: black !important;
   font-size: 25px !important;
 }
+
+/* Replaces the former fxLayout/fxFlex attributes (flex-layout is discontinued). */
+.matContent {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 100%;
+}
+
+@media (max-width: 599.98px) {
+  .matContent {
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 959.98px) {
+  .matContent {
+    max-width: 50%;
+  }
+}

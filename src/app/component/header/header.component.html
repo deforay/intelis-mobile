@@ -1,10 +1,14 @@
 <mat-toolbar>
   <!-- <button mat-icon-button > -->
-    <ion-menu-button class="menuIcon" *ngIf="isMenuOrBackButton=='menu'">
+  @if (isMenuOrBackButton=='menu') {
+    <ion-menu-button class="menuIcon">
     </ion-menu-button>
-  <!-- </button> -->
-  <button mat-icon-button *ngIf="isMenuOrBackButton=='back'" (click)="goBack()">
+  }
+<!-- </button> -->
+@if (isMenuOrBackButton=='back') {
+  <button mat-icon-button (click)="goBack()">
     <mat-icon matSuffix class="menuIcon">arrow_back_ios</mat-icon>
   </button>
-  <p class="headerName" text-wrap>{{titleHeader}}</p>
+}
+<p class="headerName" text-wrap>{{titleHeader}}</p>
 </mat-toolbar>

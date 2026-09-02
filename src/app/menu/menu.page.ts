@@ -16,14 +16,14 @@ import {
 } from '@ionic/storage-angular';
 import {
   Network
-} from '@ionic-native/network/ngx';
+} from '@awesome-cordova-plugins/network/ngx';
 // import {
 //   DbService
 // } from '../services/db.service';
 // import {
 //   SQLite,
 //   SQLiteObject
-// } from '@ionic-native/sqlite/ngx';
+// } from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   CrudOperationsService,
 } from '../../app/service/providers';
@@ -31,9 +31,10 @@ import { ModalController } from '@ionic/angular';
 import { DbMigrationService } from '../services/db-migration.service';
 // ../app/services/db-migration.service
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.page.html',
-  styleUrls: ['./menu.page.scss'],
+    selector: 'app-menu',
+    templateUrl: './menu.page.html',
+    styleUrls: ['./menu.page.scss'],
+    standalone: false
 })
 export class MenuPage implements OnInit {
 

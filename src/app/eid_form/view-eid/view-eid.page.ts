@@ -18,12 +18,13 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 
 @Component({
-  selector: 'app-view-eid',
-  templateUrl: './view-eid.page.html',
-  styleUrls: ['./view-eid.page.scss'],
+    selector: 'app-view-eid',
+    templateUrl: './view-eid.page.html',
+    styleUrls: ['./view-eid.page.scss'],
+    standalone: false
 })
 export class ViewEidPage implements OnInit {
   userID: any;

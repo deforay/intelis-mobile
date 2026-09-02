@@ -14,7 +14,7 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   Observable,
 } from 'rxjs';
@@ -60,9 +60,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-new-eid-drc',
-  templateUrl: './new-eid-drc.page.html',
-  styleUrls: ['./new-eid-drc.page.scss'],
+    selector: 'app-new-eid-drc',
+    templateUrl: './new-eid-drc.page.html',
+    styleUrls: ['./new-eid-drc.page.scss'],
+    standalone: false
 })
 
 export class NewEidDrcPage implements OnInit {

@@ -1,5 +1,5 @@
 import { Component, OnInit,ChangeDetectorRef, NgZone } from '@angular/core';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { PopoverController } from '@ionic/angular';
 import { SortingPopoverComponent } from 'src/app/component/sorting-popover/sorting-popover.component';
 import { Events } from 'src/app/service/providers';
@@ -7,9 +7,10 @@ import { Storage } from '@ionic/storage-angular';
 import _ from "lodash";
 
 @Component({
-  selector: 'app-view-covid',
-  templateUrl: './view-covid.page.html',
-  styleUrls: ['./view-covid.page.scss'],
+    selector: 'app-view-covid',
+    templateUrl: './view-covid.page.html',
+    styleUrls: ['./view-covid.page.scss'],
+    standalone: false
 })
 export class ViewCovidPage implements OnInit {
   userID: any;

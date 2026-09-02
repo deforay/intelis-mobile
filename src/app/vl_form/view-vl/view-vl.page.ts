@@ -17,11 +17,12 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 @Component({
-  selector: 'app-view-vl',
-  templateUrl: './view-vl.page.html',
-  styleUrls: ['./view-vl.page.scss'],
+    selector: 'app-view-vl',
+    templateUrl: './view-vl.page.html',
+    styleUrls: ['./view-vl.page.scss'],
+    standalone: false
 })
 export class ViewVlPage implements OnInit {
   userID: any;

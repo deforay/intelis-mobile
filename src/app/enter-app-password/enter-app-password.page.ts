@@ -10,11 +10,12 @@ import {
 import { MenuController, LoadingController } from '@ionic/angular';
 // import { Events } from "@ionic/angular";
 // import { FcmService } from "../../app/fcm.service";
-import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
+import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
 @Component({
-  selector: 'app-enter-app-password',
-  templateUrl: './enter-app-password.page.html',
-  styleUrls: ['./enter-app-password.page.scss'],
+    selector: 'app-enter-app-password',
+    templateUrl: './enter-app-password.page.html',
+    styleUrls: ['./enter-app-password.page.scss'],
+    standalone: false
 })
 export class EnterAppPasswordPage implements OnInit {
 
@@ -274,7 +275,7 @@ export class EnterAppPasswordPage implements OnInit {
   }
   checkFingerprintAvaiablity() {
     this.faio
-      .isAvailable()
+      .isAvailable({ requireStrongBiometrics: false })
       .then((result: any) => {
         // console.log('FAIO result', result);
         if (result) {

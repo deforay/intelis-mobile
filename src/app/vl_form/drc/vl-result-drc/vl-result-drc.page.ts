@@ -5,14 +5,15 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   Events
 } from '../../../../app/service/providers';
 @Component({
-  selector: 'app-vl-result-drc',
-  templateUrl: './vl-result-drc.page.html',
-  styleUrls: ['./vl-result-drc.page.scss'],
+    selector: 'app-vl-result-drc',
+    templateUrl: './vl-result-drc.page.html',
+    styleUrls: ['./vl-result-drc.page.scss'],
+    standalone: false
 })
 export class VlResultDrcPage implements OnInit {
 

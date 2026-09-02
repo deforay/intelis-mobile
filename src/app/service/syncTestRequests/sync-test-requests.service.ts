@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Network } from '@ionic-native/network/ngx';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
 import { CrudOperationsService, Events, ToastService, AlertService, } from '../../../app/service/providers';
 import { syncDataLimit } from '../../service/constant';
 import { syncAllDataLimit } from '../../service/constant';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';

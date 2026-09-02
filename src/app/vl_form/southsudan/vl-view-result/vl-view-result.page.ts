@@ -21,9 +21,10 @@ import {
 } from '../../../component/sorting-popover/sorting-popover.component';
 import { CommonService } from '../../../service/common/common.service';
 @Component({
-  selector: 'app-vl-view-result',
-  templateUrl: './vl-view-result.page.html',
-  styleUrls: ['./vl-view-result.page.scss'],
+    selector: 'app-vl-view-result',
+    templateUrl: './vl-view-result.page.html',
+    styleUrls: ['./vl-view-result.page.scss'],
+    standalone: false
 })
 export class VlViewResultPage implements OnInit {
   isNoRecord: boolean = false;

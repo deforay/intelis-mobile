@@ -14,7 +14,7 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   Observable,
 } from 'rxjs';
@@ -57,9 +57,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 @Component( {
-  selector: 'app-covid19-add-southsudan',
-  templateUrl: './covid19-add-southsudan.page.html',
-  styleUrls: ['./covid19-add-southsudan.page.scss'],
+    selector: 'app-covid19-add-southsudan',
+    templateUrl: './covid19-add-southsudan.page.html',
+    styleUrls: ['./covid19-add-southsudan.page.scss'],
+    standalone: false
 } )
 
 export class Covid19AddSouthsudanPage implements OnInit {
