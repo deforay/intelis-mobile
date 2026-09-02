@@ -31,9 +31,7 @@ import {
 import {
   AppVersion
 } from '@awesome-cordova-plugins/app-version/ngx';
-import {
-  HttpClientModule
-} from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {
   IonicStorageModule
 } from '@ionic/storage-angular';
@@ -63,40 +61,34 @@ import { Device } from '@awesome-cordova-plugins/device/ngx';
 import {
   MatIconModule
 } from '@angular/material/icon';
-@NgModule( {
-  declarations: [AppComponent],
-  imports: [
-    NgxPaginationModule,
-    BrowserModule,
-    MaterialModule,
-    IonicModule.forRoot(),
-    IonicStorageModule.forRoot(),
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,MatSelectModule,MatIconModule
-  ],
-  providers: [
-    Device,
-    AppVersion,
-    StatusBar,
-    SplashScreen,
-    MomentModule,
-    Network,
-    NetworkService,
-    SQLite,
-    SQLitePorter,
-    FingerprintAIO,
-    {
-      provide: RouteReuseStrategy,
-      useClass: IonicRouteStrategy
-    }
-  ],
-  exports: [MatFormFieldModule, MatInputModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  bootstrap: [AppComponent],
-})
+@NgModule( { declarations: [AppComponent],
+    exports: [MatFormFieldModule, MatInputModule],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    bootstrap: [AppComponent], imports: [NgxPaginationModule,
+        BrowserModule,
+        MaterialModule,
+        IonicModule.forRoot(),
+        IonicStorageModule.forRoot(),
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule, MatSelectModule, MatIconModule], providers: [
+        Device,
+        AppVersion,
+        StatusBar,
+        SplashScreen,
+        MomentModule,
+        Network,
+        NetworkService,
+        SQLite,
+        SQLitePorter,
+        FingerprintAIO,
+        {
+            provide: RouteReuseStrategy,
+            useClass: IonicRouteStrategy
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {}
