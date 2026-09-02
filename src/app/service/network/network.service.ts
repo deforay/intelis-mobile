@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import {
   Network
-} from '@ionic-native/network/ngx';
+} from '@awesome-cordova-plugins/network/ngx';
 import {
    Events
  } from '../../../app/service/providers';

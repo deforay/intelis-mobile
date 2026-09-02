@@ -8,7 +8,7 @@ import {
 } from '../../app/service/providers';
 // import { CrudServiceService } from "../../app/service/crud/crud-service.service";
 import { MenuController, LoadingController } from '@ionic/angular';
-import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
+import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
 // import { Events } from "@ionic/angular";
 
 @Component( {
@@ -256,7 +256,7 @@ export class AppPasswordPage implements OnInit {
   }
   checkFingerprintAvaiablity() {
     this.faio
-      .isAvailable()
+      .isAvailable({ requireStrongBiometrics: false })
       .then( ( result: any ) => {
         console.log( 'FAIO result', result );
         if ( result ) {

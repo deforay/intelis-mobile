@@ -1,7 +1,7 @@
 import { ViewChild } from '@angular/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { UntypedFormControl, FormGroupDirective, NgForm, Validators, FormBuilder, UntypedFormGroup, FormArray, FormControl, ControlValueAccessor, NgControl, FormGroup, } from '@angular/forms';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Observable } from 'rxjs';
 import { CrudOperationsService, ToastService, LoaderService, Events, AlertService, } from '../../../service/providers';
 import { Router } from '@angular/router';

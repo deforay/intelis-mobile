@@ -22,10 +22,10 @@ import { CommonService } from '../service/common/common.service';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { trimmedCharsValidator } from '../../validators/validators';
 import { Storage } from '@ionic/storage-angular';
-import { Network } from '@ionic-native/network/ngx';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
 import _ from 'lodash';
 import { DbService } from '../services/db.service';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { HttpClient } from '@angular/common/http';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(

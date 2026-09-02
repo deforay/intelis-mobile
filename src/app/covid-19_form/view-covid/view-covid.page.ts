@@ -1,5 +1,5 @@
 import { Component, OnInit,ChangeDetectorRef, NgZone } from '@angular/core';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { PopoverController } from '@ionic/angular';
 import { SortingPopoverComponent } from 'src/app/component/sorting-popover/sorting-popover.component';
 import { Events } from 'src/app/service/providers';

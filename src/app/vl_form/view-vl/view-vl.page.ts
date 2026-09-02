@@ -17,7 +17,7 @@ import {
 import {
   SQLite,
   SQLiteObject
-} from '@ionic-native/sqlite/ngx';
+} from '@awesome-cordova-plugins/sqlite/ngx';
 @Component({
   selector: 'app-view-vl',
   templateUrl: './view-vl.page.html',

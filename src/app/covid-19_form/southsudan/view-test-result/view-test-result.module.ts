@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { ViewTestResultPageRoutingModule } from './view-test-result-routing.module';
 import { MaterialModule } from '../../../material.module';
 import { MomentModule } from '../../../moment.module';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { ViewTestResultPage } from './view-test-result.page';
 import { NgxPaginationModule } from 'ngx-pagination';
 // import { JwPaginationComponent } from '../../../component/jw-pagination/jw-pagination.component';
@@ -21,7 +20,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     IonicModule,
     MaterialModule,
     MomentModule,
-    Ng2SearchPipeModule,
     ViewTestResultPageRoutingModule,
     NgxPaginationModule, SharedModule,
   ],

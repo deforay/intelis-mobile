@@ -6,7 +6,6 @@ import { ViewVlResultDrcPageRoutingModule } from './view-vl-result-drc-routing.m
 import { ViewVlResultDrcPage } from './view-vl-result-drc.page';
 import { MomentModule } from '../../../moment.module';
 import { MaterialModule } from '../../../material.module';
-import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -19,7 +18,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ReactiveFormsModule,
     MaterialModule,
     MomentModule,
-    Ng2SearchPipeModule,
     NgxPaginationModule, SharedModule
   ],
   declarations: [ViewVlResultDrcPage],

@@ -96,3 +96,10 @@
 .login-wrapper {
   height: 100%;
 }
+/* Replaces the former fxLayout="row" fxLayoutAlign="center center" attributes. */
+.login-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

@@ -30,7 +30,7 @@ import {
 } from '@angular/forms';
 import {
   AppVersion
-} from '@ionic-native/app-version/ngx';
+} from '@awesome-cordova-plugins/app-version/ngx';
 import {
   HttpClientModule
 } from '@angular/common/http';
@@ -39,26 +39,26 @@ import {
 } from '@ionic/storage-angular';
 import {
   SplashScreen
-} from '@ionic-native/splash-screen/ngx';
+} from '@awesome-cordova-plugins/splash-screen/ngx';
 import {
   StatusBar
-} from '@ionic-native/status-bar/ngx';
+} from '@awesome-cordova-plugins/status-bar/ngx';
 import {
   MomentModule
 } from '../../src/app/moment.module';
 import {
   Network
-} from '@ionic-native/network/ngx';
+} from '@awesome-cordova-plugins/network/ngx';
 import { NetworkService} from '../app/service/network/network.service';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { SQLite } from '@ionic-native/sqlite/ngx';
-import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
-import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { SQLitePorter } from '@awesome-cordova-plugins/sqlite-porter/ngx';
+import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { JwPaginationComponent } from './component/jw-pagination/jw-pagination.component';
-import { Device } from '@ionic-native/device/ngx';
+import { Device } from '@awesome-cordova-plugins/device/ngx';
 
 import {
   MatIconModule

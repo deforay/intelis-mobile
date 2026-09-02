@@ -16,14 +16,14 @@ import {
 } from '@ionic/storage-angular';
 import {
   Network
-} from '@ionic-native/network/ngx';
+} from '@awesome-cordova-plugins/network/ngx';
 // import {
 //   DbService
 // } from '../services/db.service';
 // import {
 //   SQLite,
 //   SQLiteObject
-// } from '@ionic-native/sqlite/ngx';
+// } from '@awesome-cordova-plugins/sqlite/ngx';
 import {
   CrudOperationsService,
 } from '../../app/service/providers';

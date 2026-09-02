@@ -1,13 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
-import { AppVersion } from '@ionic-native/app-version/ngx';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
+import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
+import { StatusBar } from '@awesome-cordova-plugins/status-bar/ngx';
 import { Platform, IonRouterOutlet, AlertController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 import { Router } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 import { CommonService } from '../app/service/common/common.service';
-import { Device } from '@ionic-native/device/ngx';
+import { Device } from '@awesome-cordova-plugins/device/ngx';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CrudOperationsService,
@@ -17,7 +17,7 @@ import {
   MultilevelService,
   SyncTestRequestsService,
 } from '../app/service/providers';
-import { Network } from '@ionic-native/network/ngx';
+import { Network } from '@awesome-cordova-plugins/network/ngx';
 import { interval } from 'rxjs';
 import { nanoid } from 'nanoid';
 import { DbMigrationService } from '../app/services/db-migration.service';

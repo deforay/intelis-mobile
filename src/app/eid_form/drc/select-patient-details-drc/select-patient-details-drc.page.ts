@@ -4,7 +4,7 @@ import { ToastService, LoaderService } from '../../../../app/service/providers';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { Events } from 'src/app/service/providers';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 
 @Component({
   selector: 'app-select-patient-details-drc',
