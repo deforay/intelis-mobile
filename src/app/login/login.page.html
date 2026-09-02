@@ -1,4 +1,4 @@
-<ion-content> 
+<ion-content>
 
   <div class="login-wrapper">
 
@@ -7,69 +7,79 @@
         <div class="text-center">
           <img class="logoImage" src="assets/imgs/icon.png">
           <mat-card-title>VLSM</mat-card-title>
-          </div>
+        </div>
       </mat-card-header>
-  
+
       <form class="example-form">
-  
+
         <p>
           <mat-form-field appearance="fill">
             <mat-label>Server URL</mat-label>
             <input matInput [formControl]="serverHostFormControl" [errorStateMatcher]="matcher"
-            [ngClass]="{ 'mat-form-field-invalid':submitted }" autocomplete="off" oninput="this.value?this.value=this.value.replace(/(^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$)./gmi,''):''" >
-            <mat-icon matSuffix class="matIcons" >language</mat-icon>
-            <mat-error *ngIf="serverHostFormControl.hasError('required')">
-              Please enter a valid Host URL
-            </mat-error>
-          </mat-form-field>
-        </p>
-     
+              [ngClass]="{ 'mat-form-field-invalid':submitted }" autocomplete="off" oninput="this.value?this.value=this.value.replace(/(^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$)./gmi,''):''" >
+              <mat-icon matSuffix class="matIcons" >language</mat-icon>
+              @if (serverHostFormControl.hasError('required')) {
+                <mat-error>
+                  Please enter a valid Host URL
+                </mat-error>
+              }
+            </mat-form-field>
+          </p>
 
-        <p>
-          <mat-form-field appearance="fill">
-            <mat-label>Username</mat-label>
-            <input matInput [formControl]="userNameFormControl" [errorStateMatcher]="matcher"
-            [ngClass]="{ 'mat-form-field-invalid':submitted }" autocomplete="off">
-            <mat-icon matSuffix class="matIcons">account_box </mat-icon>
-            <mat-error
-            *ngIf="(!userNameFormControl.hasError('required') && userNameFormControl.hasError('trimmedThreeChars'))">
-            Username must be atleast <strong>3 Characters</strong>
-          </mat-error>
-          <mat-error *ngIf="userNameFormControl.hasError('required')">
-            Username is <strong>required</strong>
-          </mat-error>
-          </mat-form-field>
-        </p>
-     
 
-        <p>
-          <mat-form-field appearance="fill">
-            <mat-label>Password</mat-label>
-            <input matInput [type]="pswdhide ? 'password' : 'text'" placeholder="Password" [formControl]="pswdFormControl"
-            [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid': submitted }" autocomplete="off">
-          <button mat-icon-button matSuffix (click)="pswdhide = !pswdhide" [attr.aria-label]="'hide password'"
-            [attr.aria-pressed]="pswdhide">
-            <mat-icon class="matIcons">{{pswdhide ? 'visibility_off' : 'visibility'}}</mat-icon>
-          </button>
-          <mat-error *ngIf="!pswdFormControl.hasError('required') && pswdFormControl.hasError('trimmedThreeChars')">
-            Password must be atleast <strong>3 Characters</strong>
-          </mat-error>
-          <mat-error *ngIf="pswdFormControl.hasError('required')">
-            Password is <strong>required</strong>
-          </mat-error>
-          </mat-form-field>
-        </p>
-   
+          <p>
+            <mat-form-field appearance="fill">
+              <mat-label>Username</mat-label>
+              <input matInput [formControl]="userNameFormControl" [errorStateMatcher]="matcher"
+                [ngClass]="{ 'mat-form-field-invalid':submitted }" autocomplete="off">
+              <mat-icon matSuffix class="matIcons">account_box </mat-icon>
+              @if ((!userNameFormControl.hasError('required') && userNameFormControl.hasError('trimmedThreeChars'))) {
+                <mat-error
+                  >
+                  Username must be atleast <strong>3 Characters</strong>
+                </mat-error>
+              }
+              @if (userNameFormControl.hasError('required')) {
+                <mat-error>
+                  Username is <strong>required</strong>
+                </mat-error>
+              }
+            </mat-form-field>
+          </p>
 
-        <ion-row class="loginRow">
-          <ion-col>
-          </ion-col>
+
+          <p>
+            <mat-form-field appearance="fill">
+              <mat-label>Password</mat-label>
+              <input matInput [type]="pswdhide ? 'password' : 'text'" placeholder="Password" [formControl]="pswdFormControl"
+                [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid': submitted }" autocomplete="off">
+              <button mat-icon-button matSuffix (click)="pswdhide = !pswdhide" [attr.aria-label]="'hide password'"
+                [attr.aria-pressed]="pswdhide">
+                <mat-icon class="matIcons">{{pswdhide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              @if (!pswdFormControl.hasError('required') && pswdFormControl.hasError('trimmedThreeChars')) {
+                <mat-error>
+                  Password must be atleast <strong>3 Characters</strong>
+                </mat-error>
+              }
+              @if (pswdFormControl.hasError('required')) {
+                <mat-error>
+                  Password is <strong>required</strong>
+                </mat-error>
+              }
+            </mat-form-field>
+          </p>
+
+
+          <ion-row class="loginRow">
+            <ion-col>
+            </ion-col>
             <button ion-col mat-raised-button class="form-btn" color="primary" (click)="login()">Login</button>
-          <ion-col>
-          </ion-col>
-        </ion-row>
+            <ion-col>
+            </ion-col>
+          </ion-row>
 
-        <!-- <ion-row>
+          <!-- <ion-row>
           <ion-col></ion-col>
           <ion-col>
             <button ion-col  mat-button color="secondary" class="forgot-btn"  (click)="forgotPassword()">Forgot Password?</button>
@@ -77,15 +87,15 @@
           <ion-col>
           </ion-col>
         </ion-row> -->
-       
-        
+
+
       </form>
     </mat-card>
 
-   
-   
-</div>
-<div style="margin-top: -15%; text-align: center;">
-  <a href="https://vlsm.app/privacy.html" target="_blank" style="font-size: 16px; color: #3c8dbc;">Privacy Policy</a>
-</div>
+
+
+  </div>
+  <div style="margin-top: -15%; text-align: center;">
+    <a href="https://vlsm.app/privacy.html" target="_blank" style="font-size: 16px; color: #3c8dbc;">Privacy Policy</a>
+  </div>
 </ion-content>

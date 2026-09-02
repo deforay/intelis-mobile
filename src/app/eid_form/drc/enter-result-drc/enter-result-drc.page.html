@@ -1,146 +1,137 @@
 <mat-toolbar>
   <!-- <button mat-icon-button> -->
-    <ion-menu-button class="menuIcon"></ion-menu-button>
-  <!-- </button> -->
-  <p class="mainHeaderName" text-wrap>Enter EID Test Result</p>
+  <ion-menu-button class="menuIcon"></ion-menu-button>
+<!-- </button> -->
+<p class="mainHeaderName" text-wrap>Enter EID Test Result</p>
 </mat-toolbar>
 
 <ion-content>
 
-  <ion-searchbar 
-  showCancelButton="never" 
-  class="patientDetailsSearchBar"
-  placeholder="Search" 
-  [(ngModel)]="searchTerm" 
-  (ionInput)="filterItems()"
-  name="searchPatient" 
-  mode="ios">
-</ion-searchbar>
+  <ion-searchbar
+    showCancelButton="never"
+    class="patientDetailsSearchBar"
+    placeholder="Search"
+    [(ngModel)]="searchTerm"
+    (ionInput)="filterItems()"
+    name="searchPatient"
+    mode="ios">
+  </ion-searchbar>
 
-<!-- Use filteredUserTestPendingResultArray instead of userTestPendingResultArray -->
-<app-jw-pagination [items]="filteredUserTestPendingResultArray" [search]="searchTerm" ></app-jw-pagination>
+  <!-- Use filteredUserTestPendingResultArray instead of userTestPendingResultArray -->
+  <app-jw-pagination [items]="filteredUserTestPendingResultArray" [search]="searchTerm" ></app-jw-pagination>
 
 
-  
+
   <!-- ion-skeleton-text code start -->
-  <div class="searchSkeleton" *ngIf="userEidPendingResultArray.length==0">
-    <ion-skeleton-text animated style="width: 100%;text-align:center;"></ion-skeleton-text>
-  </div>
+  @if (userEidPendingResultArray.length==0) {
+    <div class="searchSkeleton">
+      <ion-skeleton-text animated style="width: 100%;text-align:center;"></ion-skeleton-text>
+    </div>
+  }
 
 
-  <mat-card class="vlsm_mat_card" *ngFor="let item of skeltonArray">
-    <mat-card-header class="mat_header" [ngStyle]="{'background':getSkeltonColor()}">
-      <p text-wrap class="headerName">
-        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-      </p>
-    </mat-card-header>
-
-    <mat-card-content class="matContent">
-
-      <ion-grid class="viewGrid">
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <mat-card-actions class="cardActions">
-          <mat-divider></mat-divider>
-          <ion-row class="matActionsRow">
-            <ion-col size="6">
-              <button mat-raised-button class="viewButton">
-                <mat-icon>visibility</mat-icon>
-                View
-              </button>
-            </ion-col>
-            <ion-col size="6">
-              <button mat-raised-button class="editButton">
-                <mat-icon>mode_edit</mat-icon>Edit
-              </button>
+  @for (item of skeltonArray; track item) {
+    <mat-card class="vlsm_mat_card">
+      <mat-card-header class="mat_header" [ngStyle]="{'background':getSkeltonColor()}">
+        <p text-wrap class="headerName">
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </mat-card-header>
+      <mat-card-content class="matContent">
+        <ion-grid class="viewGrid">
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+              </p>
             </ion-col>
           </ion-row>
-        </mat-card-actions>
-
-      </ion-grid>
-
-    </mat-card-content>
-  </mat-card>
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="skeltonRow">
+            <ion-col size="12">
+              <p text-wrap>
+                <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+              </p>
+            </ion-col>
+          </ion-row>
+          <mat-card-actions class="cardActions">
+            <mat-divider></mat-divider>
+            <ion-row class="matActionsRow">
+              <ion-col size="6">
+                <button mat-raised-button class="viewButton">
+                  <mat-icon>visibility</mat-icon>
+                  View
+                </button>
+              </ion-col>
+              <ion-col size="6">
+                <button mat-raised-button class="editButton">
+                  <mat-icon>mode_edit</mat-icon>Edit
+                </button>
+              </ion-col>
+            </ion-row>
+          </mat-card-actions>
+        </ion-grid>
+      </mat-card-content>
+    </mat-card>
+  }
 
   <!-- ion-skeleton-text code end -->
 
 
-  <mat-card class="vlsm_mat_card" *ngIf="isNoRecord">
-    <mat-card-content>
-      <p class="noRecord">No records found</p>
-    </mat-card-content>
-  </mat-card>
+  @if (isNoRecord) {
+    <mat-card class="vlsm_mat_card">
+      <mat-card-content>
+        <p class="noRecord">No records found</p>
+      </mat-card-content>
+    </mat-card>
+  }
 
 </ion-content>

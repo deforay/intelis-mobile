@@ -1,18 +1,18 @@
 <mat-toolbar>
   <!-- <button mat-icon-button> -->
-    <ion-menu-button class="menuIcon"></ion-menu-button>
-  <!-- </button> -->
-  <p class="mainHeaderName" text-wrap>COVID-19 Test Requests</p>
+  <ion-menu-button class="menuIcon"></ion-menu-button>
+<!-- </button> -->
+<p class="mainHeaderName" text-wrap>COVID-19 Test Requests</p>
 </mat-toolbar>
 
 
 <ion-content>
 
   <!-- <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher> -->
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher> -->
 
-  <ion-searchbar 
+<ion-searchbar
   showCancelButton="never"
   class="patientDetailsSearchBar"
   placeholder="Search"
@@ -23,7 +23,8 @@
   mode="ios">
 </ion-searchbar>
 
-  <ion-grid class="countGrid" *ngIf="userTestRequestArray.length!=0 || isFiltered">
+@if (userTestRequestArray.length!=0 || isFiltered) {
+  <ion-grid class="countGrid">
     <ion-row>
       <ion-col size="6">
         <mat-card class="vlsm_mat_card count" (click)="filterTotalRequests()"
@@ -52,7 +53,6 @@
         </mat-card>
       </ion-col>
     </ion-row>
-
     <ion-row class="countGrid">
       <ion-col size="6">
         <mat-card class="vlsm_mat_card count" (click)="filterWithoutResults()"
@@ -81,27 +81,33 @@
         </mat-card>
       </ion-col>
     </ion-row>
-
-    <ion-row class="sortRow" *ngIf="userTestRequestArray.length!=0">
-      <ion-col size="12">
-        <button mat-raised-button class="sortButton" (click)="presentSortingPopover($event)">
-          <mat-icon class="matIcons sort"></mat-icon>Sort<mat-icon class="matIcons">keyboard_arrow_down
+    @if (userTestRequestArray.length!=0) {
+      <ion-row class="sortRow">
+        <ion-col size="12">
+          <button mat-raised-button class="sortButton" (click)="presentSortingPopover($event)">
+            <mat-icon class="matIcons sort"></mat-icon>Sort<mat-icon class="matIcons">keyboard_arrow_down
           </mat-icon>
         </button>
       </ion-col>
     </ion-row>
+  }
+</ion-grid>
+}
 
-  </ion-grid>
+<!-- app-  app- -->
+@if (userTestRequestArray.length!=0) {
+  <app-jw-pagination [items]="userTestRequestArray" [search]="searchTerm"></app-jw-pagination>
+}
 
-  <!-- app-  app- -->
-  <app-jw-pagination [items]="userTestRequestArray" [search]="searchTerm" *ngIf="userTestRequestArray.length!=0"></app-jw-pagination>
-
-  <!-- ion-skeleton-text code start -->
-  <div class="searchSkeleton" *ngIf="userTestRequestArray.length==0 && isFiltered==false">
+<!-- ion-skeleton-text code start -->
+@if (userTestRequestArray.length==0 && isFiltered==false) {
+  <div class="searchSkeleton">
     <ion-skeleton-text animated style="width: 100%;text-align:center;"></ion-skeleton-text>
   </div>
+}
 
-  <ion-grid class="countGrid" *ngIf="isFiltered==false">
+@if (isFiltered==false) {
+  <ion-grid class="countGrid">
     <ion-row>
       <ion-col size="6">
         <mat-card class="vlsm_mat_card count">
@@ -132,7 +138,6 @@
         </mat-card>
       </ion-col>
     </ion-row>
-
     <ion-row class="countGrid">
       <ion-col size="6">
         <mat-card class="vlsm_mat_card count">
@@ -163,133 +168,120 @@
         </mat-card>
       </ion-col>
     </ion-row>
-
     <ion-row class="sortRow">
       <ion-col size="12">
         <button mat-raised-button class="sortButton">
           <mat-icon class="matIcons sort"></mat-icon>Sort<mat-icon class="matIcons">keyboard_arrow_down
-          </mat-icon>
-        </button>
-      </ion-col>
-    </ion-row>
+        </mat-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+}
 
 
-  </ion-grid>
-
-
-  <mat-card class="vlsm_mat_card" *ngFor="let item of skeltonArray">
+@for (item of skeltonArray; track item) {
+  <mat-card class="vlsm_mat_card">
     <mat-card-header class="mat_header" [ngStyle]="{'background':getSkeltonColor()}">
       <!-- <p text-wrap class="headerName">
-        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-      </p> -->
-    </mat-card-header>
-
-    <mat-card-content class="matContent">
-
-      <ion-grid class="viewGrid">
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
-            </p>
+      <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+    </p> -->
+  </mat-card-header>
+  <mat-card-content class="matContent">
+    <ion-grid class="viewGrid">
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row class="skeltonRow">
+        <ion-col size="12">
+          <p text-wrap>
+            <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+          </p>
+        </ion-col>
+      </ion-row>
+      <mat-card-actions class="cardActions">
+        <mat-divider></mat-divider>
+        <ion-row class="matActionsRow">
+          <ion-col size="6">
+            <button mat-raised-button class="viewButton">
+              <mat-icon>visibility</mat-icon>
+              <span>View</span>
+            </button>
+          </ion-col>
+          <ion-col size="6">
+            <button mat-raised-button class="editButton">
+              <mat-icon>mode_edit</mat-icon>
+              <span>Edit</span>
+            </button>
           </ion-col>
         </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
+      </mat-card-actions>
+    </ion-grid>
+  </mat-card-content>
+</mat-card>
+}
+<!-- ion-skeleton-text code end -->
 
 
-        <ion-row class="skeltonRow">
-          <ion-col size="12">
-            <p text-wrap>
-              <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
-            </p>
-          </ion-col>
-        </ion-row>
-
-        <mat-card-actions class="cardActions">
-          <mat-divider></mat-divider>
-          <ion-row class="matActionsRow">
-            <ion-col size="6">
-              <button mat-raised-button class="viewButton">
-                <mat-icon>visibility</mat-icon>
-                <span>View</span>
-              </button>
-            </ion-col>
-            <ion-col size="6">
-              <button mat-raised-button class="editButton">
-                <mat-icon>mode_edit</mat-icon>
-                <span>Edit</span>
-              </button>
-            </ion-col>
-          </ion-row>
-        </mat-card-actions>
-
-      </ion-grid>
-
-    </mat-card-content>
-  </mat-card>
-  <!-- ion-skeleton-text code end -->
-
-
-  <mat-card class="vlsm_mat_card" *ngIf="isNoRecord">
+@if (isNoRecord) {
+  <mat-card class="vlsm_mat_card">
     <mat-card-content>
       <p class="noRecord">{{isNoRecordText}}</p>
     </mat-card-content>
   </mat-card>
+}
 
 </ion-content>

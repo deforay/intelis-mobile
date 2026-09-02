@@ -1,8 +1,8 @@
 <mat-toolbar>
   <!-- <button mat-icon-button> -->
-    <ion-menu-button class="menuIcon"></ion-menu-button>
-  <!-- </button> -->
-  <p class="mainHeaderName" text-wrap>Profile</p>
+  <ion-menu-button class="menuIcon"></ion-menu-button>
+<!-- </button> -->
+<p class="mainHeaderName" text-wrap>Profile</p>
 </mat-toolbar>
 
 <ion-content>
@@ -14,69 +14,77 @@
         <form [formGroup]="profileForm" novalidate>
           <mat-form-field appearance="fill">
             <mat-label>
-              Name</mat-label>
+            Name</mat-label>
             <input matInput formControlName="name" readonly>
             <mat-icon matSuffix class="matIcons">person</mat-icon>
           </mat-form-field>
 
 
-          <mat-form-field appearance="fill" *ngIf="profileForm.controls.role.value">
-            <mat-label>
+          @if (profileForm.controls.role.value) {
+            <mat-form-field appearance="fill">
+              <mat-label>
               Role</mat-label>
-            <input matInput formControlName="role" readonly>
-            <mat-icon matSuffix class="matIcons">
-              recent_actors
-            </mat-icon>
-          </mat-form-field>
+              <input matInput formControlName="role" readonly>
+              <mat-icon matSuffix class="matIcons">
+                recent_actors
+              </mat-icon>
+            </mat-form-field>
+          }
 
-          
-          <mat-form-field appearance="fill" *ngIf="profileForm.controls.email.value">
-            <mat-label>
+
+          @if (profileForm.controls.email.value) {
+            <mat-form-field appearance="fill">
+              <mat-label>
               Email</mat-label>
-            <input matInput formControlName="email" readonly>
-            <mat-icon matSuffix class="matIcons">email</mat-icon>
-          </mat-form-field>
+              <input matInput formControlName="email" readonly>
+              <mat-icon matSuffix class="matIcons">email</mat-icon>
+            </mat-form-field>
+          }
 
-         
-          <mat-form-field appearance="fill" *ngIf="profileForm.controls.phoneNo.value">
-            <mat-label>
+
+          @if (profileForm.controls.phoneNo.value) {
+            <mat-form-field appearance="fill">
+              <mat-label>
               Phone no</mat-label>
-            <input matInput formControlName="phoneNo" readonly>
-            <mat-icon matSuffix class="matIcons">smartphone</mat-icon>
-          </mat-form-field>
+              <input matInput formControlName="phoneNo" readonly>
+              <mat-icon matSuffix class="matIcons">smartphone</mat-icon>
+            </mat-form-field>
+          }
 
           <ion-row class="loginRow">
             <ion-col>
             </ion-col>
-              <button ion-col mat-raised-button class="form-btn1" color="primary" (click)="syncall('syncall')" [disabled]="isDisabled">
-                <mat-icon>360</mat-icon>
-                Sync All Requests
-              </button>
+            <button ion-col mat-raised-button class="form-btn1" color="primary" (click)="syncall('syncall')" [disabled]="isDisabled">
+              <mat-icon>360</mat-icon>
+              Sync All Requests
+            </button>
             <ion-col>
             </ion-col>
           </ion-row>
-        <br>
-          
-          <mat-card class="vlsm_inner_mat_card">
-            <ion-row class="facilityDetailsRow">
-              <ion-col size="12">
-                <p text-wrap>
-                  <span class="facilityDetailSpan">Facilities</span>
-                </p>
-              </ion-col>
-            </ion-row>
+          <br>
 
-            <ion-row>
-              <ion-col size="12">
-                <ul *ngFor="let item of testingLabsListArray">
-                  <li>{{item.show}}</li>
-                </ul>
-              </ion-col>
-            </ion-row>
+            <mat-card class="vlsm_inner_mat_card">
+              <ion-row class="facilityDetailsRow">
+                <ion-col size="12">
+                  <p text-wrap>
+                    <span class="facilityDetailSpan">Facilities</span>
+                  </p>
+                </ion-col>
+              </ion-row>
 
-          </mat-card>
-        </form>
-      </ion-grid>
-    </mat-card-content>
-  </mat-card>
-</ion-content>
+              <ion-row>
+                <ion-col size="12">
+                  @for (item of testingLabsListArray; track item) {
+                    <ul>
+                      <li>{{item.show}}</li>
+                    </ul>
+                  }
+                </ion-col>
+              </ion-row>
+
+            </mat-card>
+          </form>
+        </ion-grid>
+      </mat-card-content>
+    </mat-card>
+  </ion-content>
