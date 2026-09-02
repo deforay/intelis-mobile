@@ -1,7 +1,8 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   Storage
@@ -24,6 +25,7 @@ import {
     selector: 'app-view-eid',
     templateUrl: './view-eid.page.html',
     styleUrls: ['./view-eid.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ViewEidPage implements OnInit {

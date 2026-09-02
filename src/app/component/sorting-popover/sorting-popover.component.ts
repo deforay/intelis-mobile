@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
     selector: 'app-sorting-popover',
     templateUrl: './sorting-popover.component.html',
     styleUrls: ['./sorting-popover.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SortingPopoverComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import {
@@ -15,6 +15,7 @@ import { MenuController, LoadingController } from '@ionic/angular';
     selector: 'app-enter-app-password',
     templateUrl: './enter-app-password.page.html',
     styleUrls: ['./enter-app-password.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EnterAppPasswordPage implements OnInit {

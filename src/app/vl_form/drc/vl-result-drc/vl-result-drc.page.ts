@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   Storage
 } from '@ionic/storage-angular';
@@ -13,6 +13,7 @@ import {
     selector: 'app-vl-result-drc',
     templateUrl: './vl-result-drc.page.html',
     styleUrls: ['./vl-result-drc.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class VlResultDrcPage implements OnInit {

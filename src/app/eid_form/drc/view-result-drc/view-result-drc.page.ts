@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   Storage
@@ -24,6 +25,7 @@ import { CommonService } from '../../../service/common/common.service';
     selector: 'app-view-result-drc',
     templateUrl: './view-result-drc.page.html',
     styleUrls: ['./view-result-drc.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ViewResultDrcPage implements OnInit {

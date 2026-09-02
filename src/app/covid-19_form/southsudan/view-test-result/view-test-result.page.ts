@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   Storage
@@ -25,6 +26,7 @@ import { CommonService } from '../../../service/common/common.service';
     selector: 'app-view-test-result',
     templateUrl: './view-test-result.page.html',
     styleUrls: ['./view-test-result.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ViewTestResultPage implements OnInit {

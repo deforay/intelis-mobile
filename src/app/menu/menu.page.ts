@@ -1,7 +1,8 @@
 import { SynctimelinePage } from './../syncTimeline/synctimeline.page';
 import {
   Component,
-  OnInit
+  OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   Events,
@@ -34,6 +35,7 @@ import { ModalController } from '@ionic/angular';
     selector: 'app-menu',
     templateUrl: './menu.page.html',
     styleUrls: ['./menu.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MenuPage implements OnInit {

@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   FormControl,
@@ -62,6 +63,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     selector: 'app-new-vl-drc',
     templateUrl: './new-vl-drc.page.html',
     styleUrls: ['./new-vl-drc.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class NewVlDrcPage implements OnInit {

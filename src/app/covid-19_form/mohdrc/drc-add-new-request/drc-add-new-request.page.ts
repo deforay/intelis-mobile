@@ -1,4 +1,4 @@
-import { ViewChild } from '@angular/core';
+import { ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Component, OnInit, NgZone } from '@angular/core';
 import { UntypedFormControl, FormGroupDirective, NgForm, Validators, FormBuilder, UntypedFormGroup, FormArray, FormControl, ControlValueAccessor, NgControl, FormGroup, } from '@angular/forms';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
@@ -38,6 +38,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     providers: [
         { provide: MatFormFieldControl, useExisting: DRCAddNewRequestPage },
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DRCAddNewRequestPage implements OnInit {

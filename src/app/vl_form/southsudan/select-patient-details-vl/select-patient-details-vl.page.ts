@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { ToastService, LoaderService } from '../../../../app/service/providers';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,6 +10,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
     selector: 'app-select-patient-details-vl',
     templateUrl: './select-patient-details-vl.page.html',
     styleUrls: ['./select-patient-details-vl.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SelectPatientDetailsVlPage implements OnInit {

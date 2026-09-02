@@ -1,5 +1,5 @@
 import { PrivilegeService } from './../service/privilage/privilege.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   CrudOperationsService,
   ToastService,
@@ -44,6 +44,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     selector: 'app-login',
     templateUrl: './login.page.html',
     styleUrls: ['./login.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LoginPage implements OnInit {

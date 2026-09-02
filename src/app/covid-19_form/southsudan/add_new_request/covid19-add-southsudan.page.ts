@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit, NgZone
+  OnInit, NgZone,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   FormControl,
@@ -60,6 +61,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     selector: 'app-covid19-add-southsudan',
     templateUrl: './covid19-add-southsudan.page.html',
     styleUrls: ['./covid19-add-southsudan.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 } )
 

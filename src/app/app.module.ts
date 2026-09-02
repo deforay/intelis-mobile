@@ -27,7 +27,7 @@ import {
 import {
   AppVersion
 } from '@awesome-cordova-plugins/app-version/ngx';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import {
   IonicStorageModule
 } from '@ionic/storage-angular';
@@ -86,6 +86,6 @@ import {
             provide: RouteReuseStrategy,
             useClass: IonicRouteStrategy
         },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
     ] })
 export class AppModule {}
