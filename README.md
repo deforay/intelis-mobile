@@ -17,6 +17,7 @@ Built with Ionic 7, Angular 15 and Apache Cordova.
 - [Run tests and lint](#run-tests-and-lint)
 - [Project layout](#project-layout)
 - [Server compatibility](#server-compatibility)
+- [Privacy policy and terms](#privacy-policy-and-terms)
 - [License](#license)
 
 ## Prerequisites
@@ -147,6 +148,15 @@ Unit tests run under Karma with Jasmine and require Chrome.
 The app talks to the InteLIS server API under `/api/v1.1/`. At login the user enters the server host. The app then calls `version.php` on that host to confirm it is reachable before authenticating.
 
 The server must allow the app's origin, and for `http://` hosts the Android build enables cleartext traffic in `config.xml`.
+
+## Privacy policy and terms
+
+The privacy policy and terms of use are published from the `docs/` folder through GitHub Pages:
+
+- Privacy policy: https://deforay.github.io/intelis-mobile/privacy.html
+- Terms and conditions: https://deforay.github.io/intelis-mobile/terms.html
+
+The privacy policy URL is the one entered in the Google Play Console listing. When the app's data handling changes, update `docs/privacy.html` and its effective date in the same commit.
 
 ## License
 
