@@ -6,7 +6,7 @@ Android and iOS companion app for [InteLIS](https://github.com/deforay/intelis),
 
 The app lets field and lab staff register Viral Load (VL), Early Infant Diagnosis (EID) and Covid-19 test requests on a phone or tablet. It stores requests in a local SQLite database, so it works without a network connection. When a connection is available, it syncs pending requests to an InteLIS server and pulls back test results. Access to the app is protected by a PIN, with optional fingerprint unlock.
 
-Built with Ionic 8, Angular 21 and Apache Cordova.
+Built with Ionic 9, Angular 21 and Apache Cordova.
 
 ## Contents
 

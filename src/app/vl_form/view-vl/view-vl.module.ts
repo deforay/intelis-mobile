@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ViewVlPageRoutingModule } from './view-vl-routing.module';
 import { NgModule ,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonCol, IonContent, IonGrid, IonMenuButton, IonRefresher, IonRefresherContent, IonRow, IonSearchbar, IonSkeletonText } from '@ionic/angular';
 import { MaterialModule } from '../../material.module';
 import { MomentModule } from '../../moment.module';
 
@@ -17,7 +17,7 @@ import { ViewVlPage } from './view-vl.page';
     ViewVlPageRoutingModule,
     CommonModule,
     FormsModule,
-    IonicModule,
+    IonCol, IonContent, IonGrid, IonMenuButton, IonRefresher, IonRefresherContent, IonRow, IonSearchbar, IonSkeletonText,
     MaterialModule,
     ReactiveFormsModule,
     MomentModule,

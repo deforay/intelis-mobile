@@ -1,7 +1,7 @@
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonCol, IonContent, IonGrid, IonMenuButton, IonRow, IonSearchbar, IonSkeletonText } from '@ionic/angular';
 import { MaterialModule } from '../../../material.module';
 import { MomentModule } from '../../../moment.module';
 import { EnterVlResultPageRoutingModule } from './enter-vl-result-routing.module';
@@ -14,7 +14,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
+    IonCol, IonContent, IonGrid, IonMenuButton, IonRow, IonSearchbar, IonSkeletonText,
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,

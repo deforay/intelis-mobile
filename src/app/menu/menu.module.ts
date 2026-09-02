@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
+import { IonContent, IonFooter, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonTitle, IonToolbar, IonRouterLink, IonRouterLinkWithHref } from '@ionic/angular';
 
 import { MenuPageRoutingModule } from './menu-routing.module';
 
@@ -14,7 +14,7 @@ import { MaterialModule } from '../material.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule,
+    IonContent, IonFooter, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonTitle, IonToolbar, IonRouterLink, IonRouterLinkWithHref,
     MaterialModule,
     MenuPageRoutingModule
   ],

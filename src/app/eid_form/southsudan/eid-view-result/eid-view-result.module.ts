@@ -1,7 +1,7 @@
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonCol, IonContent, IonGrid, IonMenuButton, IonRow, IonSkeletonText } from '@ionic/angular';
 import { EidViewResultPageRoutingModule } from './eid-view-result-routing.module';
 import { EidViewResultPage } from './eid-view-result.page';
 
@@ -18,7 +18,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule,
+    IonCol, IonContent, IonGrid, IonMenuButton, IonRow, IonSkeletonText,
     MaterialModule,
     MomentModule,
     NgxPaginationModule,

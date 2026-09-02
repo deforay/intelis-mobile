@@ -2,7 +2,7 @@ import { NgModule ,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
+import { IonCol, IonContent, IonGrid, IonMenuButton, IonRow, IonSkeletonText } from '@ionic/angular';
 
 import { MohdrcViewTestResultPageRoutingModule } from './mohdrc-view-test-result-routing.module';
 import { MaterialModule } from '../../../material.module';
@@ -16,7 +16,7 @@ import { MohdrcViewTestResultPage } from './mohdrc-view-test-result.page';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule,
+    IonCol, IonContent, IonGrid, IonMenuButton, IonRow, IonSkeletonText,
     MaterialModule,
     MomentModule,
     NgxPaginationModule, SharedModule,

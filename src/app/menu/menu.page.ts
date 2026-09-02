@@ -27,8 +27,8 @@ import {
 import {
   CrudOperationsService,
 } from '../../app/service/providers';
-import { ModalController } from '@ionic/angular';
 import { DbMigrationService } from '../services/db-migration.service';
+import { ModalController } from '@ionic/angular';
 // ../app/services/db-migration.service
 @Component({
     selector: 'app-menu',

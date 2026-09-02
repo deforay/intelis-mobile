@@ -1,7 +1,7 @@
+import { Platform } from '@ionic/angular';
 import {
   Injectable
 } from '@angular/core';
-import { Platform } from '@ionic/angular';
 import {
   SQLite,
   SQLiteObject

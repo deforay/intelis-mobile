@@ -7,10 +7,10 @@ import {
   AlertService,
 } from '../../app/service/providers';
 // import { CrudServiceService } from "../../app/service/crud/crud-service.service";
-import { MenuController, LoadingController } from '@ionic/angular';
 // import { Events } from "@ionic/angular";
 // import { FcmService } from "../../app/fcm.service";
 import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
+import { MenuController, LoadingController } from '@ionic/angular';
 @Component({
     selector: 'app-enter-app-password',
     templateUrl: './enter-app-password.page.html',
