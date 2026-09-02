@@ -138,7 +138,16 @@ export class LoginPage implements OnInit {
       // if (apiURL) {
       // this.http.get(URL + '/api/v1.1/xyz.php')
 
-      this.http.get(URL + '/api/v1.1/version.php').subscribe(async (resp: any) => {
+      // Prefer the health endpoint. Older InteLIS servers only have version.php, so fall back to it.
+      this.http.get(URL + '/api/v1.1/health').subscribe((health: any) => {
+        if (health && (health.status === 'ok' || health.version)) {
+          resolve(true);
+        } else {
+          checkLegacyVersionEndpoint();
+        }
+      }, () => checkLegacyVersionEndpoint());
+
+      const checkLegacyVersionEndpoint = () => this.http.get(URL + '/api/v1.1/version.php').subscribe(async (resp: any) => {
         console.log(resp);
         if (resp) {
           const res: any = resp;
@@ -270,7 +279,7 @@ export class LoginPage implements OnInit {
                       this.insertFacilitiesDetails();
                       this.LoaderService.hide();
                     }
-                    if (result.status == '2') {
+                    if (result.status == '2' || result.status == 'failed') {
                       this.LoaderService.hide();
                       this.alertService.alertWithSingleButton('Alert', 'OK', result.message, '');
                     }
@@ -523,7 +532,7 @@ export class LoginPage implements OnInit {
                       data.push(item.c19Tests[i].testingPlatform);
                       data.push(item.c19Tests[i].kitLotNo);
                       data.push(item.c19Tests[i].kitExpiryDate);
-                      data.push(item.c19Tests[i].testResult);
+                      data.push((item.c19Tests[i].testResult ?? item.c19Tests[i].result));
                       // console.log(item.c19Tests[i].testId,'c19tests[i]',data);
                     }
                   }

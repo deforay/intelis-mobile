@@ -104,6 +104,7 @@ export class EidViewResultPage implements OnInit {
       let searchJSON = {
         "sampleCode": this.searchRecordForm.controls.sampleCode.value ? [this.searchRecordForm.controls.sampleCode.value] : [],
         "patientId": this.searchRecordForm.controls.patientID.value ? [this.searchRecordForm.controls.patientID.value] : [],
+        "childId": this.searchRecordForm.controls.patientID.value ? [this.searchRecordForm.controls.patientID.value] : [],
         "patientName": this.searchRecordForm.controls.patientName.value ? this.searchRecordForm.controls.patientName.value : '',
         "facility": this.searchRecordForm.controls.facilities.value ? this.searchRecordForm.controls.facilities.value : [],
         "sampleStatus": this.searchRecordForm.controls.sampleStatus.value ? [this.searchRecordForm.controls.sampleStatus.value] : [],

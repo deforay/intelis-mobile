@@ -19,7 +19,6 @@ import {
 } from '../app/service/providers';
 import { Network } from '@awesome-cordova-plugins/network/ngx';
 import { interval } from 'rxjs';
-import { nanoid } from 'nanoid';
 import { addIcons } from 'ionicons';
 import { close, flask, cloudOfflineOutline } from 'ionicons/icons';
 import { DbMigrationService } from '../app/services/db-migration.service';
@@ -157,10 +156,12 @@ export class AppComponent {
     });
   }
 
-  getDeviceOSVersion() {
+  async getDeviceOSVersion() {
     this.deviceOSVersion = this.device.version;
-    this.device.uuid = uuidv4();
-    this.deviceuuid = this.device.uuid;
+    // Use the real device identifier so the server can recognise this installation.
+    // In a browser (no Cordova) fall back to a random id that is persisted once.
+    this.deviceuuid = this.device.uuid || await this.getPersistedDeviceId();
+    this.CrudService.deviceID = this.deviceuuid;
     this.CrudService.deviceOSVersion =this.deviceOSVersion
     this.CrudService.deviceuuid = this.deviceuuid
     this.storage.set('deviceOSVersion', this.deviceOSVersion);
@@ -331,8 +332,17 @@ export class AppComponent {
       });
     });
   }
+  private async getPersistedDeviceId(): Promise<string> {
+    let id = await this.storage.get('deviceId');
+    if (!id) {
+      id = uuidv4();
+      await this.storage.set('deviceId', id);
+    }
+    return id;
+  }
+
   async createUser() {
-    const id = nanoid();
+    const id = this.deviceuuid || await this.getPersistedDeviceId();
     this.CrudService.deviceID = id;
     console.log('nanoid device id', this.CrudService.deviceID);
   }
