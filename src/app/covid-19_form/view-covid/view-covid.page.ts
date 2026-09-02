@@ -7,9 +7,10 @@ import { Storage } from '@ionic/storage-angular';
 import _ from "lodash";
 
 @Component({
-  selector: 'app-view-covid',
-  templateUrl: './view-covid.page.html',
-  styleUrls: ['./view-covid.page.scss'],
+    selector: 'app-view-covid',
+    templateUrl: './view-covid.page.html',
+    styleUrls: ['./view-covid.page.scss'],
+    standalone: false
 })
 export class ViewCovidPage implements OnInit {
   userID: any;

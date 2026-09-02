@@ -32,12 +32,13 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 @Component({
-  selector: 'drc-app-add-new-request',
-  templateUrl: './drc-add-new-request.page.html',
-  styleUrls: ['./drc-add-new-request.page.scss'],
-  providers: [
-    { provide: MatFormFieldControl, useExisting: DRCAddNewRequestPage },
-  ],
+    selector: 'drc-app-add-new-request',
+    templateUrl: './drc-add-new-request.page.html',
+    styleUrls: ['./drc-add-new-request.page.scss'],
+    providers: [
+        { provide: MatFormFieldControl, useExisting: DRCAddNewRequestPage },
+    ],
+    standalone: false
 })
 export class DRCAddNewRequestPage implements OnInit {
   matcher = new MyErrorStateMatcher();

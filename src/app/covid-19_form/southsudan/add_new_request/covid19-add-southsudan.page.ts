@@ -57,9 +57,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 @Component( {
-  selector: 'app-covid19-add-southsudan',
-  templateUrl: './covid19-add-southsudan.page.html',
-  styleUrls: ['./covid19-add-southsudan.page.scss'],
+    selector: 'app-covid19-add-southsudan',
+    templateUrl: './covid19-add-southsudan.page.html',
+    styleUrls: ['./covid19-add-southsudan.page.scss'],
+    standalone: false
 } )
 
 export class Covid19AddSouthsudanPage implements OnInit {

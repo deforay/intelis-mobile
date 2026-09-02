@@ -59,9 +59,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 @Component({
-  selector: 'app-add-new-request',
-  templateUrl: './add-new-request.page.html',
-  styleUrls: ['./add-new-request.page.scss'],
+    selector: 'app-add-new-request',
+    templateUrl: './add-new-request.page.html',
+    styleUrls: ['./add-new-request.page.scss'],
+    standalone: false
 })
 export class AddNewRequestPage implements OnInit {
   reason:any;

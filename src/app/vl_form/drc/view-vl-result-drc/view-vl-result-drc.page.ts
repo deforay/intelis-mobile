@@ -22,9 +22,10 @@ import {
 import { CommonService } from '../../../service/common/common.service';
 
 @Component({
-  selector: 'app-view-vl-result-drc',
-  templateUrl: './view-vl-result-drc.page.html',
-  styleUrls: ['./view-vl-result-drc.page.scss'],
+    selector: 'app-view-vl-result-drc',
+    templateUrl: './view-vl-result-drc.page.html',
+    styleUrls: ['./view-vl-result-drc.page.scss'],
+    standalone: false
 })
 export class ViewVlResultDrcPage implements OnInit {
   isNoRecord: boolean = false;

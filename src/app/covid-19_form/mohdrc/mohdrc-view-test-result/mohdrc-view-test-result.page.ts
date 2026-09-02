@@ -22,9 +22,10 @@ import {
 import { CommonService } from '../../../service/common/common.service';
 
 @Component({
-  selector: 'app-mohdrc-view-test-result',
-  templateUrl: './mohdrc-view-test-result.page.html',
-  styleUrls: ['./mohdrc-view-test-result.page.scss'],
+    selector: 'app-mohdrc-view-test-result',
+    templateUrl: './mohdrc-view-test-result.page.html',
+    styleUrls: ['./mohdrc-view-test-result.page.scss'],
+    standalone: false
 })
 export class MohdrcViewTestResultPage implements OnInit {
   isNoRecord: boolean = false;

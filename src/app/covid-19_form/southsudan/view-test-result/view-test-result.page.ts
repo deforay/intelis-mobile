@@ -22,9 +22,10 @@ import {
 import { CommonService } from '../../../service/common/common.service';
 
 @Component({
-  selector: 'app-view-test-result',
-  templateUrl: './view-test-result.page.html',
-  styleUrls: ['./view-test-result.page.scss'],
+    selector: 'app-view-test-result',
+    templateUrl: './view-test-result.page.html',
+    styleUrls: ['./view-test-result.page.scss'],
+    standalone: false
 })
 export class ViewTestResultPage implements OnInit {
 

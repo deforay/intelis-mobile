@@ -59,9 +59,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 @Component({
-  selector: 'app-new-vl-drc',
-  templateUrl: './new-vl-drc.page.html',
-  styleUrls: ['./new-vl-drc.page.scss'],
+    selector: 'app-new-vl-drc',
+    templateUrl: './new-vl-drc.page.html',
+    styleUrls: ['./new-vl-drc.page.scss'],
+    standalone: false
 })
 export class NewVlDrcPage implements OnInit {
   reason:any;

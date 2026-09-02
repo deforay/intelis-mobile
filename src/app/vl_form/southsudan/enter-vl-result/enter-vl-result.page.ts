@@ -10,9 +10,10 @@ import {
   Events
 } from '../../../../app/service/providers';
 @Component({
-  selector: 'app-enter-vl-result',
-  templateUrl: './enter-vl-result.page.html',
-  styleUrls: ['./enter-vl-result.page.scss'],
+    selector: 'app-enter-vl-result',
+    templateUrl: './enter-vl-result.page.html',
+    styleUrls: ['./enter-vl-result.page.scss'],
+    standalone: false
 })
 export class EnterVlResultPage implements OnInit {
   isNoRecord: boolean = false;

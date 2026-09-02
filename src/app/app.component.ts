@@ -23,9 +23,10 @@ import { nanoid } from 'nanoid';
 import { DbMigrationService } from '../app/services/db-migration.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    standalone: false
 })
 export class AppComponent {
   

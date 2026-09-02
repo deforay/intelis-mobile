@@ -12,9 +12,10 @@ import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
 // import { Events } from "@ionic/angular";
 
 @Component( {
-  selector: 'app-app-password',
-  templateUrl: './app-password.page.html',
-  styleUrls: ['./app-password.page.scss'],
+    selector: 'app-app-password',
+    templateUrl: './app-password.page.html',
+    styleUrls: ['./app-password.page.scss'],
+    standalone: false
 } )
 export class AppPasswordPage implements OnInit {
   @ViewChild( 'ngCreatePinInput', {

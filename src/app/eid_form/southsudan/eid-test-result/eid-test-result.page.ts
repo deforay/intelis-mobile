@@ -10,9 +10,10 @@ import {
   Events
 } from '../../../../app/service/providers';
 @Component({
-  selector: 'app-eid-test-result',
-  templateUrl: './eid-test-result.page.html',
-  styleUrls: ['./eid-test-result.page.scss'],
+    selector: 'app-eid-test-result',
+    templateUrl: './eid-test-result.page.html',
+    styleUrls: ['./eid-test-result.page.scss'],
+    standalone: false
 })
 export class EidTestResultPage implements OnInit {
   isNoRecord: boolean = false;

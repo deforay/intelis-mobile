@@ -31,9 +31,10 @@ import { ModalController } from '@ionic/angular';
 import { DbMigrationService } from '../services/db-migration.service';
 // ../app/services/db-migration.service
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.page.html',
-  styleUrls: ['./menu.page.scss'],
+    selector: 'app-menu',
+    templateUrl: './menu.page.html',
+    styleUrls: ['./menu.page.scss'],
+    standalone: false
 })
 export class MenuPage implements OnInit {
 

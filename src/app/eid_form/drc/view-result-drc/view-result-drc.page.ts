@@ -21,9 +21,10 @@ import {
 } from '../../../component/sorting-popover/sorting-popover.component';
 import { CommonService } from '../../../service/common/common.service';
 @Component({
-  selector: 'app-view-result-drc',
-  templateUrl: './view-result-drc.page.html',
-  styleUrls: ['./view-result-drc.page.scss'],
+    selector: 'app-view-result-drc',
+    templateUrl: './view-result-drc.page.html',
+    styleUrls: ['./view-result-drc.page.scss'],
+    standalone: false
 })
 export class ViewResultDrcPage implements OnInit {
 

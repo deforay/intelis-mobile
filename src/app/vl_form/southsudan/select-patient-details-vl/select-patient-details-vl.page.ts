@@ -7,9 +7,10 @@ import { Events } from 'src/app/service/providers';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 
 @Component({
-  selector: 'app-select-patient-details-vl',
-  templateUrl: './select-patient-details-vl.page.html',
-  styleUrls: ['./select-patient-details-vl.page.scss'],
+    selector: 'app-select-patient-details-vl',
+    templateUrl: './select-patient-details-vl.page.html',
+    styleUrls: ['./select-patient-details-vl.page.scss'],
+    standalone: false
 })
 export class SelectPatientDetailsVlPage implements OnInit {
   search: string = ''; // Search string bound to the ion-searchbar

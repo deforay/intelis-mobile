@@ -2,9 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-sorting-popover',
-  templateUrl: './sorting-popover.component.html',
-  styleUrls: ['./sorting-popover.component.scss'],
+    selector: 'app-sorting-popover',
+    templateUrl: './sorting-popover.component.html',
+    styleUrls: ['./sorting-popover.component.scss'],
+    standalone: false
 })
 export class SortingPopoverComponent implements OnInit {
   @Input() sortedData: any;
