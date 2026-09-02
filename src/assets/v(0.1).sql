@@ -1,0 +1,1 @@
+ALTER TABLE vl_request_form ADD result_value_hiv_detection TEXT DEFAULT NULL;

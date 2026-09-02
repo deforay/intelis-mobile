@@ -1,0 +1,59 @@
+/* Ensure the segment takes full width */
+.full-width-segment {
+  width: 100%;
+}
+
+/* Ensure segment buttons are displayed correctly */
+.full-width-segment ion-segment-button {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: visible;
+  margin-left: -29%;
+}
+
+/* Ensure text inside segment buttons is displayed correctly */
+.full-width-segment ion-segment-button ion-label.full-text {
+  font-size: 14px;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* Add custom styles for the popover container */
+.popover-container {
+  padding: 10px;
+}
+
+/* Styling for the header and buttons */
+.popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+}
+
+.popover-footer {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.apply-button, .cancel-button {
+  width: 40%;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.apply-button {
+  background-color: #ff4d4d;
+  color: #fff;
+}
+
+.cancel-button {
+  background-color: #f1f1f1;
+  color: #333;
+}

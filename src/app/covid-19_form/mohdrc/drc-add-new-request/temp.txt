@@ -1,0 +1,77 @@
+
+let saveCovid19SSJSON = {
+        createdOn: this.createdOn,
+        authToken: this.loginDetails['api_token'],
+        formId: this.loginDetails['form'],
+        sampleID: this.siteInfoPanelForm.controls.sampleID.value,
+        sampling: this.siteInfoPanelForm.controls.sampling.value,
+        provinceId: this.provinceID,
+        provinceName: this.siteInfoPanelForm.controls.province.value,
+        facilityName: this.siteInfoPanelForm.controls.facilityName.value,
+        labId: this.labId,
+        labName: this.labName,
+        patientProvinceId: this.patientStateID,
+        patientDistrict:
+          this.caseDetailsPanelForm.controls.patientDistrict.value,
+        patientDistrictId: this.patientDistrictID,
+        patientZone: this.caseDetailsPanelForm.controls.zone.value,
+        patientCity: this.caseDetailsPanelForm.controls.city.value,
+        patientNationalityName:
+          this.caseDetailsPanelForm.controls.patientNationality.value,
+        reasonDetails: reasonDetailsArray,
+        fever: this.vitalSignsPanelForm.controls.fever.value,
+        weightLoss: this.vitalSignsPanelForm.controls.weightLoss.value,
+        convulsions: this.vitalSignsPanelForm.controls.convulsions.value,
+        lethargy: this.vitalSignsPanelForm.controls.lethargy.value,
+        headAche: this.vitalSignsPanelForm.controls.headAche.value,
+        soreThroat: this.vitalSignsPanelForm.controls.soreThroat.value,
+        cough: this.vitalSignsPanelForm.controls.cough.value,
+        rhinitis: this.vitalSignsPanelForm.controls.rhinitis.value,
+        difficultBreathing:
+          this.vitalSignsPanelForm.controls.difficultBreathing.value,
+        nausea: this.vitalSignsPanelForm.controls.nausea.value,
+        musclePain: this.vitalSignsPanelForm.controls.musclePain.value,
+        asthenia: this.vitalSignsPanelForm.controls.asthenia.value,
+        diarrhea: this.vitalSignsPanelForm.controls.diarrhea.value,
+        sampleReceivedDate: this.labResultPanelForm.controls
+          .sampleReceivedDateTime.value
+          ? this.dateTimeFormat(
+              new Date(
+                this.labResultPanelForm.controls.sampleReceivedDateTime.value
+              )
+            )
+          : '',
+        sampleCondition: this.labResultPanelForm.controls.sampleCondition.value
+          ? this.labResultPanelForm.controls.sampleCondition.value
+          : '',
+        labTechnicianName: this.labResultPanelForm.controls.labTechnician.value
+          ? this.labResultPanelForm.controls.labTechnician.value
+          : '',
+          rejectionReasonid: this.rejectionReasonId ? this.rejectionReasonId : '',
+
+        c19Tests: this.testDetails,
+        : this.labResultPanelForm.controls.finalResult.value
+          ? this.labResultPanelForm.controls.finalResult.value
+          : '',
+        testedBy: this.testedByID ? this.testedByID : '',
+        testedByName: this.labResultPanelForm.controls.testedBy.value
+          ? this.labResultPanelForm.controls.testedBy.value
+          : '',
+        reviewedBy: this.labResultPanelForm.controls.reviewedBy.value
+          ? this.labResultPanelForm.controls.reviewedBy.value
+          : '',
+      };
+
+      //above keys are unused, not sure if i paired the right open_in_browser
+
+
+
+      //insert query by mohan
+
+            // new query for drc
+      return this.storage.executeSql(`INSERT INTO form_covid19 (covid19_id, unique_id, vlsm_instance_id, vlsm_country_id, sample_code_key, sample_code_format, sample_code, external_sample_code, test_number, remote_sample_code, remote_sample_code_key, remote_sample_code_format, remote_sample, sample_collection_date, sample_dispatched_datetime, sample_received_at_hub_datetime, sample_received_at_vl_lab_datetime, sample_condition, tested_by, sample_tested_datetime, funding_source, implementing_partner, source_of_alert, source_of_alert_other, facility_id, province_id, district_id, patient_id, patient_name, patient_surname, patient_dob, patient_age, patient_gender, is_patient_pregnant, patient_phone_number, patient_nationality, patient_passport_number, patient_occupation, does_patient_smoke, patient_address, flight_airline, flight_seat_no, flight_arrival_datetime, flight_airport_of_departure, flight_transit, reason_of_visit, is_sample_collected, reason_for_covid19_test, type_of_test_requested, patient_province, patient_district, patient_zone, patient_city, specimen_type, is_sample_post_mortem, priority_status, number_of_days_sick, asymptomatic, date_of_symptom_onset, suspected_case, date_of_initial_consultation, medical_history, recent_hospitalization, patient_lives_with_children, patient_cares_for_children, fever_temp, temperature_measurement_method, respiratory_rate, oxygen_saturation, close_contacts, contact_with_confirmed_case, has_recent_travel_history, travel_country_names, travel_return_date, lab_id, testing_point, lab_technician, investogator_name, investigator_phone, investigator_email, clinician_name, clinician_phone, clinician_email, health_outcome, health_outcome_date, lab_reception_person, covid19_test_platform, covid19_test_name, result_status, locked, is_sample_rejected, reason_for_sample_rejection, rejection_on, result, if_have_other_diseases, other_diseases, is_result_authorised, authorized_by, authorized_on, revised_by, revised_on, reason_for_changing, result_reviewed_datetime, result_reviewed_by, result_approved_datetime, result_approved_by, approver_comments, result_dispatched_datetime, result_mail_datetime, manual_result_entry, import_machine_name, import_machine_file_name, result_printed_datetime, request_created_datetime, request_created_by, sample_registered_at_lab, sample_batch_id, sample_package_id, sample_package_code, positive_test_manifest_id, positive_test_manifest_code, lot_number, source_of_request, source_data_dump, result_sent_to_source, lot_expiration_date, is_result_mail_sent, app_sample_code, last_modified_datetime, last_modified_by, data_sync)
+      VALUES ("${saveCovid19SSJSON.form_covid19}","${saveCovid19SSJSON.uniqueId}","","","","","${saveCovid19SSJSON.sampleCode}","${saveCovid19SSJSON.externalSampleCode}","","${saveCovid19SSJSON.remoteSampleCode}","no",0, "","${saveCovid19SSJSON.sampleCollectionDate}","","","","${saveCovid19SSJSON.sampleCondition}","${saveCovid19SSJSON.testedBy}","${saveCovid19SSJSON.sampleTestedDateTime}","${saveCovid19SSJSON.fundingSource}","${saveCovid19SSJSON.implementingPartner}","${saveCovid19SSJSON.sourceOfAlertPOE}","","${saveCovid19SSJSON.facility_id}","${saveCovid19SSJSON.province_id}","${saveCovid19SSJSON.district_id}","${saveCovid19SSJSON.patientId}"),"${saveCovid19SSJSON.firstName}","${saveCovid19SSJSON.lastName}","${saveCovid19SSJSON.patientDob}","${saveCovid19SSJSON.patientAge}","${saveCovid19SSJSON.patientGender}","${saveCovid19SSJSON.isPatientPregnant}","${saveCovid19SSJSON.patientPhoneNumber}","${saveCovid19SSJSON.patientNationality}","${saveCovid19SSJSON.patientPassportNumber}","${saveCovid19SSJSON.patientOccupation}","${saveCovid19SSJSON.doesPatientSmoke}","${saveCovid19SSJSON.patientAddress}","${saveCovid19SSJSON.airline}","${saveCovid19SSJSON.seatNo}","${saveCovid19SSJSON.dateTimeofArrivalPicker}","${saveCovid19SSJSON.airportOfDeparture}","${saveCovid19SSJSON.transit}","${saveCovid19SSJSON.reasonOfVisit}","","${saveCovid19SSJSON.reasonForCovid19Test}","","${saveCovid19SSJSON.patientProvince}","${saveCovid19SSJSON.patientDistrict}","${saveCovid19SSJSON.patientZone}","${saveCovid19SSJSON.patientCity}","${saveCovid19SSJSON.specimenType}","","","${saveCovid19SSJSON.numberOfDaysSick}","${saveCovid19SSJSON.asymptomatic}","${saveCovid19SSJSON.dateOfSymptomOnset}","","${saveCovid19SSJSON.dateOfInitialConsultation}","${saveCovid19SSJSON.medicalBackground}","${saveCovid19SSJSON.recentHospitalization}","${saveCovid19SSJSON.patientLivesWithChildren}","${saveCovid19SSJSON.patientCaresForChildren}","${saveCovid19SSJSON.feverTemp}","${saveCovid19SSJSON.temperatureMeasurementMethod}","${saveCovid19SSJSON.respiratoryRate}","${saveCovid19SSJSON.oxygenSaturation}","${saveCovid19SSJSON.closeContacts}","","${saveCovid19SSJSON.hasRecentTravelHistory}","${saveCovid19SSJSON.countryName}","${saveCovid19SSJSON.returnDate}","${saveCovid19SSJSON.labId}","","${saveCovid19SSJSON.labTechnician}","","","","","","","","","","","","","","${saveCovid19SSJSON.isSampleRejected}","${saveCovid19SSJSON.rejectionReason}","${saveCovid19SSJSON.rejectionDate}","${saveCovid19SSJSON.result}","",,"","${saveCovid19SSJSON.isResultAuthorized}","${saveCovid19SSJSON.authorizedBy}","${saveCovid19SSJSON.authorizedOn}","","","${saveCovid19SSJSON.reasonForChanging}","${saveCovid19SSJSON.reviewedOn}","${saveCovid19SSJSON.reviewedBy}","${saveCovid19SSJSON.approvedOn}","${saveCovid19SSJSON.approvedBy}","","","","","","","","","","","","","","","","","","","","","","${saveCovid19SSJSON.appSampleCode}","${saveCovid19SSJSON.updatedOn}","","${saveCovid19SSJSON.isSynced}"
+      ON CONFLICT (unique_id)
+      DO UPDATE
+      SET (covid19_id, unique_id, vlsm_instance_id, vlsm_country_id, sample_code_key, sample_code_format, sample_code, external_sample_code, test_number, remote_sample, remote_sample_code_key, remote_sample_code_format, remote_sample_code, sample_collection_date, sample_dispatched_datetime, sample_received_at_hub_datetime, sample_received_at_vl_lab_datetime, sample_condition, tested_by, sample_tested_datetime, funding_source, implementing_partner, source_of_alert, source_of_alert_other, facility_id, province_id, district_id, patient_id, patient_name, patient_surname, patient_dob, patient_age, patient_gender, is_patient_pregnant, patient_phone_number, patient_nationality, patient_passport_number, patient_occupation, does_patient_smoke, patient_address, flight_airline, flight_seat_no, flight_arrival_datetime, flight_airport_of_departure, flight_transit, reason_of_visit, is_sample_collected, reason_for_covid19_test, type_of_test_requested, patient_province, patient_district, patient_zone, patient_city, specimen_type, is_sample_post_mortem, priority_status, number_of_days_sick, asymptomatic, date_of_symptom_onset, suspected_case, date_of_initial_consultation, medical_history, recent_hospitalization, patient_lives_with_children, patient_cares_for_children, fever_temp, temperature_measurement_method, respiratory_rate, oxygen_saturation, close_contacts, contact_with_confirmed_case, has_recent_travel_history, travel_country_names, travel_return_date, lab_id, testing_point, lab_technician, investogator_name, investigator_phone, investigator_email, clinician_name, clinician_phone, clinician_email, health_outcome, health_outcome_date, lab_reception_person, covid19_test_platform, covid19_test_name, result_status, locked, is_sample_rejected, reason_for_sample_rejection, rejection_on, result, if_have_other_diseases, other_diseases, is_result_authorised, authorized_by, authorized_on, revised_by, revised_on, reason_for_changing, result_reviewed_datetime, result_reviewed_by, result_approved_datetime, result_approved_by, approver_comments, result_dispatched_datetime, result_mail_datetime, manual_result_entry, import_machine_name, import_machine_file_name, result_printed_datetime, request_created_datetime, request_created_by, sample_registered_at_lab, sample_batch_id, sample_package_id, sample_package_code, positive_test_manifest_id, positive_test_manifest_code, lot_number, source_of_request, source_data_dump, result_sent_to_source, lot_expiration_date, is_result_mail_sent, app_sample_code, last_modified_datetime, last_modified_by, data_sync) = (EXCLUDED.user_id, EXCLUDED.vlsm_country_id, EXCLUDED.remote_sample, EXCLUDED.locked, EXCLUDED.data_sync, EXCLUDED.sample_collection_date, EXCLUDED.sample_code,EXCLUDED.last_modified_datetime, EXCLUDED.source_of_alert, EXCLUDED.province_id, EXCLUDED.province_name,EXCLUDED.district, EXCLUDED.facility_id, EXCLUDED.facility_name, EXCLUDED.implementing_partner, EXCLUDED.implementing_partner_name, EXCLUDED.funding_source, EXCLUDED.funding_source_name, EXCLUDED.lab_id,EXCLUDED.lab_name, EXCLUDED.patient_id, EXCLUDED.external_sample_code, EXCLUDED.patient_name, EXCLUDED.patient_surname, EXCLUDED.patient_dob, EXCLUDED.patient_age, EXCLUDED.patient_gender, EXCLUDED.patient_phone_number, EXCLUDED.patient_address, EXCLUDED.patient_province_id, EXCLUDED.patient_province, EXCLUDED.patient_district,EXCLUDED.patient_zone, EXCLUDED.patient_city, EXCLUDED.patient_nationality, EXCLUDED.patient_nationality_name, EXCLUDED.patient_passport_number, EXCLUDED.type_of_test_requested, EXCLUDED.reason_for_covid19_test, EXCLUDED.specimen_type, EXCLUDED.test_number, EXCLUDED.sample_received_at_vl_lab_datetime, EXCLUDED.sample_condition, EXCLUDED.lab_technician,EXCLUDED.lab_technician_name, EXCLUDED.is_sample_rejected, EXCLUDED.rejection_on, EXCLUDED.reason_for_sample_rejection, EXCLUDED.sample_rejection_id, EXCLUDED.result, EXCLUDED.tested_by,EXCLUDED.tested_by_name, EXCLUDED.is_result_authorised, EXCLUDED.authorized_by, EXCLUDED.authorized_on, EXCLUDED.request_created_datetime,EXCLUDED.is_synced, EXCLUDED.reason_for_changing)`, []).then(async (res) => {
+

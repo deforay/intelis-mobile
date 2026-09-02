@@ -1,0 +1,211 @@
+<ion-app [class]="selectedTheme">
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+
+      <ion-header>
+        <ion-toolbar class="main-toolbar">
+          <div class="text-center">
+            <img class="logoImage" src="assets/imgs/icon.png">
+            <p class="VLSMText">VLSM</p>
+            <p class="loginName">Welcome {{userName}}</p>
+            <!-- <p class="roleName">{{userRole}}</p> -->
+          </div>
+        </ion-toolbar>
+      </ion-header>
+
+
+      <ion-content class="appContent">
+
+
+        <mat-list>
+          <mat-list-item>
+            <ion-grid>
+              <ion-row routerLink="/menu" (click)="toggleMenu('home')">
+                <ion-col size="2">
+                  <mat-icon class="matIcons">home</mat-icon>
+                </ion-col>
+                <ion-col size="10">
+                  <p class="menuName">Home</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </mat-list-item>
+          <ng-container *ngFor="let p of appPages; let i=index;">
+            <ion-item
+              *ngIf="p.access"
+              [routerDirection]="'root'"
+              (click)="toggleLevel1('idx'+i)"
+              [ngClass]="{active: isLevel1Shown('idx'+i)}"
+            >
+              <ion-label style="width: 100%;">
+                <mat-icon
+                  class="matIcons firstLevelLeftIcon"
+                  *ngIf="p.name == 'COVID-19'"
+                >
+                  coronavirus
+                </mat-icon>
+                <mat-icon class="matIcons firstLevelLeftIcon" *ngIf="p.name == 'EID'"
+                  >child_care</mat-icon
+                >
+                <ion-icon
+                  class="matIcons firstLevelLeftIcon vlIcon"
+                  name="flask"
+                  *ngIf="p.name=='VL'"
+                ></ion-icon>
+                <span class="level1Span">{{p.name}}</span>
+                <mat-icon class="matIcons firstLevelRightIcon">
+                  {{isLevel1Shown('idx'+i) ? 'expand_more' : 'expand_less'}}
+                </mat-icon>
+
+                <ul *ngIf="isLevel1Shown('idx'+i)" class="level1">
+                  <ng-container *ngFor="let i1 of p.item; let j=index;">
+                    <li
+                      *ngIf="i1.access"
+                      (click)="toggleLevel2('idx'+i+'idx'+j)"
+                      [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+j)}"
+                    >
+                      <mat-icon class="matIcons secondLevelIcon">
+                        {{isLevel2Shown('idx'+i+'idx'+j) ? 'expand_more' :
+                        'expand_less'}}
+                      </mat-icon>
+                      <span class="level2Span">{{i1.name}}</span>
+
+                      <ul *ngIf="isLevel2Shown('idx'+i+'idx'+j)" class="level2">
+                        <ng-container *ngFor="let i2 of i1.item; let k=index;">
+                          <div *ngIf="i2.access">
+                            <li
+                              *ngIf="(i2.id!=1 || (i2.id==1 && isTestingUser=='yes'))"
+                              (click)="toggleLevel3('idx'+i+'idx'+j+'idx'+k,i2)"
+                              [ngClass]="{active: isLevel3Shown('idx'+i+'idx'+j+'idx'+k)}"
+                            >
+                              <mat-icon matPrefix class="matIcons thirdLevelIcon"
+                                >keyboard_arrow_right</mat-icon
+                              >
+                              <span class="level3Span">{{i2.name}}</span>
+                            </li>
+                          </div>
+                        </ng-container>
+                      </ul>
+                    </li>
+                  </ng-container>
+                </ul>
+              </ion-label>
+            </ion-item>
+
+
+          </ng-container>
+          <!-- <ion-item class="sideMenuItem" *ngFor="let p of appPages; let i=index;" [routerDirection]="'root'" (click)="toggleLevel1('idx'+i)" [ngClass]="{active: isLevel1Shown('idx'+i)}">
+            <ion-label>
+
+             <mat-icon class="matIcons firstLevelLeftIcon" *ngIf="p.name == 'COVID-19'">
+          coronavirus
+        </mat-icon>
+        <mat-icon class="matIcons firstLevelLeftIcon" *ngIf="p.name == 'EID'">child_care</mat-icon>
+        <ion-icon class="matIcons firstLevelLeftIcon vlIcon" name="flask" *ngIf="p.name=='VL'"></ion-icon>
+              <span class="level1Span">{{p.name}}</span>
+              <mat-icon class="matIcons firstLevelRightIcon">
+                {{isLevel1Shown('idx'+i) ? 'expand_more' : 'expand_less'}}
+              </mat-icon>
+
+              <ul *ngIf="isLevel1Shown('idx'+i)" class="level1">
+
+                <li *ngFor="let i1 of p.item; let j=index;" (click)="toggleLevel2('idx'+i+'idx'+j)"
+                  [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+j)}">
+
+                  <mat-icon class="matIcons secondLevelIcon">
+                     {{isLevel2Shown('idx'+i+'idx'+j) ? 'expand_more' : 'expand_less'}}
+                  </mat-icon>
+                  <span class="level2Span">{{i1.name}}</span>
+
+                  <ul *ngIf="isLevel2Shown('idx'+i+'idx'+j)" class="level2">
+                    <div *ngFor="let i2 of i1.item; let k=index;">
+                    <li *ngIf="(i2.id!=1 || (i2.id==1 && isTestingUser=='yes'))" (click)="toggleLevel3('idx'+i+'idx'+j+'idx'+k,i2)"
+                      [ngClass]="{active: isLevel3Shown('idx'+i+'idx'+j+'idx'+k)}">
+                      <mat-icon matPrefix class="matIcons thirdLevelIcon">keyboard_arrow_right</mat-icon>
+                      <span class="level3Span">{{i2.name}}</span>
+                    </li>
+                  </div>
+                  </ul>
+
+                </li>
+
+              </ul>
+
+            </ion-label>
+          </ion-item> -->
+          <mat-list-item>
+            <ion-grid>
+              <ion-row routerLink="/profile" (click)="toggleMenu('prof')">
+                <ion-col size="2">
+                  <mat-icon class="matIcons">portrait</mat-icon>
+                </ion-col>
+                <ion-col size="10">
+                  <p class="menuName">Profile</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </mat-list-item>
+
+
+          <mat-list-item>
+            <ion-grid>
+              <ion-row (click)="toggleMenu('sync')">
+                <ion-col size="2">
+                  <mat-icon class="matIcons">sync</mat-icon>
+                </ion-col>
+                <ion-col size="10">
+                  <p class="menuName">Sync with Server</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </mat-list-item>
+
+          <!-- <mat-list-item>
+            <ion-grid>
+              <ion-row (click)="toggleMenu('syncall')">
+                <ion-col size="2">
+                  <mat-icon class="matIcons">360</mat-icon>
+                </ion-col>
+                <ion-col size="10">
+                  <p class="menuName">Sync All Requests</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </mat-list-item> -->
+
+
+          <mat-list-item>
+            <ion-grid>
+              <ion-row (click)="logout()">
+                <ion-col size="2">
+                  <mat-icon class="matIcons">logout</mat-icon>
+                </ion-col>
+                <ion-col size="10">
+                  <p class="menuName">Log out</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </mat-list-item>
+        </mat-list>
+
+
+      </ion-content>
+
+      <div style="text-align: center; background-color: #3c8dbc;  padding: 10px;">
+        <a href="https://vlsm.app/privacy.html" target="_blank" style="font-size: 16px; color: white;">Privacy Policy</a>
+      </div>
+
+      <ion-footer class="ion-no-border">
+        <ion-toolbar class="footerToolbar">
+          
+          <ion-title class="footerTitle">Version : {{appVersionNumber}}</ion-title>
+        </ion-toolbar>
+      </ion-footer>
+
+    </ion-menu>
+
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+
+
+  </ion-split-pane>
+</ion-app>

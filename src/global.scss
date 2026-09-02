@@ -1,0 +1,496 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "~@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "~@ionic/angular/css/normalize.css";
+@import "~@ionic/angular/css/structure.css";
+@import "~@ionic/angular/css/typography.css";
+@import '~@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "~@ionic/angular/css/padding.css";
+@import "~@ionic/angular/css/float-elements.css";
+@import "~@ionic/angular/css/text-alignment.css";
+@import "~@ionic/angular/css/text-transformation.css";
+@import "~@ionic/angular/css/flex-utils.css";
+
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import "../node_modules/material-design-icons-iconfont/dist/material-design-icons.css"; /* Offline Icon work, Ngrjnk https://stackoverflow.com/questions/37270835/how-to-host-material-icons-offline */
+
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+ion-label,
+ion-tab-group,
+mat-card,
+ion-title,
+ion-button // ion-toast
+
+  {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 12px !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  min-height: 100vh;
+  background: #e2e2e2;
+}
+
+.app-header {
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
+}
+
+.login-wrapper {
+  height: 100%;
+}
+
+.positronx {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.box {
+  position: relative;
+  top: 0;
+  opacity: 1;
+  float: left;
+  padding: 40px 50px 40px 50px;
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  z-index: 5;
+  max-width: 330px;
+}
+
+.box.back {
+  transform: scale(.95);
+  -webkit-transform: scale(.95);
+  -ms-transform: scale(.95);
+  top: -20px;
+  opacity: .8;
+  z-index: -1;
+}
+
+.box:before {
+  content: "";
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+  //   position: absolute;
+  //   top: -10px;
+  background: rgba(255, 255, 255, .6);
+  left: 0;
+  transform: scale(.95);
+  -webkit-transform: scale(.95);
+  -ms-transform: scale(.95);
+  z-index: -1;
+}
+
+.login-wrapper .example-form {
+  min-width: 100%;
+  max-width: 300px;
+  width: 100%;
+}
+
+.login-wrapper .example-full-width,
+.login-wrapper .btn-block {
+  width: 100%;
+}
+mat-divider {
+  width: 100%;
+}
+
+.login-wrapper mat-card-header {
+  text-align: center;
+  width: 100%;
+  display: block;
+  font-weight: 700;
+}
+
+.login-wrapper mat-card-header mat-card-title {
+  font-size: 30px;
+  margin: 0;
+}
+.mat-card-header-text {
+  width: 100% !important;
+}
+
+.login-wrapper .mat-card {
+  width: 80%;
+  height: 90%;
+  margin: 10%;
+  background-color: #e5e6ec;
+}
+
+.login-wrapper .mat-stroked-button {
+  border: 1px solid currentColor;
+  line-height: 54px;
+  background: #FFF7FA;
+}
+
+.login-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0.8375em 0;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.mat-raised-button.mat-primary.form-btn {
+  width: 150px !important;
+}
+
+.mat-raised-button.mat-primary.form-btn1 {
+  width: 160px !important;
+  background-color: var(--ion-color-primary-shade) !important;
+}
+
+
+
+.mat-raised-button.mat-primary {
+  background-color: var(--ion-color-primary) !important;
+}
+
+.mat-form-field.mat-form-field-invalid.mat-form-field-label {
+  color: black !important;
+}
+
+.mat-form-field {
+  width: 100% !important;
+}
+
+.mat-expansion-panel-header.mat-expanded:focus,
+.mat-expansion-panel-header.mat-expanded:hover {
+  background-color: #e1e1e6 !important;
+}
+
+.mat-expansion-panel-header-title {
+  font-weight: bold !important;
+}
+
+.searchbar-input.sc-ion-searchbar-ios {
+  font-size: 13px !important;
+}
+
+.mat-expansion-panel {
+  margin: 5% !important;
+}
+
+.mat-expansion-panel-body {
+  padding: 0 12px 16px !important;
+}
+
+.mainHeaderName {
+  color: white;
+  margin-top: 10px;
+  line-height: initial;
+  white-space: normal;
+  text-transform: uppercase;
+}
+
+.menuIcon {
+  color: white !important;
+}
+
+.mat-typography p {
+  margin: 0 0 3px !important;
+}
+
+.text-title-color {
+  color: var(--ion-color-tertiary);
+  font-weight: 500;
+}
+
+.matPanel {
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px !important;
+}
+
+.mat-radio-button~.mat-radio-button {
+  margin-left: 16px;
+}
+
+// .mat-radio-button.mat-accent .mat-radio-inner-circle {
+//   background-color: var(--ion-color-secondary) !important;
+// }
+
+// .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+//   border-color: var(--ion-color-primary) !important;
+// }
+
+.mat-error {
+  font-size: 10px !important;
+  margin-left: -3px;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  margin-bottom: -1.25em;
+}
+
+.mat-menu-content:not(:empty) {
+  background: #f6efef !important;
+}
+
+.mat-menu-panel {
+  background: #f6efef !important;
+}
+
+.alert-button.sc-ion-alert-ios {
+  color: var(--ion-color-primary-shade) !important;
+}
+
+.mat-form-field-appearance-fill.mat-form-field-disabled .mat-form-field-flex {
+  background: #f5f5f5 !important;
+}
+
+/* Works - pass "my-custom-class" in cssClass to increase specificity */
+.my-custom-class .action-sheet-group {
+  --background: white;
+}
+
+.action-sheet-icon.sc-ion-action-sheet-md {
+  color: red;
+}
+
+.action-sheet-button-inner.sc-ion-action-sheet-md {
+  font-weight: 500;
+}
+
+.action-sheet-title.sc-ion-action-sheet-md {
+  font-weight: 600;
+  color: black;
+  text-transform: uppercase;
+}
+
+.mat-select-disabled .mat-select-value {
+  color: rgba(0, 0, 0, .87) !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.skeltonRow {
+  padding: 6px;
+}
+
+.searchSkeleton {
+  height: 25px;
+  margin: 17px;
+}
+
+.mat_header {
+  // margin: 16px !important;
+  width:100% !important;
+  
+}
+
+.headerName {
+  // margin: 10px!important;
+  font-weight: 500;
+  font-size: 15px !important;
+  color: black;
+  width:100% !important;
+  display: block !important;
+  background: rgb(255, 105, 97);
+  line-height: 300%;
+  text-align: center;
+  
+
+}
+
+.cardActions {
+  margin-top: 10px;
+  margin-bottom: 10%;
+  --background: rgb(232 216 216 / 40%) !important;
+}
+
+.matActionsRow {
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+.noRecord {
+  text-align: center;
+  font-weight: 500;
+  color: black;
+  margin: 10px !important;
+}
+
+.viewResult {
+  margin: 0px -15px 0px 0px;
+  text-decoration: underline;
+  float: right;
+  color: #126b29;
+  font-weight: 600;
+}
+
+.viewResultRow {
+  margin-top: -15px;
+  margin-bottom: -30px;
+}
+
+.vlsm_mat_card {
+  margin: 15px;
+  border-radius: 6px!important;
+  overflow: hidden;
+  display: block !important;
+  max-width: 100% !important;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+}
+
+.vlsm_mat_cards {
+  margin: 15px;
+  border-radius: 6px!important;
+  overflow: hidden;
+  display: block !important;
+  max-width: 100% !important;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+  height: 380px;
+}
+
+.viewGrid.last {
+  margin-bottom: -20px !important;
+}
+
+.mainHeaderName {
+  font-weight: 500 !important;
+  font-size: 13px !important;
+}
+
+.noRecord {
+  text-align: center;
+  font-weight: 500;
+  color: black;
+  margin: 10px !important;
+}
+
+.viewGrid {
+  margin: 5px !important;
+}
+
+.matContent {
+  margin: 20px -5px 0px 0px !important;
+  max-width: 100% !important;
+}
+
+.mat_footer {
+  background: var(--ion-color-light-pink) !important;
+  margin: -16px !important;
+}
+
+.viewButton {
+  .mat-icon{
+    font-size: 25px;
+  }
+  width: 90%;
+  height: 100%;
+  background: #269442 !important;
+  border-radius: 5px !important;
+  color: white;
+  margin-bottom: 16%;
+  margin-left: 4%;
+  margin-top: -2%;
+}
+
+.viewButton1 {
+  .mat-icon{
+    font-size: 25px;
+  }
+  width: 50%;
+  height: 50%;
+  background: #269442 !important;
+  border-radius: 5px !important;
+  color: white;
+  margin-bottom: 16%;
+  margin-left: 2%;
+  margin-top: 2%;
+}
+.syncAllButton {
+  .mat-icon{
+    font-size: 20px;
+  }
+  width: 60%;
+  margin-left:20%;
+  margin-right:20%;
+  // float: center;
+  color: white;
+  border-radius: 5px !important;
+  background-color: var(--ion-color-primary-shade) !important;
+}
+.editButton {
+  .mat-icon{
+    font-size: 25px;
+  }
+  width: 90%;
+  height: 100%;
+  margin-top:-10%;
+  border-radius: 5px !important;
+  float: right;
+  color: white;
+  background-color: var(--ion-color-primary-shade) !important;
+  margin-right:2%;
+  margin-top: -2%;
+}
+.editButton1 {
+  .mat-icon{
+    font-size: 20px;
+  }
+  width: 90%;
+  height: 120%;
+  border-radius: 5px !important;
+  color: white;
+  background-color: var(--ion-color-primary-shade) !important;
+}
+
+.text-title-color.unSynced {
+  color: #D75A11 !important;
+}
+
+.ngx-pagination{
+  padding: 0px!important;
+  text-align: center!important;
+}
+
+
+.mat-mdc-form-field{
+  display: block !important;
+}

@@ -1,0 +1,1 @@
+ALTER TABLE form_covid19 ADD sample_dispatched_datetime datetime DEFAULT NULL;

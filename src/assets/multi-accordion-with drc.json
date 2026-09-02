@@ -1,0 +1,219 @@
+[
+  {
+    "name": "COVID-19",
+    "activeModule": "covid19",
+    "access": false,
+    "item": [
+      {
+        "name": "Test Requests",
+        "access": false,
+        "item":  [
+          {
+            "name": "Add New Request",
+            "access": false,
+            "url": "/covid19-add-southsudan"
+          },
+          {
+            "name": "Add New Request",
+            "access": true,
+            "url": "/mohdrc-add-new-request"
+          }, {
+            "name": "View Test Request",
+            "access": false,
+            "url": "/covid19-view-southsudan"
+          },
+          {
+            "name": "View Test Request",
+            "access": true,
+            "url": "/mohdrc-view-test-request"
+          }
+        ]
+      },
+      {
+        "name": "Test Results",
+        "access": false,
+        "item": [
+          {
+            "id": 1,
+            "name": "Enter Test Result",
+            "access": false,
+            "url": "/mohdrc-enter-test-result"
+          },
+          {
+            "id": 2,
+            "name": "View Test Result",
+            "access": false,
+            "url": "/mohdrc-view-result-drc"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "EID",
+    "activeModule": "eid",
+    "access":false,
+    "item": [
+      {
+        "name": "Test Requests",
+        "access":false,
+        "item": [{
+            "name": "Add New Request",
+            "access":false,
+            "url": "/add-new-request"
+          },
+          {
+            "name": "View Test Request",
+            "access":false,
+            "url": "/eid-view-southsudan"
+          },
+          {
+            "name": "Add New Request",
+            "access":false,
+            "url": "/new-eid-drc"
+          },
+          {
+            "name": "View Test Request",
+            "access":false,
+            "url": "/eid-view-drc"
+          }
+        ]
+      },
+      {
+        "name": "Test Results",
+        "access":false,
+        "item": [{
+            "id":1,
+            "name": "Enter Test Result",
+            "access":false,
+            "url": "/eid-test-result"
+          },
+          {
+            "id":2,
+            "name": "View Test Result",
+            "access":false,
+            "url": "/eid-view-result"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "VL",
+    "activeModule": "vl",
+    "access":false,
+    "item": [
+      {
+        "name": "Test Requests",
+        "access":false,
+        "item": [{
+            "name": "Add New Request",
+            "access":false,
+            "url": "/vl-new-request"
+          },
+          {
+            "name": "View Test Request",
+            "access":false,
+            "url": "/vl-view-southsudan"
+          },
+          {
+            "name": "Add New Request",
+            "access":false,
+            "url": "/new-vl-drc"
+          },
+          {
+            "name": "View Test Request",
+            "access":false,
+            "url": "/view-vl-drc"
+          }
+        ]
+      },
+     {
+        "name": "Test Results",
+        "access":false,
+        "item": [{
+            "id":1,
+            "name": "Enter Test Result",
+            "access":false,
+            "url": "/enter-vl-result"
+          },
+          {
+            "id":2,
+            "name": "View Test Result",
+            "access":false,
+            "url": "/vl-view-result"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "EID",
+    "access":false,
+    "item": [
+      {
+         "name": "Test Results",
+         "access":false,
+         "item": [{
+             "id":1,
+             "name": "Enter Test Result",
+             "access":false,
+             "url": "/enter-result-drc"
+           },
+           {
+             "id":2,
+             "name": "View Test Result",
+             "access":false,
+             "url": "/view-result-drc"
+           }
+         ]
+       }
+    ]
+  },
+  {
+    "name": "VL",
+    "access":false,
+    "item": [
+      {
+         "name": "Test Results",
+         "access":false,
+         "item": [{
+             "id":1,
+             "name": "Enter Test Result",
+             "access":false,
+             "url": "/vl-result-drc"
+           },
+           {
+             "id":2,
+             "name": "View Test Result",
+             "access":false,
+             "url": "/view-vl-result-drc"
+           }
+         ]
+       }
+    ]
+  },
+  {
+    "name": "COVID-19",
+    "access":false,
+    "item": [
+      {
+         "name": "Test Results",
+         "access":false,
+         "item": [{
+             "id":1,
+             "name": "Enter Test Result",
+             "access":false,
+             "url": "/mohdrc-enter-test-result"
+           },
+           {
+             "id":2,
+             "name": "View Test Result",
+             "access":false,
+             "url": "/mohdrc-view-result-drc"
+           }
+         ]
+       }
+    ]
+  }
+]

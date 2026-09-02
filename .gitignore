@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+
+# Build output
+www/
+dist/
+.angular/
+.sourcemaps/
+coverage/
+.tmp/
+*.tmp
+*.tmp.*
+
+# Cordova / Capacitor generated
+platforms/
+plugins/
+.ionic/
+.gradle/
+build/
+*.apk
+*.aab
+*.ipa
+
+# Signing material — never commit
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+*.pem
+.env
+.env.*
+
+# Legacy Mercurial metadata
+.hg/
+.orig
+.resolve
+
+# Logs
+*.log
+log.txt
+npm-debug.log*
+yarn-error.log*
+
+# Editors / IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*~
+*.sw[mnpcod]
+
+# OS
+.DS_Store
+Thumbs.db
+$RECYCLE.BIN/
+UserInterfaceState.xcuserstate

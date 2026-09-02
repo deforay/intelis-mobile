@@ -1,0 +1,23 @@
+<ion-list>
+  <ion-item>
+    <ion-label>Sort By</ion-label>
+    <ion-select [(ngModel)]="value" (ionChange)="setValue($event.detail.value)">
+      <ion-select-option value="lastModified">Last Modified</ion-select-option>
+      <ion-select-option value="sampleCollectionDate">Sample Collection Date</ion-select-option>
+      <ion-select-option value="sampleCode">Sample Code</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <!-- <ion-label style="font-size: 14px;">Order</ion-label> -->
+    <ion-segment [(ngModel)]="order" (ionChange)="setOrder($event.detail.value)" class="full-width-segment">
+      <ion-segment-button value="asc">
+        <ion-label class="full-text">Ascending</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="des">
+        <ion-label class="full-text">Descending</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
+</ion-list>
+<ion-button expand="full" (click)="applySorting()">Apply</ion-button>
+<ion-button expand="full" color="light" (click)="close()">Cancel</ion-button>

@@ -1,0 +1,205 @@
+<mat-toolbar>
+  <!-- <button mat-icon-button> -->
+    <ion-menu-button class="menuIcon"></ion-menu-button>
+  <!-- </button> -->
+  <p class="mainHeaderName" text-wrap>View EID Test Result</p>
+</mat-toolbar>
+
+<ion-content>
+  <mat-card class="vlsm_mat_card">
+    <ion-grid>
+
+      <form [formGroup]="searchRecordForm" novalidate>
+
+        <mat-form-field appearance="fill" class="caseID">
+          <mat-label>
+            Sample Code</mat-label>
+          <input matInput formControlName="sampleCode">
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill" class="caseID">
+          <mat-label>
+            Case/Patient ID</mat-label>
+          <input matInput formControlName="patientID">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="caseID">
+          <mat-label>
+            Case/Patient Name</mat-label>
+          <input matInput formControlName="patientName">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Facility</mat-label>
+          <mat-select formControlName="facilities" multiple>
+            <!-- [(value)]="facilitySelected"  -->
+            <mat-option *ngFor="let item of facilitiesArray" [value]="item.value">
+              {{item.show}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="sampleStatus" >
+            <!-- [(value)]="sampleStatusSelected" -->
+            <mat-option value="">Please Select</mat-option>
+            <mat-option *ngFor="let item of sampleStatusArray" [value]="item.value">
+              {{item.show}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <ion-row class="matActionsRow">
+          <ion-col size="6">
+            <button mat-raised-button class="searchButton" (click)="searchRecord()">
+              <mat-icon>search</mat-icon>
+              Search
+            </button>
+          </ion-col>
+          <ion-col size="6">
+            <button mat-raised-button class="resetButton" (click)="reset()">
+              <mat-icon>restart_alt</mat-icon>
+              Reset
+            </button>
+          </ion-col>
+        </ion-row>
+
+      </form>
+
+    </ion-grid>
+  </mat-card>
+
+
+  <ion-row class="sortRow">
+    <ion-col size="12">
+      <button mat-raised-button class="sortButton" (click)="presentSortingPopover($event)">
+        <mat-icon class="matIcons sort"></mat-icon>Sort<mat-icon class="matIcons">keyboard_arrow_down
+        </mat-icon>
+      </button>
+    </ion-col>
+  </ion-row>
+
+
+  <app-jw-pagination [items]="searchArray" [page]="'search'" *ngIf="searchArray.length!=0"></app-jw-pagination>
+
+   <!-- ion-skeleton-text code start -->
+
+  <mat-card class="vlsm_mat_card" *ngFor="let item of skeltonArray">
+    <mat-card-header class="mat_header" [ngStyle]="{'background':getSkeltonColor()}">
+      <p text-wrap class="headerName">
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+      </p>
+    </mat-card-header>
+
+    <mat-card-content class="matContent">
+
+      <ion-grid class="viewGrid">
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+
+        <ion-row class="skeltonRow">
+          <ion-col size="12">
+            <p text-wrap>
+              <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+            </p>
+          </ion-col>
+        </ion-row>
+
+        <mat-card-actions class="cardActions">
+          <mat-divider></mat-divider>
+          <ion-row class="matActionsRow">
+            <ion-col size="6">
+              <button mat-raised-button class="viewButton">
+                <mat-icon>visibility</mat-icon>
+                View
+              </button>
+            </ion-col>
+            <ion-col size="6">
+              <button mat-raised-button class="editButton">
+                <mat-icon>mode_edit</mat-icon>Edit
+              </button>
+            </ion-col>
+          </ion-row>
+        </mat-card-actions>
+
+      </ion-grid>
+
+    </mat-card-content>
+  </mat-card>
+
+  <!-- ion-skeleton-text code end -->
+
+
+  <mat-card class="vlsm_mat_card" *ngIf="isNoRecord">
+    <mat-card-content>
+      <p class="noRecord">No View Test Result found</p>
+    </mat-card-content>
+  </mat-card>
+</ion-content>

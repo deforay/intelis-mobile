@@ -1,0 +1,269 @@
+// ion-item ion-label{
+//     padding-left: 15px;
+// }
+
+ion-menu ion-content {
+  --background: var(--ion-item-background, var(--ion-background-color, #fff));
+}
+
+ion-menu.md ion-content {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+}
+
+ion-menu.md ion-list {
+  padding: 5px 0 20px 0;
+}
+
+ion-menu.md ion-note {
+  margin-bottom: 30px;
+}
+
+ion-menu.md ion-list-header,
+ion-menu.md ion-note {
+  padding-left: 10px;
+}
+
+ion-menu.md ion-list#inbox-list {
+  border-bottom: 1px solid var(--ion-color-step-150, #d7d8da);
+}
+
+ion-menu.md ion-list#inbox-list ion-list-header {
+  font-size: 22px;
+  font-weight: 600;
+  min-height: 20px;
+}
+
+ion-menu.md ion-list#labels-list ion-list-header {
+  font-size: 16px;
+  margin-bottom: 18px;
+  color: #757575;
+  min-height: 26px;
+}
+
+ion-menu.md ion-item {
+  --padding-start: 10px;
+  --padding-end: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  height: auto;
+  --background:transparent;
+
+}
+ion-menu.md ion-item.ion-native{
+  border-bottom: 0px;
+}
+ion-menu.md ion-item.selected {
+  --background: rgba(var(--ion-color-primary-rgb), 0.14);
+}
+
+ion-menu.md ion-item.selected ion-icon {
+  color: var(--ion-color-primary);
+}
+
+ion-menu.md ion-item ion-label {
+  font-size: 14px;
+  margin-left: 20px;
+  margin-top: 0px;
+}
+
+ion-menu.md ion-item ion-icon {
+  color: #616e7e;
+}
+
+ion-menu.ios ion-content {
+  --padding-bottom: 20px;
+}
+
+ion-menu.ios ion-list {
+  padding: 20px 0 0 0;
+}
+
+ion-menu.ios ion-note {
+  line-height: 24px;
+  margin-bottom: 20px;
+}
+
+ion-menu.ios ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 50px;
+}
+
+ion-menu.ios ion-item.selected ion-icon {
+  color: var(--ion-color-primary);
+}
+
+ion-menu.ios ion-item ion-icon {
+  font-size: 24px;
+  color: #73849a;
+}
+
+ion-menu.ios ion-list#labels-list ion-list-header {
+  margin-bottom: 8px;
+}
+
+ion-menu.ios ion-list-header,
+ion-menu.ios ion-note {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+ion-menu.ios ion-note {
+  margin-bottom: 8px;
+}
+
+ion-note {
+  display: inline-block;
+  font-size: 16px;
+  color: var(--ion-color-medium-shade);
+}
+
+ion-item.selected {
+  --color: var(--ion-color-primary);
+}
+
+ion-menu-toggle div ion-item.sidemenu-item.ion-focusable:hover {
+  --color: var(--ion-color-tertiary);
+  --background: rgb(var(--ion-color-tertiary-rgb), 0.12) !important;
+}
+
+.sidemenu-img-icon img {
+  height: 24px !important;
+}
+
+.loginName {
+  margin-top: 10px !important;
+  font-weight: 600;
+  color: #313030;
+  text-transform: capitalize;
+  font-size: 15px !important;
+  text-align: center
+}
+
+.roleName {
+  margin-top: 10px !important;
+  font-weight: 500;
+  color: #313030;
+  text-transform: capitalize;
+  font-size: 14px !important;
+  text-align: center
+}
+
+.VLSMText {
+  margin-top: 10px !important;
+  font-size: 20px !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+.menuCard {
+  box-shadow: rgb(60 64 67 / 30%) 0px 1px 2px 0px, rgb(60 64 67 / 15%) 0px 2px 6px 2px !important;
+  margin: 5px !important;
+  padding: 5px !important;
+}
+
+.menuName {
+  margin: 7px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+.footerTitle.md.title-default.hydrated {
+  text-align: center !important;
+}
+
+.matIcons {
+  margin: 4px;
+}
+
+.level1,
+.level2,
+.level3 {
+  padding: 0;
+  margin: 8px 0;
+  list-style: none;
+
+  li {
+    padding: 5px 0 0 8px;
+  }
+}
+
+.level1Span {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-transform: capitalize;
+  margin-left: 15px;
+  position: relative;
+  top: 4px;
+}
+
+
+.level2Span {
+  font-size: 12px !important;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin: 10px 10px 10px 0px;
+  position: relative;
+  top: -8px;
+}
+
+.level3Span {
+  font-size: 11.75px !important;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin: 10px 10px 10px 0px;
+  position: relative;
+  top: -8px;
+}
+
+.singleMenuSpan {
+  font-size: 16px !important;
+  font-weight: 500;
+  text-transform: capitalize;
+  margin: 10px 10px 10px 5px;
+  position: relative;
+  top: -4px;
+}
+
+.matIcons.firstLevelLeftIcon {
+  float: left;
+}
+
+.matIcons.firstLevelRightIcon {
+  float: right;
+  margin: -2px;
+}
+
+.level1 {
+  margin-left: 20px;
+}
+
+.level2 {
+  margin-left: 15px;
+  margin-top: 0px;
+}
+
+.matIcons.logout {
+  font-size: 20px;
+  margin-left: 2px;
+}
+
+.sideMenuItem {
+  margin-left: -3px;
+  --border-style: none;
+  margin-bottom: -10px;
+}
+
+.logoImage {
+  width: 30%;
+  margin-top: 20px;
+}
+.vlIcon{
+  background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    font-size: 23px;
+}

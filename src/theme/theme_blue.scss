@@ -1,0 +1,65 @@
+.blue-theme {
+  .mat-toolbar.mat-toolbar-single-row {
+    background: #3c8dbc !important;
+  }
+
+  .matIcons {
+    color: #3c8dbc !important;
+  }
+
+  .VLSMText {
+    color: #3c8dbc !important;
+  }
+
+  .appContent {
+    --background: #d0dadf !important;
+    //--background: linear-gradient(315deg, #ffdde1 0%, rgb(232 216 216 / 40%) 74%)!important;
+  }
+
+  .main-toolbar {
+    --background: linear-gradient(315deg, #3c8dbc 0%, rgb(0 0 0 / 10%) 74%);
+  }
+
+  .sideMenuItem{
+    --background:  #d0dadf;
+  }
+  .footerToolbar {
+    --background: #d0dadf !important;
+  }
+
+  .matIcons.arrowForward {
+    color: #0c5682 !important;
+  }
+
+  .matIcons.firstLevelLeftIcon {
+    color: #0871ae !important;
+    margin-top: 3%;
+    margin-right: 2%;
+  }
+
+  .matIcons.secondLevelIcon {
+    color: #2f8bc0 !important
+  }
+
+  .matIcons.thirdLevelIcon {
+    color: #79b7db !important
+  }
+
+  .previousButton {
+    color: #3c8dbc !important
+  }
+
+  .action-sheet-icon.sc-ion-action-sheet-md {
+    color: #3c8dbc !important;
+  }
+
+  .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: #3c8dbc !important;
+  }
+
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: #3c8dbc!important;
+  }
+
+
+}

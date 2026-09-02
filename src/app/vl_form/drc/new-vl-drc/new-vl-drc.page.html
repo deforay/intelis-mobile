@@ -1,0 +1,1195 @@
+<mat-toolbar>
+  <!-- <button mat-icon-button> -->
+    <ion-menu-button class="menuIcon" *ngIf="isMenuOrBackButton=='menu'"></ion-menu-button>
+  <!-- </button> -->
+  <button mat-icon-button *ngIf="isMenuOrBackButton=='back'" (click)="goBack()">
+    <mat-icon matSuffix class="menuIcon">arrow_back_ios</mat-icon>
+  </button>
+  <p class="mainHeaderName" text-wrap>{{titleHeader}}</p>
+</mat-toolbar>
+
+<ion-content>
+
+
+
+  <mat-accordion class="example-headers-align">
+
+    <form [formGroup]="clinicInfoPanelForm" novalidate>
+      <mat-expansion-panel class="matPanel" *ngIf="isToggled==false" [expanded]="step === 0" (opened)="setStep(0)"
+        hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+           1. Réservé à la structure de soins
+          </mat-panel-title>
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </mat-expansion-panel-header>
+        
+        <ion-row>
+          <ion-col size="12">
+            <p> Information sur la structure de soins</p>
+          </ion-col>
+        </ion-row>
+
+        <ion-row *ngIf="appSampleCode || sampleCode">
+          <ion-col size="5">
+            <p text-wrap>
+              <span class="text-title-color" *ngIf="sampleCode">Sample ID </span>
+              <span class="text-title-color" *ngIf="!sampleCode">Offline Test Request ID</span>
+            </p>
+          </ion-col>
+          <ion-col size="1" class="grid-readonly-col">
+            <p text-wrap>
+              <span class="text-title-color">:</span>
+            </p>
+          </ion-col>
+          <ion-col size="6" class="grid-readonly-col">
+            <p text-wrap style="float:right;">
+              <span> {{sampleCode? sampleCode:appSampleCode}}</span>
+            </p>
+          </ion-col>
+        </ion-row>
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>Recency ID</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="tel" matInput formControlName="serialNo"
+            [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Province</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="text" matInput formControlName="POEState"
+            required [matAutocomplete]="autoPOEState" [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+          <mat-autocomplete #autoPOEState="matAutocomplete"
+            (optionSelected)="onChangePOEState($event)">
+            <mat-option *ngFor="let option of POEStateFilteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="clinicInfoPanelForm.controls.POEState.hasError('required')">
+            Please choose State/Province
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>Zone de santé</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="text" matInput formControlName="POECounty"
+            required [matAutocomplete]="autoPOECounty" [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+          <mat-autocomplete #autoPOECounty="matAutocomplete" (optionSelected)="onChangePOECounty($event)">
+            <mat-option *ngFor="let option of POECountyFilteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="clinicInfoPanelForm.controls.POECounty.hasError('required')">
+            Please choose District/County
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>Nom de l'installation</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="text" matInput formControlName="POE" required
+            [matAutocomplete]="autoPOE" [errorStateMatcher]="matcher" [ngClass]="{'mat-form-field-invalid':submitted }">
+          <mat-autocomplete #autoPOE="matAutocomplete">
+            <mat-option *ngFor="let option of POEFilteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="clinicInfoPanelForm.controls.gender.hasError('required')">
+            Please enter Nom de l'installation
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>Demandeur</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="text" matInput formControlName="reqClinician"
+            [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>Téléphone</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="tel" matInput formControlName="reqClinicianPhoneNumber"
+             [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+        </mat-form-field>
+
+        <!-- [(value)]="genderSelected"  -->
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>Partnaire d'appui</mat-label>
+            <mat-select [readonly]="mode=='view' || mode=='result edit'" [disabled]="mode=='view' || mode=='result edit'" formControlName="implementingPartner" 
+             [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+            <mat-option *ngFor="let item of initArray['implementingPartnerList']" [value]="item.value">
+              {{item.show}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+
+        <mat-form-field appearance="fill">
+          <mat-label>Partnaire d'appui</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'" 
+            type="text" matInput formControlName="implementingPartner" [matAutocomplete]="autoImplementingPartner">
+          <mat-autocomplete #autoImplementingPartner="matAutocomplete">
+            <mat-option *ngFor="let option of implementPartnerFilteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Date de la demande	</mat-label>
+          <input
+            matInput
+            [matDatepicker]="dodPicker"
+            formControlName="dateOfDemand"
+            [max]="maxDate"
+            [readonly]="true"
+            
+            [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null"
+            
+          />
+          <mat-datepicker-toggle matSuffix [for]="dodPicker" [disabled]="mode === 'view' || mode === 'result edit'"></mat-datepicker-toggle>
+          <!-- <ion-icon  name="close" *ngIf="mode!='view'" class="clearDateIcon" ios="ios-close" (click)="clearDOB('dod')">
+          </ion-icon> -->
+          <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearDOB('dod')">
+                </ion-icon>
+          <mat-datepicker #dodPicker></mat-datepicker>
+        </mat-form-field>
+
+        
+        
+
+        <!-- [(value)]="genderSelected" -->
+        <mat-form-field appearance="fill">
+          <mat-label>Source de financement</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'" formControlName="fundingSource"
+            [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+            <mat-option *ngFor="let item of initArray['fundingSourceList']" [value]="item.show" [disabled]="isOptionDisabled()">
+              {{item.show}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+
+
+        <br>
+        <mat-label>Information sur le patient</mat-label>
+        <ion-grid *ngIf="mode!='view'">
+          <ion-row>
+            <ion-col size="10">
+              <ion-searchbar showCancelButton="never" class="patientSearchBar"
+                placeholder="Enter ART Number or Patient Name" formControlName="search" mode="ios"> </ion-searchbar>
+            </ion-col>
+            <ion-col size="2" class="ion-align-self-end">
+              <button mat-mini-fab class="previousButton" class="searchMatIcon" (click)="searchPatient()"
+                [disabled]="clinicInfoPanelForm.controls.search.value.length==0">
+                <mat-icon class="searchIcon">search</mat-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Date de naissance</mat-label>
+          <input [readonly]="true"
+         
+          [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null" matInput [matDatepicker]="dobPicker" formControlName="dob"
+            [max]="maxDate" (dateChange)="calAge()">
+          <mat-datepicker-toggle matSuffix [for]="dobPicker" [disabled]="mode === 'view' || mode === 'result edit'"></mat-datepicker-toggle>
+          <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateIcon" ios="ios-close" (click)="clearDOB('dob')">
+          </ion-icon> -->
+          <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearDOB('dob')">
+                </ion-icon>
+          <mat-datepicker #dobPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Âge en années</mat-label>
+          <input  matInput type="tel"
+            formControlName="ageInYears">
+            <mat-error *ngIf="clinicInfoPanelForm.controls.ageInYears.hasError('required')">
+              Please enter age year
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Âge en mois</mat-label>
+              <input   matInput type="tel"
+                formControlName="ageInMonths">
+                <mat-error *ngIf="clinicInfoPanelForm.controls.ageInMonths.hasError('required')">
+                  Please enter age months
+                </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label style="color: black;">Sexe</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="gender" required
+            [(value)]="genderSelected" [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+            <mat-option *ngFor="let item of genderArray" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="clinicInfoPanelForm.controls.gender.hasError('required')">
+            Please select sexe
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="caseID">
+          <mat-label>
+            Code du patient</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  matInput formControlName="patientArtNo" required
+            [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted }">
+          <mat-error *ngIf="clinicInfoPanelForm.controls.patientArtNo.hasError('required')">
+            Please enter Code du patient
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Si S/ARV</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="isPatientNew">
+            <mat-option *ngFor="let item of PatientConsent" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="clinicInfoPanelForm.controls.isPatientNew.value=='yes'">
+          <mat-label>Date du début des ARV</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"
+         
+          [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null" matInput [matDatepicker]="doiPicker"
+            formControlName="dateOfArtInitiation" [max]="maxDate" >
+          <mat-datepicker-toggle matSuffix [for]="doiPicker" [disabled]="mode === 'view' || mode === 'result edit'"></mat-datepicker-toggle>
+          <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateIcon" ios="ios-close" (click)="clearDOB('doi')">
+          </ion-icon> -->
+          <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearDOB('doi')">
+                </ion-icon>
+          <mat-datepicker #doiPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Régime ARV en cours</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="artRegimen" 
+            [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted }">
+            <mat-option *ngFor="let item of artRegimenArray" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill"
+        *ngIf="this.clinicInfoPanelForm.controls.artRegimen.value == 'other'">
+        <mat-label>Enter Régime ARV</mat-label>
+        <input [readonly]="mode=='view' || mode=='result edit'"  matInput formControlName="newArtRegimen">
+      </mat-form-field>
+      
+
+        <mat-form-field appearance="fill">
+          <mat-label>Ce patient a-t-il déjà changé de régime de traitement?</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="hasChangedRegimen">
+            <mat-option *ngFor="let item of PatientConsent" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="this.clinicInfoPanelForm.controls.hasChangedRegimen.value == 'yes'">
+          <mat-label>Motif de changement de régime ARV</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="text" matInput formControlName="reasonForArvRegimenChange"
+            [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="this.clinicInfoPanelForm.controls.hasChangedRegimen.value == 'yes'">
+          <mat-label>Date du changement de régime ARV</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"
+
+          [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null" matInput [matDatepicker]="doARCPicker" formControlName="dateOfArvRegimenChange"
+            [max]="maxDate">
+          <mat-datepicker-toggle matSuffix [for]="doARCPicker" [disabled]="mode === 'view' || mode === 'result edit'"></mat-datepicker-toggle>
+          <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateIcon" ios="ios-close" (click)="clearDOB('doarc')">
+          </ion-icon> -->
+          <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearDOB('doarc')">
+                </ion-icon>
+          <mat-datepicker #doARCPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Motif de la demande</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="vlTestReason" required  [(value)]="vlTestReasonSelected"
+            [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted }">
+            <mat-option *ngFor="let item of vlTestReasonArray" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="clinicInfoPanelForm.controls.gender.hasError('required')">
+            Please select Motif de la demande
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Charge virale N</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="text" matInput formControlName="viralLoadNo"
+             [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Résultat dernière charge virale</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"  type="text" matInput formControlName="lastViralLoadResult"
+             [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Date dernière charge virale (demande)</mat-label>
+          <input [readonly]="true"
+          
+          [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null" matInput [matDatepicker]="dolvltPicker"
+            formControlName="lastViralLoadTestDate" [max]="maxDate" >
+          <mat-datepicker-toggle matSuffix [for]="dolvltPicker" [disabled]="mode === 'view' || mode === 'result edit'"></mat-datepicker-toggle>
+          <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateIcon" ios="ios-close" (click)="clearDOB('dolvlt')">
+          </ion-icon> -->
+          <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearDOB('dolvlt')">
+                </ion-icon>
+          <mat-datepicker #dolvltPicker></mat-datepicker>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill" *ngIf="this.clinicInfoPanelForm.controls.gender.value == 'female'">
+          <mat-label>allaitante ?</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'" formControlName="isPatientBreastfeeding">
+            <mat-option *ngFor="let item of PatientConsent" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="this.clinicInfoPanelForm.controls.gender.value == 'female'">
+          <mat-label>Ou enceinte ?</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'" 
+            formControlName="isPatientPregnant">
+            <mat-option *ngFor="let item of PatientConsent" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="this.clinicInfoPanelForm.controls.gender.value == 'female'">
+          <mat-label>Si Femme enceinte :</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'"  [(value)]="trimesterSelected" formControlName="trimester">
+            <mat-option *ngFor="let item of trimestre" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <ion-row>
+          <ion-col size="12">
+            <p> A remplir par le service demandeur dans la structure de soins</p>
+            <p> Informations sur le prélèvement (A remplir par le préleveur)</p>
+          </ion-col>
+        </ion-row>
+        
+        <mat-form-field appearance="fill">
+          <mat-label>Date du prélèvement</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"
+        
+          [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null" matInput type="datetime-local"
+           [max]="maxDatetime"[min]="minSampleCollectedDate"
+            formControlName="sampleCollectionDate" required [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }"(change)="setMaxSampleReceivedHubDate()">
+          <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+          <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateIcon" ios="ios-close"
+            (click)="clearSampleCollection()"></ion-icon> -->
+            <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearSampleCollection()">
+                </ion-icon>
+            <mat-error *ngIf="clinicInfoPanelForm.controls.sampleCollectionDate.hasError('required')">
+              Please enter Date du prélèvement
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Type d'échantillon</mat-label>
+          <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="specimenType" required
+            [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted }">
+            <mat-option *ngFor="let item of specimenTypeArray" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="clinicInfoPanelForm.controls.specimenType.hasError('required')">
+            Please enter Type d'échantillon
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Date de départ au Labo biomol</mat-label>
+          <input [readonly]="mode=='view'"  matInput type="datetime-local" [max]="maxDatetime"
+            formControlName="dateDispatchedFromClinicToLab" [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+          <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+          <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateIcon" ios="ios-close"
+            (click)="clearSampleCollection()"></ion-icon> -->
+            <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearSampleCollections()">
+                </ion-icon>
+          <mat-error *ngIf="clinicInfoPanelForm.controls.dateDispatchedFromClinicToLab.hasError('required')">
+            Please enter Date de départ au Labo biomol
+          </mat-error>
+        </mat-form-field>
+
+        <ion-row>
+          <ion-col size="12">
+            <p>         A remplir par le préleveur
+            </p>
+          </ion-col>
+        </ion-row>
+
+
+        <mat-action-row>
+          <button mat-button color="primary" (click)="nextStepClinicInfo(clinicInfoPanelForm.valid)">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </form>
+
+    <form [formGroup]="labResultPanelForm" novalidate>
+
+      <mat-expansion-panel [expanded]="step === 1" *ngIf="isToggled==false && isTestingUser=='yes'"
+        (opened)="setStep(1)" hideToggle>
+        <mat-expansion-panel-header class="matHeader">
+          <mat-panel-title>
+           2. Réservé au Laboratoire de biologie moléculaire
+          </mat-panel-title>
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </mat-expansion-panel-header>
+        
+
+        <!-- [required]="labResultPanelForm.controls.status.value=='no' || labResultPanelForm.controls.status.value=='yes'" -->
+         <mat-form-field appearance="fill" class="caseID">
+          <mat-label>Date de réception de l'échantillon</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'"
+         
+          [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null" matInput type="datetime-local" [max]="maxDatetime"
+            formControlName="sampleReceivedDate" [min]="maxSampleReceivedLabDate"
+            required
+            [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value}">
+          <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateTimeIcon" ios="ios-close"
+            (click)="clearSampleReceived()"></ion-icon> -->
+            <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearSampleReceived()">
+                </ion-icon>
+          <mat-error *ngIf="labResultPanelForm.controls.sampleReceivedDate.hasError('required')">
+            Please enter Date de réception de l'échantillon
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Décision prise</mat-label>
+          <mat-select [readonly]="mode=='view'" formControlName="isSampleRejected">
+            <!-- (selectionChange)="onChangeSampleRejected($event.value)" -->
+            <mat-option value='no' [disabled]="isOptionDisabled()" >Echantillon accepté</mat-option>
+            <mat-option value='yes' [disabled]="isOptionDisabled()" >Echantillon rejeté</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill" *ngIf="(mode=='edit' && isTestingUser=='yes' && (previousStatusValue=='yes' || previousStatusValue=='no') && (labResultPanelForm.controls.vlResult.dirty || labResultPanelForm.controls.status.dirty))">
+          <mat-label>Reason for Changing </mat-label>
+          <input [required]="mode=='edit' && isTestingUser=='yes' && (previousStatusValue=='no' || previousStatusValue=='yes') && (labResultPanelForm.controls.vlResult.dirty || labResultPanelForm.controls.targetNotDetected.dirty || labResultPanelForm.controls.below20.dirty || labResultPanelForm.controls.below40.dirty || labResultPanelForm.controls.below400.dirty || labResultPanelForm.controls.status.dirty)"
+          [readonly]="mode=='view'"  matInput formControlName="reasonForChanging">
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="fill" *ngIf="labResultPanelForm.controls.isSampleRejected.value=='yes'">
+          <mat-label>Motifs de rejet</mat-label>
+          <mat-select [readonly]="mode=='view'" [disabled]="mode=='view'" formControlName="rejectionReason"
+            [required]="labResultPanelForm.controls.status.isSampleRejected=='yes'" [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value}" (selectionChange)="onChangeRejectReason()">
+            <mat-option *ngFor="let item of rejectedReasonArray" [value]="item.value">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="labResultPanelForm.controls.rejectionReason.hasError('required')">Please select Motifs de rejet
+          </mat-error>
+        </mat-form-field> -->
+
+        <mat-form-field appearance="fill" *ngIf="labResultPanelForm.controls.isSampleRejected.value=='yes'">
+          <mat-label>Motifs de rejet</mat-label>
+          <mat-select [readonly]="mode=='view'"  formControlName="rejectionReason"
+            [required]="labResultPanelForm.controls.isSampleRejected.value=='yes'" [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value}"
+            (selectionChange)="onChangeRejectReason()">
+            <mat-optgroup *ngFor="let item of vlInitArray['rejectedReasonList']" label="{{item.show}}">
+              <mat-option *ngFor="let innerItem of item.reasons" [value]="innerItem.show" [disabled]="isOptionDisabled()">{{innerItem.show}}
+              </mat-option>
+            </mat-optgroup>
+          </mat-select>
+          <mat-error *ngIf="labResultPanelForm.controls.rejectionReason.hasError('required')">Please select Reason
+            for Rejection
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" *ngIf="labResultPanelForm.controls.isSampleRejected.value=='yes'">
+          <mat-label>Rejection Date</mat-label>
+          <input  [readonly]="mode=='view' "
+         
+          [attr.readonly]="mode === 'view'  ? true : null" matInput [matDatepicker]="rejectionDatePicker"
+            formControlName="rejectionDate" [errorStateMatcher]="matcher" [max]="maxDate"
+            [required]="labResultPanelForm.controls.isSampleRejected.value=='yes'"
+            [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value=='no'}">
+          <mat-datepicker-toggle matSuffix [for]="rejectionDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker #rejectionDatePicker></mat-datepicker>
+        </mat-form-field>
+
+        
+        <mat-form-field appearance="fill">
+          <mat-label>Nom du laboratoire</mat-label>
+          <mat-select [readonly]="mode=='view'"  formControlName="labName"
+          required [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value}">
+           
+              <!-- <mat-option *ngFor="let item of labNameArray" [value]="item.show">
+                {{ item.show }}
+              </mat-option> -->
+              <ng-container *ngFor="let item of initArray['testingLabsList']">
+                <mat-option *ngIf="item.test_type == 'vl'" [value]="item.show" [disabled]="isOptionDisabled()">
+                  {{item.show}}
+                </mat-option>
+              </ng-container>
+        
+          </mat-select>
+          <mat-error *ngIf="labResultPanelForm.controls.labName.hasError('required')">
+            Please select Nom du laboratoire
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="caseID">
+          <mat-label>Date de réalisation de la charge virale</mat-label>
+          <input [readonly]="mode=='view'"  matInput type="datetime-local" [max]="maxDatetime"
+            formControlName="dateOfCompletionOfViralLoad" [min]="maxSampleReceivedLabDate"
+            [required]="labResultPanelForm.controls.isSampleRejected.value=='no' || labResultPanelForm.controls.isSampleRejected.value=='yes'"
+            [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value}">
+          <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateTimeIcon" ios="ios-close"
+            (click)="clearDateOfCompletion()"></ion-icon> -->
+            <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearDateOfCompletion()">
+                </ion-icon>
+          <mat-error *ngIf="labResultPanelForm.controls.dateOfCompletionOfViralLoad.hasError('required')">
+            Please enter Date de réalisation de la charge virale
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="fill">
+          <mat-label>Technique utilisée</mat-label>
+          <mat-select [readonly]="mode=='view'"  formControlName="testingPlatform"
+            [required]="labResultPanelForm.controls.isSampleRejected.value=='no' || labResultPanelForm.controls.isSampleRejected.value=='yes'"
+            [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value}">
+            <mat-option *ngFor="let item of testingPlatformArray" [value]="item.value" [disabled]="isOptionDisabled()">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="labResultPanelForm.controls.testingPlatform.hasError('required')">
+            Please select Technique utilisée
+          </mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill"  *ngIf="labResultPanelForm.controls.isSampleRejected.value=='no'">
+          <mat-label>Résultat (copiesl/ml)</mat-label>
+          <input [readonly]="mode=='view' || checkedT || checkedB20 || checkedB40 || checkedB400" [disabled]="mode=='view' || checkedT || checkedB20 || checkedB40 || checkedB400" [matAutocomplete]="autoVlResult"
+          matInput formControlName="vlResult" (focusout)="onChangeVl('vlResult')">
+          <!-- (focusout)="onChangeVl('vlResult')" -->
+          <mat-autocomplete #autoVlResult="matAutocomplete">
+            <mat-option *ngFor="let option of resultat" [value]="option.value" [disabled]="isOptionDisableds()">
+              {{option.name}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill"  *ngIf="labResultPanelForm.controls.isSampleRejected.value=='no'">
+          <mat-label>Viral Load Log</mat-label>
+          <input [readonly]="mode=='view' || checkedT || checkedB20 || checkedB40 || checkedB400" [disabled]="mode=='view' || checkedT || checkedB20 || checkedB40 || checkedB400"
+            type="tel" matInput formControlName="vlLog" (focusout)="onChangeVl('vlLog')">
+        </mat-form-field>
+
+        <!-- <mat-checkbox formControlName="below20" [readonly]="mode=='view'" [disabled]="mode=='view'" [checked]="checkedB20" *ngIf="labResultPanelForm.controls.status.value=='no'" [disabled]="checkedT || checkedB40 || checkedB400 || (labResultPanelForm.controls.vlResult.value!='' && labResultPanelForm.controls.vlLog.value!='')"
+        (change)="onChangeBelow(20)"> < 20</mat-checkbox>
+
+        <mat-checkbox formControlName="below40" [readonly]="mode=='view'" [disabled]="mode=='view'" [checked]="checkedB40" *ngIf="labResultPanelForm.controls.status.value=='no'" [disabled]="checkedT || checkedB20 || checkedB400 || (labResultPanelForm.controls.vlResult.value!='' && labResultPanelForm.controls.vlLog.value!='')"
+        (change)="onChangeBelow(40)"> < 40</mat-checkbox>
+
+        <mat-checkbox formControlName="below400" [readonly]="mode=='view'" [disabled]="mode=='view'" [checked]="checkedB400" *ngIf="labResultPanelForm.controls.status.value=='no'" [disabled]="checkedT || checkedB20 || checkedB40 || (labResultPanelForm.controls.vlResult.value!='' && labResultPanelForm.controls.vlLog.value!='')"
+        (change)="onChangeBelow(400)"> < 400</mat-checkbox> -->
+
+
+        <!-- <mat-checkbox formControlName="targetNotDetected" [readonly]="mode=='view'" [disabled]="mode=='view'" [checked]="checkedT" *ngIf="labResultPanelForm.controls.status.value=='no'" [disabled]="checkedB20 || checkedB40 || checkedB400 || (labResultPanelForm.controls.vlResult.value!='' && labResultPanelForm.controls.vlLog.value!='')"
+        (change)="onChangeTarget()">Target Not Detected / Non Détecté</mat-checkbox>      -->
+
+
+        <ion-row>
+          <ion-col size="12">
+            <p> A remplir par le service effectuant la charge virale</p>
+          </ion-col>
+        </ion-row>
+
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Revu par</mat-label>
+        <input [readonly]="mode=='view'" [disabled]="mode=='view'" matInput formControlName="reviewedBy"
+          [matAutocomplete]="reviewedBy" [errorStateMatcher]="matcher"
+          [required]="labResultPanelForm.controls.isSampleRejected.value=='no'"
+          [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value=='no'}">
+        <mat-autocomplete #reviewedBy="matAutocomplete">
+          <mat-option *ngFor="let option of reviewedByFilteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="labResultPanelForm.controls.reviewedBy.hasError('required')">Please select reviewed By
+        </mat-error>
+      </mat-form-field> -->
+
+      <mat-form-field appearance="fill">
+        <mat-label>Revu par</mat-label>
+        <input [readonly]="mode=='view'"  matInput formControlName="reviewedBy"
+          [matAutocomplete]="reviewedBy" [errorStateMatcher]="matcher"
+          [required]="labResultPanelForm.controls.isSampleRejected.value=='no'"
+          [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value=='no'}">
+        <mat-autocomplete #reviewedBy="matAutocomplete">
+          <mat-option *ngFor="let item of initArray['labTechniciansList']" [value]="item.show" [disabled]="isOptionDisabled()">
+            {{item.show}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="labResultPanelForm.controls.reviewedBy.hasError('required')">Please select reviewed By
+        </mat-error>
+      </mat-form-field>
+
+
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Revu le</mat-label>
+        <input [readonly]="mode=='view'" readonly [disabled]="mode=='view'" matInput [matDatepicker]="reviewedOnPicker"
+          formControlName="reviewedOn" [max]="maxDate" [errorStateMatcher]="matcher"
+          [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.status.value=='no'}">
+        <mat-datepicker-toggle matSuffix [for]="reviewedOnPicker"></mat-datepicker-toggle>
+        <mat-datepicker #reviewedOnPicker></mat-datepicker>
+      </mat-form-field> -->
+
+      <mat-form-field appearance="fill" class="caseID">
+        <mat-label>Revu le</mat-label>
+        <input [readonly]="mode=='view'"  matInput type="datetime-local" [max]="maxDatetime"
+          formControlName="reviewedOn" [required]="labResultPanelForm.controls.isSampleRejected.value=='no'"
+          [errorStateMatcher]="matcher"
+          [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value=='no'}">
+        <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+        <!-- <ion-icon name="close" *ngIf="mode!='view'" class="clearDateTimeIcon" ios="ios-close"
+          (click)="clearReviewedByOn()"></ion-icon> -->
+          <ion-icon name="close" class="clearDateIcon"
+                  ios="ios-close"
+                  [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+                  (click)="mode !== 'view' && mode !== 'result edit' && clearReviewedByOn()">
+                </ion-icon>
+        <mat-error *ngIf="labResultPanelForm.controls.reviewedOn.hasError('required')">
+          Please enter reviewed on Date
+        </mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Approuvé par</mat-label>
+        <input [readonly]="mode=='view'" [disabled]="mode=='view'" matInput formControlName="approvedBy"
+          [errorStateMatcher]="matcher"
+          [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.status.value}">
+
+      </mat-form-field> -->
+
+      <mat-form-field appearance="fill">
+        <mat-label>Approuvé par</mat-label>
+        <input [readonly]="mode=='view'" matInput formControlName="approvedBy"
+          [matAutocomplete]="approvedBy" [errorStateMatcher]="matcher"
+          [required]="labResultPanelForm.controls.isSampleRejected.value=='no'"
+          [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value=='no'}">
+        <mat-autocomplete #approvedBy="matAutocomplete">
+          <mat-option *ngFor="let option of approvedByFilteredOptions | async" [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="labResultPanelForm.controls.approvedBy.hasError('required')">Please select reviewed By
+        </mat-error>
+      </mat-form-field>
+
+
+      <!-- <mat-form-field appearance="fill">
+        <mat-label>Approuvé le</mat-label>
+        <input [readonly]="mode=='view'" [disabled]="mode=='view'" readonly matInput [matDatepicker]="approvedOnPicker"
+          formControlName="approvedOn" [max]="maxDate" [errorStateMatcher]="matcher"
+          [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.status.value=='no'}">
+        <mat-datepicker-toggle matSuffix [for]="approvedOnPicker"></mat-datepicker-toggle>
+        <mat-datepicker #approvedOnPicker></mat-datepicker>
+      </mat-form-field> -->
+
+      <mat-form-field appearance="fill">
+        <mat-label>Approuvé le</mat-label>
+        <input [readonly]="true"
+       
+        [attr.readonly]="mode === 'view'  ? true : null" matInput [matDatepicker]="approvedOnPicker"
+          formControlName="approvedOn" [errorStateMatcher]="matcher" [max]="maxDate"
+          [required]="labResultPanelForm.controls.isSampleRejected.value=='no'"
+          [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value=='no'}">
+        <mat-datepicker-toggle matSuffix [for]="approvedOnPicker" [disabled]="mode === 'view'"></mat-datepicker-toggle>
+        <mat-datepicker #approvedOnPicker></mat-datepicker>
+      </mat-form-field>
+       
+
+        <!-- <mat-form-field appearance="fill" *ngIf="(mode=='edit' && isTestingUser=='yes' && (previousRejectedValue=='no' || previousRejectedValue=='yes') && (labResultPanelForm.controls.vlResult.dirty || labResultPanelForm.controls.status.dirty)) || (labResultPanelForm.controls.reasonForChanging.value!='')">
+          <mat-label>Reason for Changing </mat-label>
+          <input [required]="mode=='edit' && isTestingUser=='yes' && (previousRejectedValue=='no' || previousRejectedValue=='yes') && (labResultPanelForm.controls.vlResult.dirty || labResultPanelForm.controls.targetNotDetected.dirty || labResultPanelForm.controls.belowDetectionLevel.dirty || labResultPanelForm.controls.status.dirty)"
+          [readonly]="mode=='view'" [disabled]="mode=='view'" matInput formControlName="reasonForChanging">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Date Results Dispatched</mat-label>
+          <input [readonly]="mode=='view'" [disabled]="mode=='view'" matInput type="datetime-local" [max]="maxDatetime"
+            formControlName="dateResultDispatch" [errorStateMatcher]="matcher"
+            [ngClass]="{ 'mat-form-field-invalid':submitted }">
+          <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+          <ion-icon name="close" *ngIf="mode!='view'" class="clearDateIcon" ios="ios-close"
+            (click)="()"></ion-icon>
+        </mat-form-field> -->
+
+  
+
+        <mat-action-row>
+          <button mat-button class="previousButton" (click)="prevStep()">Previous</button>
+
+          <button mat-button color="primary" *ngIf="mode=='add' && isTestingUser=='yes'"
+            (click)="saveVlAddSouthSudanForm(clinicInfoPanelForm.valid,labResultPanelForm.valid,'add')">Save</button>
+
+          <button mat-button color="primary" *ngIf="(mode=='edit' || mode=='result edit')&& isTestingUser=='yes'"
+            (click)="saveVlAddSouthSudanForm(clinicInfoPanelForm.valid,labResultPanelForm.valid,'update')">Update</button>
+
+
+          <button mat-button color="primary" *ngIf="isTestingUser=='yes' && mode=='view'"
+            (click)="goToViewResult()">Next</button>
+
+        </mat-action-row>
+
+
+      </mat-expansion-panel>
+    </form>
+
+
+    <mat-expansion-panel *ngIf="mode=='view'" class="matPanel" [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          VIEW RESULT
+        </mat-panel-title>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+      </mat-expansion-panel-header>
+      <mat-card class="vlsm_mat_card" *ngFor="let item of viewResultArray">
+
+        <mat-card-content class="matContent">
+          <ion-grid class="matContent">
+            <ion-row *ngIf="item.sampleCode">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Sample Code</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.sampleCode}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.sampleReceivedDate">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Sample Received Date</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span> {{item.sampleReceivedDate | date :'d MMM y h:mm a'}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+            <ion-row *ngIf="item.labName">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Testing Laboratory</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span> {{item.labName}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.sampleCondition">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Specimen Qualiity</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.sampleCondition}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+            <ion-row *ngIf="item.labTechnicianName">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Lab Technician</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.labTechnicianName}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.isSampleRejected">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Is Sample Rejected</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.isSampleRejected}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.isSampleRejected =='yes' && item.rejectionReason">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Reason for Rejection</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.rejectionReason}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.isSampleRejected =='yes' && item.rejectionDate">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Rejection Date</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.rejectionDate | date :'d MMM y'}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.c19Tests" class="testDetailsRow">
+              <ion-col size="12">
+                <p text-wrap>
+                  <span class="testDetailsSpan">Test Details</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+            <div *ngIf="item.c19Tests">
+              <div *ngFor="let testItem of item.c19Tests;let i=index" class="testDetailsDiv">
+                <mat-card class="testDetailsCard">
+                  <mat-card-content class="matContent">
+                    <ion-row>
+                      <ion-col size="5">
+                        <p text-wrap>
+                          <span class="text-title-color">Test No.</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="1">
+                        <p text-wrap>
+                          <span class="text-title-color">:</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="6">
+                        <p text-wrap class="values">
+                          <span>{{i+1}}</span>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+
+
+                    <ion-row>
+                      <ion-col size="5">
+                        <p text-wrap>
+                          <span class="text-title-color">Test Method</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="1">
+                        <p text-wrap>
+                          <span class="text-title-color">:</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="6">
+                        <p text-wrap class="values">
+                          <span>{{testItem.testName}}</span>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+
+
+                    <ion-row>
+                      <ion-col size="5">
+                        <p text-wrap>
+                          <span class="text-title-color">Date Of Testing</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="1">
+                        <p text-wrap>
+                          <span class="text-title-color">:</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="6">
+                        <p text-wrap class="values">
+                          <span>{{testItem.testDate | date :'d MMM y h:mm a'}}</span>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                      <ion-col size="5">
+                        <p text-wrap>
+                          <span class="text-title-color">Test Platform</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="1">
+                        <p text-wrap>
+                          <span class="text-title-color">:</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="6">
+                        <p text-wrap class="values">
+                          <span>{{testItem.testingPlatform}}</span>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                      <ion-col size="5">
+                        <p text-wrap>
+                          <span class="text-title-color">Test Result</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="1">
+                        <p text-wrap>
+                          <span class="text-title-color">:</span>
+                        </p>
+                      </ion-col>
+                      <ion-col size="6">
+                        <p text-wrap class="values">
+                          <span>{{testItem.testResult}}</span>
+                        </p>
+                      </ion-col>
+                    </ion-row>
+
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <ion-row *ngIf="item.testedByName">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Tested By</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.testedByName}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.isResultAuthorized">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Is Result Authorized</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.isResultAuthorized}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.isResultAuthorized=='yes' && item.authorizedBy">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Authorised By</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.authorizedBy}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+
+            <ion-row *ngIf="item.isResultAuthorized=='yes' && item.authorizedOn">
+              <ion-col size="5">
+                <p text-wrap>
+                  <span class="text-title-color">Authorised On</span>
+                </p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap>
+                  <span class="text-title-color">:</span>
+                </p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="values">
+                  <span>{{item.authorizedOn | date :'d MMM y'}}</span>
+                </p>
+              </ion-col>
+            </ion-row>
+
+            <mat-card-actions class="cardActions" *ngIf="item.result"
+              [ngStyle]="{'background':item.result === 'negative' ? '#bbe4bb' : '#ff6961' }">
+
+              <ion-row class="matActionsRow">
+                <ion-col size="5">
+                  <p text-wrap class="matFooterName">
+                    Final result
+                  </p>
+                </ion-col>
+                <ion-col size="1">
+                  <p text-wrap class="colon">
+                    <span class="text-title-color">:</span>
+                  </p>
+                </ion-col>
+                <ion-col size="6">
+                  <p text-wrap class="matFooterValue">
+                    {{item.result}}
+                  </p>
+                </ion-col>
+              </ion-row>
+
+            </mat-card-actions>
+          </ion-grid>
+
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="vlsm_mat_card" *ngIf="isNoRecord">
+        <mat-card-content>
+          <p class="noRecord">No result found</p>
+        </mat-card-content>
+      </mat-card>
+
+    </mat-expansion-panel>
+
+  </mat-accordion>
+
+</ion-content>

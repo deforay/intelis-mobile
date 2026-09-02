@@ -1,0 +1,25 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+syntax:glob
+
+# Project #
+
+# System #
+.DS_Store
+
+# Mercurial #
+.orig
+.resolve
+
+# Node #
+node_modules/
+
+# Grunt build #
+www/
+plugins/
+platforms/
+.tmp/
+.angular/
+.git/
+
+# Bower #
+bower_components/

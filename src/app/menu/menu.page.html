@@ -1,0 +1,99 @@
+<mat-toolbar>
+  <!-- <button mat-icon-button> -->
+    <ion-menu-button class="menuIcon">
+    </ion-menu-button>
+  <!-- </button> -->
+  <!-- *ngIf="(networkType != none || networkType != 'unknown')"  -->
+  <mat-icon suffix class="matIcons onlineIcon" *ngIf="networkType != 'none'"
+    >cloud_done</mat-icon
+  >
+  <mat-icon suffix class="matIcons offlineIcon" *ngIf="networkType == 'none'"
+    >cloud_off</mat-icon
+  >
+  <p class="mainHeaderName" text-wrap>{{appMenuName}}</p>
+</mat-toolbar>
+
+<ion-content>
+  <ion-list lines="full">
+    <ng-container *ngFor="let p of appPages; let i=index;">
+      <ion-item
+        *ngIf="p.access"
+        [routerDirection]="'root'"
+        (click)="toggleLevel1('idx'+i)"
+        [ngClass]="{active: isLevel1Shown('idx'+i)}"
+      >
+        <ion-label>
+          <mat-icon
+            class="matIcons firstLevelLeftIcon"
+            *ngIf="p.name == 'COVID-19'"
+          >
+            coronavirus
+          </mat-icon>
+          <mat-icon class="matIcons firstLevelLeftIcon" *ngIf="p.name == 'EID'"
+            >child_care</mat-icon
+          >
+          <ion-icon
+            class="matIcons firstLevelLeftIcon vlIcon"
+            name="flask"
+            *ngIf="p.name=='VL'"
+          ></ion-icon>
+          <span class="level1Span">{{p.name}}</span>
+          <mat-icon class="matIcons firstLevelRightIcon">
+            {{isLevel1Shown('idx'+i) ? 'expand_more' : 'expand_less'}}
+          </mat-icon>
+
+          <ul *ngIf="isLevel1Shown('idx'+i)" class="level1">
+            <ng-container *ngFor="let i1 of p.item; let j=index;">
+              <li
+                *ngIf="i1.access"
+                (click)="toggleLevel2('idx'+i+'idx'+j)"
+                [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+j)}"
+              >
+                <mat-icon class="matIcons secondLevelIcon">
+                  {{isLevel2Shown('idx'+i+'idx'+j) ? 'expand_more' :
+                  'expand_less'}}
+                </mat-icon>
+                <span class="level2Span">{{i1.name}}</span>
+
+                <ul *ngIf="isLevel2Shown('idx'+i+'idx'+j)" class="level2">
+                  <ng-container *ngFor="let i2 of i1.item; let k=index;">
+                    <div *ngIf="i2.access">
+                      <li
+                        *ngIf="(i2.id!=1 || (i2.id==1 && isTestingUser=='yes'))"
+                        (click)="toggleLevel3('idx'+i+'idx'+j+'idx'+k,i2)"
+                        [ngClass]="{active: isLevel3Shown('idx'+i+'idx'+j+'idx'+k)}"
+                      >
+                        <mat-icon matPrefix class="matIcons thirdLevelIcon"
+                          >keyboard_arrow_right</mat-icon
+                        >
+                        <span class="level3Span">{{i2.name}}</span>
+                      </li>
+                    </div>
+                  </ng-container>
+                </ul>
+              </li>
+            </ng-container>
+          </ul>
+        </ion-label>
+      </ion-item>
+
+
+    </ng-container>
+    <ion-item routerLink="/profile">
+        <ion-label>
+          <mat-icon matPrefix class="matIcons">portrait</mat-icon
+          ><span class="singleMenuSpan">Profile</span>
+        </ion-label>
+      </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="lastSyncDateTime" (click)="showSyncTimeline()">
+  <ion-toolbar class="footerToolbar">
+    <ion-title class="footerTitle">
+      <p class="syncDate">
+        Last synced on {{lastSyncDateTime | date :'d MMM y h:mm a'}}
+      </p></ion-title
+    >
+  </ion-toolbar>
+</ion-footer>

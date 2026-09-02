@@ -1,0 +1,113 @@
+.sortButton {
+    float: right;
+    color: white;
+    margin-right: 7px;
+    background-color: var(--ion-color-secondary) !important;
+  }
+  
+  .matIcons.sort {
+    color: white !important;
+  }
+  
+  .vlsm_mat_card {
+    display: block !important;
+    max-width: 100% !important;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+  }
+  
+  .mat_header.total {
+    display: block !important;
+    background: #afafaf !important;
+  }
+  
+  .mat_header.result {
+    display: block !important;
+    background: #50C878 !important;
+  }
+  
+  .mat_header.pending {
+    display: block !important;
+    background: #f6cd61 !important;
+  }
+  
+  .mat_header.rejected {
+    display: block !important;
+    background: #ff5349 !important;
+  }
+  
+  .mat_content_count {
+    margin-top: 25px;
+  }
+  
+  .countHeaderName {
+    padding: 5px;
+    font-weight: 500;
+    font-size: 12px !important;
+    color: rgba(0, 0, 0, 0.87);
+    text-align: center;
+  }
+  
+  .vlsm_mat_card.count {
+    border-radius: 8px !important;
+    overflow: hidden;
+    margin: 7px;
+    opacity: 0.9;
+  }
+  
+  .count {
+    text-align: center;
+    font-size: 23px !important;
+    font-weight: 500;
+    font-family: Oswald !important;
+  
+  
+    .count.total {
+      color: #4a4e4d !important;
+    }
+  
+    .count.result {
+      color: #50C878 !important;
+    }
+  
+    .count.pending {
+      color: #7f670cd1 !important;
+    }
+  
+    .count.rejected {
+      color: #ff5349 !important;
+    }
+  }
+  
+  .countGrid {
+    margin-top: -5px;
+    margin-bottom: -5px;
+  }
+  
+  .highlightedTotal {
+    border: 2px solid grey;
+    border-bottom: 2px solid rgb(0 0 0 / 54%);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px !important;
+  }
+  
+  .NoHighlighted {
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px !important;
+  }
+  
+  .highlightedWithResult {
+    border: 2px solid #077531;
+    border-bottom: 2px solid #077531;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px !important;
+  }
+  
+  .highlightedWithoutResult {
+    border: 2px solid #bd9b1a;
+    border-bottom: 2px solid #bd9b1a;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px !important;
+  }
+  
+  .highlightedRejected {
+    border: 2px solid #f44336;
+    border-bottom: 2px solid #f44336;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px !important;
+  }
+  

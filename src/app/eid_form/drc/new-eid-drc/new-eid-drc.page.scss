@@ -1,0 +1,180 @@
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field+.mat-form-field {
+  margin-left: 0px;
+  margin-top: 2px;
+}
+
+.patientSearchBar {
+  padding: 0%;
+  font-size: 13px;
+  margin: -10px;
+  width: 109%;
+}
+
+.mat-mini-fab.mat-accent {
+  background-color: #3c8dbc;
+}
+
+.searchIcon {
+  color: white;
+}
+
+.specimenUL {
+  padding-left: 10px;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.searchMatIcon {
+  margin-left: 8px;
+}
+
+.mat-flat-button.mat-warn,
+.mat-raised-button.mat-warn,
+.mat-fab.mat-warn,
+.mat-mini-fab.mat-warn {
+  background-color: #7c91db !important;
+}
+
+.mat-mini-fab.mat-warn.mat-button-disabled,
+.mat-mini-fab.mat-button-disabled.mat-button-disabled {
+  background-color: var(--ion-color-blue) !important;
+}
+
+.caseID {
+  margin-top: 10px;
+}
+
+.mat_header {
+  margin-top: 10px;
+  --background: rgb(232 216 216 / 40%) !important;
+}
+
+.matFooterName {
+  margin: 5px !important;
+  font-weight: 600;
+  font-size: 14px !important;
+  color: rgb(0 0 0 / 70%);
+  float: left;
+  text-transform: capitalize;
+}
+
+.matFooterValue {
+  margin: 5px !important;
+  font-weight: 600;
+  font-size: 14px !important;
+  color: rgb(0 0 0 / 70%);
+  float: right;
+  text-transform: capitalize;
+}
+
+.colon {
+  margin: 5px !important;
+}
+
+.testDetailsSpan {
+  text-transform: uppercase;
+  color: white;
+  font-size: 14px !important;
+  margin: 5px;
+  font-weight: 500;
+}
+
+.matContent {
+  margin: -8px !important;
+}
+
+.values {
+  float: right;
+  text-align: right;
+}
+
+.matActionsRow {
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+.testDetailsRow {
+  background: var(--ion-color-primary-tint) !important;
+}
+
+.testDetailsDiv {
+  margin: 15px 5px 15px 5px;
+}
+
+.testFormCard {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin: 15px 5px 15px 5px;
+}
+
+.testDetailsCard {
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.vlsm_mat_card {
+  margin: 15px -2px 15px -2px
+}
+
+.mat-card-actions {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  padding: 0px 0;
+}
+
+.toggleLabel {
+  font-weight: 500;
+  text-transform: capitalize;
+  font-size: 12px !important;
+  margin-left: 15px;
+}
+
+.toggleItem {
+  width: 95%
+}
+
+.matDivider {
+  margin: 10px;
+  width: 100%;
+  margin-left: 0px;
+  border-color: #4e8cfb;
+}
+
+.matIcons.add {
+  color: #4e8cfb !important;
+}
+
+.clearDateIcon {
+  position: absolute;
+  margin-right: -15px;
+  margin-left: -15px;
+  margin-top: -6px;
+  font-size: 16px;
+}
+
+.clearDateTimeIcon {
+  position: absolute;
+  margin-right: -15px;
+  margin-left: -40px;
+  margin-top: -2px;
+  font-size: 16px;
+}
+
+.panel-gap {
+  margin-top: 5%; /* Adjust the margin as needed */
+}
+
+
+
+

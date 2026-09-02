@@ -1,0 +1,101 @@
+<mat-toolbar>
+  <p class="mainHeaderName" text-wrap>
+    Results matching your search - {{ patientSearchText }}
+  </p>
+  <button mat-icon-button class="clear" (click)="close()">
+    <mat-icon class="menuIcon">clear</mat-icon>
+  </button>
+</mat-toolbar>
+
+<ion-content>
+  <!-- Show search bar only if there are matched patients -->
+  <ion-searchbar *ngIf="matchedPatientsArray.length > 0"
+    showCancelButton="never"
+    class="patientDetailsSearchBar"
+    placeholder="Search"
+    [(ngModel)]="patientSearchText"
+    (ionInput)="filterPatients()"
+    name="searchPatient"
+    mode="ios">
+</ion-searchbar>
+
+  <!-- Display patient list -->
+  <mat-card class="vlsm_mat_card" *ngFor="let item of matchedPatientsArray">
+    <mat-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col size="1">
+            <mat-radio-button [value]="item.patient_art_no"
+                              class="radioOption"
+                              (change)="selectedPatient(item)">
+            </mat-radio-button>
+          </ion-col>
+          <ion-col size="11">
+            <ion-row class="firstRow">
+              <ion-col size="5">
+                <p text-wrap><span class="text-title-color">Case ID</span></p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap><span class="text-title-color">:</span></p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="patientValues">{{ item.patient_art_no }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="5">
+                <p text-wrap><span class="text-title-color">Patient Name</span></p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap><span class="text-title-color">:</span></p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="patientValues">{{ item.patient_name }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="5">
+                <p text-wrap><span class="text-title-color">Age</span></p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap><span class="text-title-color">:</span></p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="patientValues">{{ item.patient_age_in_years }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="5">
+                <p text-wrap><span class="text-title-color">Gender</span></p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap><span class="text-title-color">:</span></p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="patientValues">{{ item.patient_gender }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="5">
+                <p text-wrap><span class="text-title-color">Facility</span></p>
+              </ion-col>
+              <ion-col size="1">
+                <p text-wrap><span class="text-title-color">:</span></p>
+              </ion-col>
+              <ion-col size="6">
+                <p text-wrap class="patientValues">{{ item.facility_name }}</p>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Display 'No match found' if no results are present -->
+  <mat-card class="vlsm_mat_card" *ngIf="matchedPatientsArray.length == 0">
+    <mat-card-content>
+      <p class="noRecord">No match found</p>
+    </mat-card-content>
+  </mat-card>
+</ion-content>

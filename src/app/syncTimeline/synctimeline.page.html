@@ -1,0 +1,35 @@
+<mat-toolbar>
+  <mat-icon matSuffix class="menuIcon" (click)="back()">arrow_back_ios</mat-icon>
+  <p class="mainHeaderName" style="text-transform: capitalize; font-size: 16px !important" text-wrap>
+    Sync Timeline
+  </p>
+</mat-toolbar>
+<ion-content style="--background: #f9f9f9">
+  <ion-card style="border: 1px dashed #3b8cbb">
+    <ion-grid style="padding: 0px">
+      <ion-row style="border-bottom: 1px dashed #3b8cbb">
+        <ion-col class="table" size="2" style="text-align: center">
+          <h3 style="font-weight: 600; margin: 0px">S.no</h3>
+        </ion-col>
+        <ion-col class="table" size="4" style="text-align: center">
+          <h3 style="font-weight: 600; margin: 0px">Synced On</h3>
+        </ion-col>
+        <ion-col class="table" size="6" style="text-align: center">
+          <h3 style="font-weight: 600; margin: 0px">Synced Data</h3>
+        </ion-col>
+      </ion-row>
+      <!-- <ion-row *ngFor="let item of syncTimelineArray;let index = index;" style="border-bottom:1px dashed #3b8cbb;"> -->
+      <ion-row *ngFor="let item of syncTimelineArray | slice:0:30; let i=index">
+        <ion-col class="table" size="2" style="text-align: center">
+          <p>{{i+1}}</p>
+        </ion-col>
+        <ion-col class="table" size="4">
+          <p>{{item['syncedOn']| date:'medium' }}</p>
+        </ion-col>
+        <ion-col class="table" size="6">
+          <p>{{item['syncMessage'] }}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+</ion-content>

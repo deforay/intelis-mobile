@@ -1,0 +1,2 @@
+ALTER TABLE form_covid19 ADD patientEmail TEXT DEFAULT NULL;
+ALTER TABLE form_covid19 ADD asymptomatic TEXT DEFAULT NULL;

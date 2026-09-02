@@ -1,0 +1,37 @@
+
+  .headerName {
+    margin: 10px 10px 10px -20px !important;
+    font-weight: 500;
+    font-size: 15px !important;
+    color: black;
+  }
+
+  .searchButton {
+    width: 90%;  
+    color: white;
+    background-color: var(--ion-color-primary-shade) !important;
+  }
+  
+  .resetButton{
+    width: 90%;  
+    color: white;
+    background-color: var(--ion-color-danger-shade) !important;
+  }
+
+  .searchDiv{
+    margin:20px;
+  }
+  
+  .sortButton {
+    float: right;
+    color: white;
+    background-color: var(--ion-color-secondary) !important;
+  }
+  
+  .matIcons.sort{
+    color: white!important;
+  }
+
+  .sortRow{
+    margin-right: 10px;
+  }
