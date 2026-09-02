@@ -138,15 +138,6 @@ export class LoginPage implements OnInit {
       // if (apiURL) {
       // this.http.get(URL + '/api/v1.1/xyz.php')
 
-      // Prefer the health endpoint. Older InteLIS servers only have version.php, so fall back to it.
-      this.http.get(URL + '/api/v1.1/health').subscribe((health: any) => {
-        if (health && (health.status === 'ok' || health.version)) {
-          resolve(true);
-        } else {
-          checkLegacyVersionEndpoint();
-        }
-      }, () => checkLegacyVersionEndpoint());
-
       const checkLegacyVersionEndpoint = () => this.http.get(URL + '/api/v1.1/version.php').subscribe(async (resp: any) => {
         console.log(resp);
         if (resp) {
@@ -167,6 +158,16 @@ export class LoginPage implements OnInit {
         // }
         reject(err);
       });
+
+      // Prefer the health endpoint. Older InteLIS servers only have version.php, so fall back to it.
+      this.http.get(URL + '/api/v1.1/health').subscribe((health: any) => {
+        if (health && (health.status === 'ok' || health.version)) {
+          resolve(true);
+        } else {
+          checkLegacyVersionEndpoint();
+        }
+      }, () => checkLegacyVersionEndpoint());
+
       // }
     });
   }
