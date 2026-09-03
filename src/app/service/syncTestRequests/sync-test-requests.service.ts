@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage-angular';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { CommonService } from '../../service/common/common.service';
+import { InitDataService } from '../init-data/init-data.service';
 @Injectable( {
   providedIn: 'root',
 } )
@@ -112,7 +113,8 @@ export class SyncTestRequestsService {
   initArray: any = [];
 
   constructor(
-    public CrudService: CrudOperationsService,
+        private initData: InitDataService,
+public CrudService: CrudOperationsService,
     public commonservice: CommonService,
     public alertService: AlertService,
     public network: Network,
@@ -1641,85 +1643,25 @@ export class SyncTestRequestsService {
       ':00');
   }
  async initAuto(){
-    const initJSON = {
-      // appVersion: this.appVersionNumber,
-      // deviceOSVersion: '',
-      // uuid: ''
-    };
+    // After the first full download, ask only for what changed since the last sync.
+    const latestDateTime = await this.initData.latestDateTimeForSync();
+    const initJSON: any = latestDateTime ? { latestDateTime } : {};
     this.appVersionNumber = await this.storage.get( 'appVersionNumber' );
-    this.deviceOSVersion = await this.storage.get('deviceOSVersion');
-    this.uuid = await this.storage.get('deviceuuid');
-    // initJSON.deviceOSVersion = this.deviceOSVersion;
-    // initJSON.uuid = this.uuid;
-      console.log('initAuto initAuto',this.authToken);
-      this.CrudService.postDataWithoutLoader(
-        '/api/v1.1/init.php',
-        initJSON,
-        this.authToken ,true
-      ).then(
-        async ( result: any ) => {
-          if ( result.status == '1' ) {
-            this.initArray = result.data;
-            
-            console.log( 'result.status1' );
-            this.insertFacilitiesDetails();
-          }
-          if ( result.status == '2' || result.status == 'failed' ) {
-            console.log( 'result.status2' );
-          }
+    this.CrudService.postDataWithoutLoader(
+      '/api/v1.1/init.php',
+      initJSON,
+      this.authToken ,true
+    ).then(
+      async ( result: any ) => {
+        if ( result.status == '1' ) {
+          const incoming = result.data || {};
+          const existing = await this.storage.get( 'initArray' );
+          this.initArray = latestDateTime ? this.initData.merge( existing, incoming ) : incoming;
+          await this.storage.set( 'initArray', this.initArray );
+          await this.initData.recordInitSync( result.timestamp );
+          await this.initData.insertFacilities( incoming.facilitiesList );
         }
-      );
-    }
-   
-    insertFacilitiesDetails() {
-      this.sql
-        .create({
-          name: 'vlsm_mobile.db',
-          location: 'default',
-        })
-        .then((db: SQLiteObject) => {
-          this.dbStorage = db;
-          const data = [];
-          const rowArgs = [];
-          let query =
-            'INSERT OR REPLACE INTO facility_details (facility_id,facility_name,facility_code,facility_state,facility_state_id,facility_district,facility_district_id,other_id,testing_points,status) VALUES ';
-          this.initArray.facilitiesList.forEach( function ( item ) {
-            rowArgs.push( '(? ,?, ?, ?, ?, ?, ?, ?, ?, ?)' );
-  
-            data.push(item.facility_id);
-            data.push(item.facility_name);
-            data.push(item.facility_code);
-            data.push(item.facility_state);
-            data.push(item.facility_state_id);
-            data.push(item.facility_district);
-            data.push(item.facility_district_id);
-            data.push(item.other_id);
-            data.push(item.testing_points);
-            data.push(item.status);
-          });
-          query += rowArgs.join(', ');
-  
-          return this.dbStorage
-            .executeSql(query, data)
-            .then((res) => {
-              // console.log('inserted facility details table');
-  
-              return this.dbStorage
-                .executeSql('SELECT * FROM facility_details', [])
-                .then((data) => {
-                  // console.log(data);
-                  this.results = [];
-                  for ( let i = 0; i < data.rows.length; i++ ) {
-                    const item = data.rows.item( i );
-                    this.results.push( item );
-                  }
-                  // console.log(this.results, 'facility_details');
-                });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        });
-    } 
-  
+      }
+    ).catch( ( e ) => console.error( 'initAuto', e ) );
+  }
 }

@@ -24,6 +24,7 @@ import { Storage } from '@ionic/storage-angular';
 import { Network } from '@awesome-cordova-plugins/network/ngx';
 import _ from 'lodash';
 import { DbService } from '../services/db.service';
+import { InitDataService } from '../service/init-data/init-data.service';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { HttpClient } from '@angular/common/http';
 import { MenuController } from '@ionic/angular';
@@ -79,6 +80,8 @@ export class LoginPage implements OnInit {
   userRole: any;
   networkType: any;
   private dbStorage: SQLiteObject;
+  /** Test requests download running alongside the init download. */
+  private webRecordsPromise: Promise<any> = Promise.resolve();
   results: any = [];
   testresults: any = [];
   formID: any;
@@ -102,6 +105,7 @@ export class LoginPage implements OnInit {
     public network: Network,
     public SyncReq: SyncTestRequestsService,
     private db: DbService,
+    private initData: InitDataService,
     private sqlite: SQLite,
     public privilege: PrivilegeService
   ) {
@@ -118,6 +122,17 @@ export class LoginPage implements OnInit {
   }
 
   async ionViewWillEnter() {
+    // Logout must leave no data on the device: rebuild the database now, so the
+    // next login does not have to.
+    if (await this.storage.get('isLogOut')) {
+      await this.LoaderService.show('Clearing local data...');
+      try {
+        await this.db.wipeDatabase();
+        await this.initData.clearSyncMarker();
+      } finally {
+        await this.LoaderService.hide();
+      }
+    }
     await this.storage.create();
     await this.storage.get('localTestRequestForm').then(async (result) => {
       if (result == null) {
@@ -198,8 +213,8 @@ export class LoginPage implements OnInit {
     return false;
   }
 
-  async login() { 
-    this.LoaderService.show();
+  async login() {
+    this.LoaderService.show('Signing in...');
     await this.db.loadSQLFile('login');
     this.networkType = this.network.type;
 
@@ -260,7 +275,8 @@ export class LoginPage implements OnInit {
                   let userJSON = { userName: this.userName, userRole: this.userRole, };
                   this.events.publish('userName', userJSON);
                   this.db.insertUserDetails(this.loginDetailsArray);
-                  await this.getWebRecords();
+                  // Runs alongside the init download below; awaited before navigating.
+                  this.webRecordsPromise = this.getWebRecords().catch((e) => console.error(e));
                 }
               });
               this.events.publish(
@@ -287,6 +303,7 @@ export class LoginPage implements OnInit {
                 // initJSON.deviceOSVersion = this.deviceOSVersion;
                 // initJSON.uuid = this.uuid;
 
+                this.LoaderService.setMessage('Downloading reference data...');
                 this.CrudService.postDataWithoutLoader(
                   '/api/v1.1/init.php',
                   initJSON,
@@ -301,10 +318,14 @@ export class LoginPage implements OnInit {
                       console.log( this.initArray, 'initAuto' );
                       await this.storage.set( 'initArray', this.initArray );
                       console.log('initArray has been set in storage:', this.initArray);          
+                      await this.initData.recordInitSync(result.timestamp);
+                      this.LoaderService.setMessage('Saving facilities...');
+                      await this.initData.insertFacilities(this.initArray.facilitiesList);
+                      this.LoaderService.setMessage('Finishing up...');
+                      await this.webRecordsPromise;
                       this.router.navigate(['/app-password'], {
                         replaceUrl: true,
                       });
-                      this.insertFacilitiesDetails();
                       this.LoaderService.hide();
                     }
                     if (result.status == '2' || result.status == 'failed') {
@@ -331,6 +352,8 @@ export class LoginPage implements OnInit {
           },
           (err) => {
             this.LoaderService.hide();
+            // A real HTTP error from login: show what the server said, or a generic message.
+            this.alertService.presentAlert('Alert', (err && err.serverMessage) || 'Could not sign in. Please check your connection and try again.', '');
             // if (this.serverHostFormControl.value.indexOf('https://') != 0) {
             //   this.alertService.alertWithSingleButton(
             //     'Alert',
@@ -376,7 +399,8 @@ export class LoginPage implements OnInit {
   async getWebRecords() {
     console.log("getWebRecords");
     let getWebSamplesJSON = { appVersion: this.appVersionNumber, };
-    await this.CrudService.postDataWithoutLoader('/api/v1.1/covid-19/get-request.php', getWebSamplesJSON, this.authToken ,true).then(
+    this.LoaderService.setMessage('Downloading your test requests...');
+    const covidRecords = this.CrudService.postDataWithoutLoader('/api/v1.1/covid-19/get-request.php', getWebSamplesJSON, this.authToken ,true).then(
       async (result) => {
         if (result['token'] != null) {
           this.authToken = result['token'];
@@ -695,7 +719,7 @@ export class LoginPage implements OnInit {
 
     const uniqueAppSampleCodes = new Set();
 
-    await this.CrudService.postDataWithoutLoader('/api/v1.1/eid/get-request.php', getWebSamplesJSON, this.authToken ,true).then(
+    const eidRecords = this.CrudService.postDataWithoutLoader('/api/v1.1/eid/get-request.php', getWebSamplesJSON, this.authToken ,true).then(
       async (result) => {
         if (result['token'] != null) {
           this.authToken = result['token'];
@@ -828,7 +852,7 @@ export class LoginPage implements OnInit {
 
     
 
-    await this.CrudService.postDataWithoutLoader('/api/v1.1/vl/get-request.php', getWebSamplesJSON, this.authToken ,true).then(
+    const vlRecords = this.CrudService.postDataWithoutLoader('/api/v1.1/vl/get-request.php', getWebSamplesJSON, this.authToken ,true).then(
       async (result) => {
         if (result['token'] != null) {
           this.authToken = result['token'];
@@ -957,6 +981,7 @@ export class LoginPage implements OnInit {
 
     
     
+    await Promise.all([covidRecords, eidRecords, vlRecords]);
     await this.showCountToast(
       this.vlSamplesArray.length,
       this.covid19WebArray.length,
@@ -986,52 +1011,5 @@ export class LoginPage implements OnInit {
         }
       }
     }
-  }
-  insertFacilitiesDetails() {
-    this.sqlite.create({
-        name: 'vlsm_mobile.db',
-        location: 'default',
-      }).then((db: SQLiteObject) => {
-        this.dbStorage = db;
-        const data = [];
-        const rowArgs = [];
-        let query = 'INSERT OR REPLACE INTO facility_details (facility_id,facility_name,facility_code,facility_state,facility_state_id,facility_district,facility_district_id,other_id,testing_points,status) VALUES ';
-        this.initArray.facilitiesList.forEach(function (item) {
-          rowArgs.push('(? ,?, ?, ?, ?, ?, ?, ?, ?, ?)');
-
-          data.push(item.facility_id);
-          data.push(item.facility_name);
-          data.push(item.facility_code);
-          data.push(item.facility_state);
-          data.push(item.facility_state_id);
-          data.push(item.facility_district);
-          data.push(item.facility_district_id);
-          data.push(item.other_id);
-          data.push(item.testing_points);
-          data.push(item.status);
-        });
-        query += rowArgs.join(', ');
-
-        return this.dbStorage
-          .executeSql(query, data)
-          .then((res) => {
-            console.log('inserted facility details table');
-
-            return this.dbStorage
-              .executeSql('SELECT * FROM facility_details', [])
-              .then((data) => {
-                console.log(data,'SELECTed');
-                this.results = [];
-                for (let i = 0; i < data.rows.length; i++) {
-                  const item = data.rows.item(i);
-                  this.results.push(item);
-                }
-                console.log(this.results, 'facility_details');
-              });
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      });
   }
 }

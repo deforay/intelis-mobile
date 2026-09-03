@@ -34,13 +34,13 @@ await loading.dismiss();
 
 }
 
-async show(){
+async show(message: string = 'Please wait'){
   const element = await this.loadingController.getTop();
   if (element && element.dismiss) {
     element.dismiss();
   }
   const loading = await this.loadingController.create({
-    message: 'Please wait',
+    message,
     mode:"ios",
     spinner: 'dots',
     backdropDismiss: false
@@ -49,6 +49,14 @@ async show(){
 
   const { role, data } = await loading.onDidDismiss();
 }
+
+  /** Update the text of the loader currently on screen, if any. */
+  async setMessage(message: string) {
+    const element: any = await this.loadingController.getTop();
+    if (element) {
+      element.message = message;
+    }
+  }
 
 async hide(){
   const element = await this.loadingController.getTop();

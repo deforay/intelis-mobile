@@ -49,6 +49,19 @@ export class CrudOperationsService {
    * The server rotates API tokens by injecting "new_token" into any authenticated
    * response. Callers historically look for "token", so expose it under both names.
    */
+  /**
+   * Attach the message from a JSON error body (4xx/5xx) to the error so callers
+   * can show it. Works for the v1.1 {message|error} shapes and a future envelope.
+   */
+  private withServerMessage( err: any ) {
+    const body = err && err.error;
+    if ( body && typeof body === 'object' ) {
+      const m = body.message || body.error || ( body.error && body.error.message );
+      if ( typeof m === 'string' ) { err.serverMessage = m; }
+    }
+    return err;
+  }
+
   private adoptRotatedToken( res: any ) {
     if ( res && typeof res === 'object' && res.new_token && !res.token ) {
       res.token = res.new_token;
@@ -97,7 +110,7 @@ export class CrudOperationsService {
               await this.storage.set( 'isLoggedIn', false );
               this.router.navigate( ['/login'] );
             }
-            reject( err );
+            reject( this.withServerMessage( err ) );
           } );
       }
     } );
@@ -134,7 +147,7 @@ export class CrudOperationsService {
               await this.storage.set( 'isLoggedIn', false );
               this.router.navigate( ['/login'] );
             }
-            reject( err );
+            reject( this.withServerMessage( err ) );
           } );
       }
     } );
@@ -163,7 +176,7 @@ export class CrudOperationsService {
               await this.storage.set( 'isLoggedIn', false );
               this.router.navigate( ['/login'] );
             }
-            reject( err );
+            reject( this.withServerMessage( err ) );
           } );
       }
     } );
@@ -182,7 +195,7 @@ export class CrudOperationsService {
               await this.storage.set( 'isLoggedIn', false );
               this.router.navigate( ['/login'] );
             }
-            reject( err );
+            reject( this.withServerMessage( err ) );
           } );
       }
     } );
@@ -213,7 +226,7 @@ export class CrudOperationsService {
               await this.storage.set( 'isLoggedIn', false );
               this.router.navigate( ['/login'] );
             }
-            reject( err );
+            reject( this.withServerMessage( err ) );
           } );
       }
     } );

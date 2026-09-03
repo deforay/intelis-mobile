@@ -35,32 +35,65 @@ export class DbService {
     // }
   }
 
+  /** Marker (schema fingerprint) set when the database was rebuilt at logout and nothing has been written since. */
+  private static readonly CLEAN_MARKER = 'dbCleanSchema';
+
   async loadSQLFile(from) {
-    console.log('loadSQLFile',from);
-  
+    console.log('loadSQLFile', from);
     try {
       await this.platform.ready();
       const db = await this.sqlite.create({
         name: 'vlsm_mobile.db',
         location: 'default',
       });
-  
       this.storage = db;
-  
+
       const data = await this.httpClient.get('assets/vlsm-sqlite3db.sql', {
         responseType: 'text',
       }).toPromise();
-  
-      await this.sqlPorter.importSqlToDb(this.storage, data);
-  
+      const clean = await this.lclstorage.get(DbService.CLEAN_MARKER);
+      if (from === 'login' && clean === this.schemaFingerprint(data)) {
+        // Rebuilt at logout already; skip the 1,000-statement schema import.
+        console.log('loadSQLFile: database already clean, skipping rebuild');
+      } else {
+        await this.sqlPorter.importSqlToDb(this.storage, data);
+      }
+      await this.lclstorage.remove(DbService.CLEAN_MARKER);
       this.isDbReady.next(true);
       await this.dbMigrationService.startMigration(from);
     } catch (error) {
       console.error(error);
-      // Handle the error appropriately, e.g., show a message to the user
     }
   }
-  
+
+  /**
+   * Drop and recreate every table so no data stays on the device after logout.
+   * Records that the next login can reuse the clean database without rebuilding.
+   */
+  async wipeDatabase(): Promise<void> {
+    await this.platform.ready();
+    const data = await this.httpClient.get('assets/vlsm-sqlite3db.sql', {
+      responseType: 'text',
+    }).toPromise();
+    const fingerprint = this.schemaFingerprint(data);
+    if ((await this.lclstorage.get(DbService.CLEAN_MARKER)) === fingerprint) {
+      return;
+    }
+    const db = await this.sqlite.create({
+      name: 'vlsm_mobile.db',
+      location: 'default',
+    });
+    this.storage = db;
+    await this.sqlPorter.importSqlToDb(this.storage, data);
+    await this.dbMigrationService.startMigration('login');
+    await this.lclstorage.set(DbService.CLEAN_MARKER, fingerprint);
+  }
+
+  private schemaFingerprint(sql: string): string {
+    let h = 0;
+    for (let i = 0; i < sql.length; i++) { h = (h * 31 + sql.charCodeAt(i)) | 0; }
+    return sql.length + ':' + h;
+  }
 
   dbState() {
     return this.isDbReady.asObservable();
