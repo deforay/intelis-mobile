@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   FormControl,
@@ -62,6 +63,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     selector: 'app-add-new-request',
     templateUrl: './add-new-request.page.html',
     styleUrls: ['./add-new-request.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AddNewRequestPage implements OnInit {

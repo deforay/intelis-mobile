@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {FormControl,FormGroup} from '@angular/forms';
 import {SyncTestRequestsService,
   AlertService,
@@ -8,6 +8,7 @@ import {Storage} from '@ionic/storage-angular';
     selector: 'app-profile',
     templateUrl: './profile.page.html',
     styleUrls: ['./profile.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ProfilePage implements OnInit {

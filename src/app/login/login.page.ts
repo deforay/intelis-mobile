@@ -1,5 +1,5 @@
 import { PrivilegeService } from './../service/privilage/privilege.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   CrudOperationsService,
   ToastService,
@@ -11,7 +11,6 @@ import {
 } from '../../app/service/providers';
 // import urlExist from "url-exist"
 import { Router } from '@angular/router';
-import { MenuController } from '@ionic/angular';
 import {
   FormControl,
   FormGroupDirective,
@@ -27,6 +26,7 @@ import _ from 'lodash';
 import { DbService } from '../services/db.service';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { HttpClient } from '@angular/common/http';
+import { MenuController } from '@ionic/angular';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
     control: FormControl | null,
@@ -44,6 +44,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     selector: 'app-login',
     templateUrl: './login.page.html',
     styleUrls: ['./login.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LoginPage implements OnInit {
@@ -138,7 +139,7 @@ export class LoginPage implements OnInit {
       // if (apiURL) {
       // this.http.get(URL + '/api/v1.1/xyz.php')
 
-      this.http.get(URL + '/api/v1.1/version.php').subscribe(async (resp: any) => {
+      const checkLegacyVersionEndpoint = () => this.http.get(URL + '/api/v1.1/version.php').subscribe(async (resp: any) => {
         console.log(resp);
         if (resp) {
           const res: any = resp;
@@ -158,9 +159,45 @@ export class LoginPage implements OnInit {
         // }
         reject(err);
       });
+
+      // Prefer the health endpoint. Older InteLIS servers only have version.php, so fall back to it.
+      // Health answers 200 {status:"ok"} normally and 503 {status:"unavailable"} when the
+      // server's database is down; it may also carry the minimum app version the server accepts.
+      this.http.get(URL + '/api/v1.1/health').subscribe((health: any) => {
+        if (!health || health.status !== 'ok') {
+          checkLegacyVersionEndpoint();
+          return;
+        }
+        if (health.minAppVersion && this.isVersionBelow(this.appVersionNumber, health.minAppVersion)) {
+          this.CrudService.alertWithSingleButton('Update required', 'OK',
+            'This version of the app (' + this.appVersionNumber + ') is no longer supported by your server. Please update the app from Google Play.', '');
+          reject('app-version-unsupported');
+          return;
+        }
+        resolve(true);
+      }, (err) => {
+        if (err && err.status === 503 && err.error && err.error.status === 'unavailable') {
+          this.CrudService.alertWithSingleButton('Alert', 'OK', 'The InteLIS server is reachable but its database is unavailable. Please try again later.', '');
+          reject(err);
+          return;
+        }
+        checkLegacyVersionEndpoint();
+      });
+
       // }
     });
   }
+  /** True when `current` is an older dotted version than `minimum` (e.g. "1.4.2" < "1.5.0"). */
+  private isVersionBelow(current: string, minimum: string): boolean {
+    const parse = (v: string) => String(v || '').replace(/^v/i, '').split('.').map(p => parseInt(p, 10) || 0);
+    const a = parse(current), b = parse(minimum);
+    for (let i = 0; i < Math.max(a.length, b.length); i++) {
+      const x = a[i] || 0, y = b[i] || 0;
+      if (x !== y) { return x < y; }
+    }
+    return false;
+  }
+
   async login() { 
     this.LoaderService.show();
     await this.db.loadSQLFile('login');
@@ -270,7 +307,7 @@ export class LoginPage implements OnInit {
                       this.insertFacilitiesDetails();
                       this.LoaderService.hide();
                     }
-                    if (result.status == '2') {
+                    if (result.status == '2' || result.status == 'failed') {
                       this.LoaderService.hide();
                       this.alertService.alertWithSingleButton('Alert', 'OK', result.message, '');
                     }
@@ -523,7 +560,7 @@ export class LoginPage implements OnInit {
                       data.push(item.c19Tests[i].testingPlatform);
                       data.push(item.c19Tests[i].kitLotNo);
                       data.push(item.c19Tests[i].kitExpiryDate);
-                      data.push(item.c19Tests[i].testResult);
+                      data.push((item.c19Tests[i].testResult ?? item.c19Tests[i].result));
                       // console.log(item.c19Tests[i].testId,'c19tests[i]',data);
                     }
                   }

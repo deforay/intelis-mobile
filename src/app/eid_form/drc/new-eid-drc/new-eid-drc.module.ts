@@ -5,7 +5,7 @@ import { NewEidDrcPage } from './new-eid-drc.page';
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonCol, IonContent, IonGrid, IonIcon, IonMenuButton, IonRow, IonSearchbar } from '@ionic/angular';
 import { MaterialModule } from '../../../material.module';
 import { MomentModule } from '../../../moment.module';
 
@@ -13,7 +13,7 @@ import { MomentModule } from '../../../moment.module';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
+    IonCol, IonContent, IonGrid, IonIcon, IonMenuButton, IonRow, IonSearchbar,
     NewEidDrcPageRoutingModule,
     ReactiveFormsModule,
     MaterialModule,

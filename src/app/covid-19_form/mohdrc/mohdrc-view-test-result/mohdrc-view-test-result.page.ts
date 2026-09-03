@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   Storage
@@ -25,6 +26,7 @@ import { CommonService } from '../../../service/common/common.service';
     selector: 'app-mohdrc-view-test-result',
     templateUrl: './mohdrc-view-test-result.page.html',
     styleUrls: ['./mohdrc-view-test-result.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MohdrcViewTestResultPage implements OnInit {
@@ -108,6 +110,7 @@ export class MohdrcViewTestResultPage implements OnInit {
         "patientName": this.searchRecordForm.controls.patientName.value ? this.searchRecordForm.controls.patientName.value : '',
         "facility": this.searchRecordForm.controls.facilities.value ? this.searchRecordForm.controls.facilities.value : [],
         "sampleStatus": this.searchRecordForm.controls.sampleStatus.value ? [this.searchRecordForm.controls.sampleStatus.value] : [],
+        "markAsSent": false,
         "sampleCollectionDate": []
       }
 

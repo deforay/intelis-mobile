@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   Storage
 } from '@ionic/storage-angular';
@@ -14,6 +14,7 @@ import {
     selector: 'app-mohdrc-enter-test-result',
     templateUrl: './mohdrc-enter-test-result.page.html',
     styleUrls: ['./mohdrc-enter-test-result.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MohdrcEnterTestResultPage implements OnInit {

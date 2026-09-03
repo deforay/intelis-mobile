@@ -9,10 +9,6 @@ import {
   RouteReuseStrategy
 } from '@angular/router';
 import {
-  IonicModule,
-  IonicRouteStrategy
-} from '@ionic/angular';
-import {
   AppComponent
 } from './app.component';
 import {
@@ -31,7 +27,7 @@ import {
 import {
   AppVersion
 } from '@awesome-cordova-plugins/app-version/ngx';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import {
   IonicStorageModule
 } from '@ionic/storage-angular';
@@ -57,6 +53,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { JwPaginationComponent } from './component/jw-pagination/jw-pagination.component';
 import { Device } from '@awesome-cordova-plugins/device/ngx';
+import { IonApp, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonMenu, IonRouterOutlet, IonRow, IonSplitPane, IonTitle, IonToolbar, IonRouterLink, IonRouterLinkWithHref, IonicRouteStrategy, provideIonicAngular } from '@ionic/angular';
 
 import {
   MatIconModule
@@ -67,14 +64,14 @@ import {
     bootstrap: [AppComponent], imports: [NgxPaginationModule,
         BrowserModule,
         MaterialModule,
-        IonicModule.forRoot(),
+        IonApp, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonMenu, IonRouterOutlet, IonRow, IonSplitPane, IonTitle, IonToolbar, IonRouterLink, IonRouterLinkWithHref,
         IonicStorageModule.forRoot(),
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MatFormFieldModule,
-        MatInputModule, MatSelectModule, MatIconModule], providers: [
+        MatInputModule, MatSelectModule, MatIconModule], providers: [provideIonicAngular(), 
         Device,
         AppVersion,
         StatusBar,
@@ -89,6 +86,6 @@ import {
             provide: RouteReuseStrategy,
             useClass: IonicRouteStrategy
         },
-        provideHttpClient(withInterceptorsFromDi())
+        provideHttpClient(withXhr(), withInterceptorsFromDi())
     ] })
 export class AppModule {}

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
+import { IonCol, IonContent, IonGrid, IonRow, IonSearchbar } from '@ionic/angular';
 
 import { SelectPatientDetailsPageRoutingModule } from './select-patient-details-routing.module';
 
@@ -13,7 +13,7 @@ import { SharedModule } from '../../../shared/shared.module';
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
+    IonCol, IonContent, IonGrid, IonRow, IonSearchbar,
     MaterialModule,
     SelectPatientDetailsPageRoutingModule, SharedModule
   ],

@@ -424,9 +424,9 @@ export class SyncTestRequestsService {
             this.authToken = mainResult['token'];
             this.commonservice.tokenUpdate( mainResult['token'] );
           }
-          if ( mainResult['status'] == 'success' ) {
+          if ( mainResult['status'] == 'success' || mainResult['status'] == 'partial' ) {
             this.resultArray = [];
-            this.resultArray = mainResult['data'];
+            this.resultArray = Object.values( mainResult['data'] || {} );
 
             this.resultArray.forEach( async ( resultAPI, index ) => {
               if ( resultAPI.status == 'success' ) {
@@ -543,9 +543,9 @@ export class SyncTestRequestsService {
                 this.authToken = mainResult['token'];
                 this.commonservice.tokenUpdate( mainResult['token'] );
               }
-              if ( mainResult['status'] == 'success' ) {
+              if ( mainResult['status'] == 'success' || mainResult['status'] == 'partial' ) {
                 this.resultArray = [];
-                this.resultArray = mainResult['data'];
+                this.resultArray = Object.values( mainResult['data'] || {} );
                 this.resultArray.forEach( async ( resultAPI, index ) => {
                   if ( resultAPI.status == 'success' ) {
                     this.responseSuccessCount = this.responseSuccessCount + 1;
@@ -689,9 +689,9 @@ export class SyncTestRequestsService {
               this.authToken = mainEidResult['token'];
               this.commonservice.tokenUpdate( mainEidResult['token'] );
             }
-            if ( mainEidResult['status'] == 'success' ) {
+            if ( mainEidResult['status'] == 'success' || mainEidResult['status'] == 'partial' ) {
               this.resultEidArray = [];
-              this.resultEidArray = mainEidResult['data'];
+              this.resultEidArray = Object.values( mainEidResult['data'] || {} );
 
               this.resultEidArray.forEach( async ( resultAPI, index ) => {
                 if ( resultAPI.status == 'success' ) {
@@ -802,9 +802,9 @@ export class SyncTestRequestsService {
                 this.authToken = mainEidResult['token'];
                 this.commonservice.tokenUpdate( mainEidResult['token'] );
               }
-              if ( mainEidResult['status'] == 'success' ) {
+              if ( mainEidResult['status'] == 'success' || mainEidResult['status'] == 'partial' ) {
                 this.resultEidArray = [];
-                this.resultEidArray = mainEidResult['data'];
+                this.resultEidArray = Object.values( mainEidResult['data'] || {} );
 
                 this.resultEidArray.forEach( async ( resultAPI, index ) => {
                   if ( resultAPI.status == 'success' ) {
@@ -945,9 +945,9 @@ export class SyncTestRequestsService {
               this.commonservice.tokenUpdate( mainVlResult['token'] );
             }
 
-            if ( mainVlResult['status'] == 'success' ) {
+            if ( mainVlResult['status'] == 'success' || mainVlResult['status'] == 'partial' ) {
               this.resultVlArray = [];
-              this.resultVlArray = mainVlResult['data'];
+              this.resultVlArray = Object.values( mainVlResult['data'] || {} );
 
               this.resultVlArray.forEach( async ( resultAPI, index ) => {
                 if ( resultAPI.status == 'success' ) {
@@ -1043,9 +1043,9 @@ export class SyncTestRequestsService {
                 this.authToken = mainVlResult['token'];
                 this.commonservice.tokenUpdate( mainVlResult['token'] );
               }
-              if ( mainVlResult['status'] == 'success' ) {
+              if ( mainVlResult['status'] == 'success' || mainVlResult['status'] == 'partial' ) {
                 this.resultVlArray = [];
-                this.resultVlArray = mainVlResult['data'];
+                this.resultVlArray = Object.values( mainVlResult['data'] || {} );
 
                 this.resultVlArray.forEach( async ( resultAPI, index ) => {
                   if ( resultAPI.status == 'success' ) {
@@ -1233,7 +1233,7 @@ export class SyncTestRequestsService {
                             data.push( item.c19Tests[i].testingPlatform );
                             data.push( item.c19Tests[i].kitLotNo );
                             data.push( item.c19Tests[i].kitExpiryDate );
-                            data.push( item.c19Tests[i].testResult );
+                            data.push( ( item.c19Tests[i].testResult ?? item.c19Tests[i].result ) );
                           }
                         }
                       } );
@@ -1322,7 +1322,7 @@ export class SyncTestRequestsService {
                       location: 'default',
                     } ).then( ( db: SQLiteObject ) => {
                       this.eidSampleResultArray.forEach( async ( item ) => {
-                        await db.executeSql( `UPDATE eid_form set sample_received_at_vl_lab_datetime="${item.sampleReceivedDate}",lab_id="${item.labId}",is_sample_rejected="${item.isSampleRejected}",reason_for_sample_rejection="${item.rejectionReason}",tested_by="${item.testedBy}",result_approved_by="${item.approvedBy}",result_approved_datetime="${item.approvedOn}",result= "${item.result}" where sample_code="${item.sampleCode}"`, [] ).then( async ( res ) => {
+                        await db.executeSql( `UPDATE eid_form set sample_received_at_vl_lab_datetime="${item.sampleReceivedDate}",lab_id="${item.labId}",is_sample_rejected="${item.isSampleRejected}",reason_for_sample_rejection="${item.rejectionReason ?? item.sampleRejectionReason ?? ''}",tested_by="${item.testedBy}",result_approved_by="${item.approvedBy}",result_approved_datetime="${item.approvedOn}",result= "${item.result}" where sample_code="${item.sampleCode}"`, [] ).then( async ( res ) => {
                           this.sampleResultSuccessCount = this.sampleResultSuccessCount + 1;
                           await db.executeSql( 'SELECT * FROM eid_form WHERE sample_code=?', [item.sampleCode] ).then( ( data ) => {
                             this.eidtestresults = [];
@@ -1664,7 +1664,7 @@ export class SyncTestRequestsService {
             console.log( 'result.status1' );
             this.insertFacilitiesDetails();
           }
-          if ( result.status == '2' ) {
+          if ( result.status == '2' || result.status == 'failed' ) {
             console.log( 'result.status2' );
           }
         }

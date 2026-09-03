@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { ToastService, LoaderService } from '../../../../app/service/providers';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -10,6 +10,7 @@ import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
     selector: 'app-mohdrc-select-patient-details',
     templateUrl: './mohdrc-select-patient-details.page.html',
     styleUrls: ['./mohdrc-select-patient-details.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MohdrcSelectPatientDetailsPage implements OnInit {

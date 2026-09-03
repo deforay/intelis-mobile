@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonCol, IonContent, IonGrid, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonRow, IonSearchbar, IonToggle } from '@ionic/angular';
 import { DRCAddNewRequestPageRoutingModule } from './drc-add-new-request-routing.module';
 import { DRCAddNewRequestPage } from './drc-add-new-request.page';
 import { MaterialModule } from 'src/app/material.module';
@@ -21,7 +21,7 @@ import { SharedModule } from '../../../shared/shared.module';
      CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    IonicModule,
+    IonCol, IonContent, IonGrid, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonRow, IonSearchbar, IonToggle,
     MaterialModule,
     MomentModule,
     MatSelectModule,

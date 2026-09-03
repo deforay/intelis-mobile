@@ -45,6 +45,17 @@ export class CrudOperationsService {
     const id = nanoid();
     console.log( 'nanoid device id', id );
   }
+  /**
+   * The server rotates API tokens by injecting "new_token" into any authenticated
+   * response. Callers historically look for "token", so expose it under both names.
+   */
+  private adoptRotatedToken( res: any ) {
+    if ( res && typeof res === 'object' && res.new_token && !res.token ) {
+      res.token = res.new_token;
+    }
+    return res;
+  }
+
   private gzipPayload(payload: any) {
     const str = JSON.stringify(payload);
     const utf8Data = unescape(encodeURIComponent(str));
@@ -61,12 +72,12 @@ export class CrudOperationsService {
     if (useGzip) {
       // GZIP the payload and add the appropriate headers
       payload = this.gzipPayload(credentials);
-      var headers = new HttpHeaders().set('Content-Encoding', 'gzip').set('Content-Type', 'application/json').set( 'Authorization', 'Bearer ' + authToken ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'deviceOSVersion', this.deviceOSVersion).set( 'deviceuuid', this.deviceuuid);
+      var headers = new HttpHeaders().set('Content-Encoding', 'gzip').set('Content-Type', 'application/json').set( 'Authorization', 'Bearer ' + authToken ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'osVersion', this.deviceOSVersion ).set( 'deviceuuid', this.deviceuuid);
       // .set('Accept-Encoding', 'gzip');
     }
     else{
       payload = JSON.stringify( credentials );
-      var headers = new HttpHeaders().set( 'Content-Type', 'application/json' ).set( 'Authorization', 'Bearer ' + authToken ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'deviceOSVersion', this.deviceOSVersion).set( 'deviceuuid', this.deviceuuid); 
+      var headers = new HttpHeaders().set( 'Content-Type', 'application/json' ).set( 'Authorization', 'Bearer ' + authToken ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'osVersion', this.deviceOSVersion ).set( 'deviceuuid', this.deviceuuid); 
     }
     const loading = await this.loadingCtrl.create( { spinner: 'dots', backdropDismiss: false, mode: 'ios', message: 'Please wait', } );
     await loading.present();
@@ -76,7 +87,7 @@ export class CrudOperationsService {
             if ( loading ) {
               loading.dismiss();
             }
-            resolve( res );
+            resolve( this.adoptRotatedToken( res ) );
           }, async ( err ) => {
             if ( loading ) {
               loading.dismiss();
@@ -93,7 +104,7 @@ export class CrudOperationsService {
   }
 
   async postDataWithoutAuthToken( URL, credentials ) {
-    const headers = new HttpHeaders().set( 'Content-Type', 'application/json' ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'deviceOSVersion', this.deviceOSVersion).set( 'deviceuuid', this.deviceuuid)
+    const headers = new HttpHeaders().set( 'Content-Type', 'application/json' ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'osVersion', this.deviceOSVersion ).set( 'deviceuuid', this.deviceuuid)
     const loading = await this.loadingCtrl.create( {
       spinner: 'dots',
       backdropDismiss: false,
@@ -113,7 +124,7 @@ export class CrudOperationsService {
             if ( loading ) {
               loading.dismiss();
             }
-            resolve( res );
+            resolve( this.adoptRotatedToken( res ) );
           }, async ( err ) => {
             if ( loading ) {
               loading.dismiss();
@@ -135,18 +146,18 @@ export class CrudOperationsService {
     if (useGzip) {
       // GZIP the payload and add the appropriate headers
       payload = this.gzipPayload(credentials);
-      var headers = new HttpHeaders().set('Content-Encoding', 'gzip').set('Content-Type', 'application/json').set( 'Authorization', 'Bearer ' + authToken ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'deviceOSVersion', this.deviceOSVersion).set( 'deviceuuid', this.deviceuuid);
+      var headers = new HttpHeaders().set('Content-Encoding', 'gzip').set('Content-Type', 'application/json').set( 'Authorization', 'Bearer ' + authToken ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'osVersion', this.deviceOSVersion ).set( 'deviceuuid', this.deviceuuid);
       // .set('Accept-Encoding', 'gzip');
     }
     else{
       payload = JSON.stringify( credentials );
-      var headers = new HttpHeaders().set( 'Content-Type', 'application/json' ).set( 'Authorization', 'Bearer ' + authToken ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'deviceOSVersion', this.deviceOSVersion).set( 'deviceuuid', this.deviceuuid); 
+      var headers = new HttpHeaders().set( 'Content-Type', 'application/json' ).set( 'Authorization', 'Bearer ' + authToken ).set( 'appVersion', this.appVersionNumber ).set( 'deviceId', this.deviceID ).set( 'osVersion', this.deviceOSVersion ).set( 'deviceuuid', this.deviceuuid); 
     }
  
     return new Promise( async ( resolve, reject ) => {
       const apiURL = await this.storage.get( 'apiUrl' );
       if ( apiURL ) {
-        this.http.post( apiURL + URL, payload, {headers} ).subscribe( res => {resolve( res );}, async ( err ) => {
+        this.http.post( apiURL + URL, payload, {headers} ).subscribe( res => {resolve( this.adoptRotatedToken( res ) );}, async ( err ) => {
             if ( err.status === 401 ) {
               this.alertWithSingleButton( 'Error', 'OK', 'Login expired. Please login again', '' );
               await this.storage.set( 'isLoggedIn', false );
@@ -164,7 +175,7 @@ export class CrudOperationsService {
       if ( apiURL ) {
         this.http.get( apiURL + URL )
           .subscribe( res => {
-            resolve( res );
+            resolve( this.adoptRotatedToken( res ) );
           }, async ( err ) => {
             if ( err.status === 401 ) {
               this.alertWithSingleButton( 'Error', 'OK', 'Login expired. Please login again', '' );
@@ -192,7 +203,7 @@ export class CrudOperationsService {
             if ( loading ) {
               loading.dismiss();
             }
-            resolve( res );
+            resolve( this.adoptRotatedToken( res ) );
           }, async ( err ) => {
             if ( loading ) {
               loading.dismiss();

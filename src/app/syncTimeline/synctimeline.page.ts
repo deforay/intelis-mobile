@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 
@@ -6,6 +6,7 @@ import { Storage } from '@ionic/storage';
     selector: 'app-synctimeline',
     templateUrl: './synctimeline.page.html',
     styleUrls: ['./synctimeline.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SynctimelinePage implements OnInit {

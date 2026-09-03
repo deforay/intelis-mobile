@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   Storage
 } from '@ionic/storage-angular';
@@ -13,6 +13,7 @@ import {
     selector: 'app-enter-test-result',
     templateUrl: './enter-test-result.page.html',
     styleUrls: ['./enter-test-result.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EnterTestResultPage implements OnInit {

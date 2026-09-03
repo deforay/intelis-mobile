@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import {
@@ -7,14 +7,15 @@ import {
   ToastService,
 } from '../../app/service/providers';
 // import { CrudServiceService } from "../../app/service/crud/crud-service.service";
-import { MenuController, LoadingController } from '@ionic/angular';
 import { FingerprintAIO } from '@awesome-cordova-plugins/fingerprint-aio/ngx';
+import { MenuController, LoadingController } from '@ionic/angular';
 // import { Events } from "@ionic/angular";
 
 @Component( {
     selector: 'app-app-password',
     templateUrl: './app-password.page.html',
     styleUrls: ['./app-password.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 } )
 export class AppPasswordPage implements OnInit {

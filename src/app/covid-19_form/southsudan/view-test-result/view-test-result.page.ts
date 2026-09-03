@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   Storage
@@ -25,6 +26,7 @@ import { CommonService } from '../../../service/common/common.service';
     selector: 'app-view-test-result',
     templateUrl: './view-test-result.page.html',
     styleUrls: ['./view-test-result.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ViewTestResultPage implements OnInit {
@@ -109,6 +111,7 @@ export class ViewTestResultPage implements OnInit {
         "patientName": this.searchRecordForm.controls.patientName.value ? this.searchRecordForm.controls.patientName.value : '',
         "facility": this.searchRecordForm.controls.facilities.value ? this.searchRecordForm.controls.facilities.value : [],
         "sampleStatus": this.searchRecordForm.controls.sampleStatus.value ? [this.searchRecordForm.controls.sampleStatus.value] : [],
+        "markAsSent": false,
         "sampleCollectionDate": []
       }
 

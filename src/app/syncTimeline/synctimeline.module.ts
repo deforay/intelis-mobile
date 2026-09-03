@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { IonicModule } from '@ionic/angular';
+import { IonCard, IonCol, IonContent, IonGrid, IonRow } from '@ionic/angular';
 
 import { SynctimelinePageRoutingModule } from './synctimeline-routing.module';
 
@@ -16,7 +16,7 @@ import {MatTableModule} from '@angular/material/table';
     SynctimelinePageRoutingModule,
      CommonModule,
     FormsModule,
-    IonicModule,
+    IonCard, IonCol, IonContent, IonGrid, IonRow,
     CommonModule,
     ReactiveFormsModule,
     MaterialModule,

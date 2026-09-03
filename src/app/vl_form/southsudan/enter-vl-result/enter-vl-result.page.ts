@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   Storage
 } from '@ionic/storage-angular';
@@ -13,6 +13,7 @@ import {
     selector: 'app-enter-vl-result',
     templateUrl: './enter-vl-result.page.html',
     styleUrls: ['./enter-vl-result.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EnterVlResultPage implements OnInit {

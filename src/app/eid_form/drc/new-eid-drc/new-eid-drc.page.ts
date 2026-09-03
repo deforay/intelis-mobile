@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   FormControl,
@@ -63,6 +64,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
     selector: 'app-new-eid-drc',
     templateUrl: './new-eid-drc.page.html',
     styleUrls: ['./new-eid-drc.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

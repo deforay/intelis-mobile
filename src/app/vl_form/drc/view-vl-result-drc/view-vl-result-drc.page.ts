@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit
+  OnInit,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   Storage
@@ -25,6 +26,7 @@ import { CommonService } from '../../../service/common/common.service';
     selector: 'app-view-vl-result-drc',
     templateUrl: './view-vl-result-drc.page.html',
     styleUrls: ['./view-vl-result-drc.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ViewVlResultDrcPage implements OnInit {
@@ -106,9 +108,11 @@ export class ViewVlResultDrcPage implements OnInit {
       let searchJSON = {
         "sampleCode": this.searchRecordForm.controls.sampleCode.value ? [this.searchRecordForm.controls.sampleCode.value] : [],
         "patientId": this.searchRecordForm.controls.patientID.value ? [this.searchRecordForm.controls.patientID.value] : [],
+        "patientArtNo": this.searchRecordForm.controls.patientID.value ? [this.searchRecordForm.controls.patientID.value] : [],
         "patientName": this.searchRecordForm.controls.patientName.value ? this.searchRecordForm.controls.patientName.value : '',
         "facility": this.searchRecordForm.controls.facilities.value ? this.searchRecordForm.controls.facilities.value : [],
         "sampleStatus": this.searchRecordForm.controls.sampleStatus.value ? [this.searchRecordForm.controls.sampleStatus.value] : [],
+        "markAsSent": false,
         "sampleCollectionDate": []
       }
 

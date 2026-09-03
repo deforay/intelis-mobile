@@ -1,5 +1,5 @@
 import { PrivilegeService } from './../../service/privilage/privilege.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Router } from '@angular/router';
 import _ from 'lodash';
@@ -9,6 +9,7 @@ import { CommonService } from '../../service/common/common.service';
     selector: 'app-jw-pagination',
     templateUrl: './jw-pagination.component.html',
     styleUrls: ['./jw-pagination.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class JwPaginationComponent implements OnInit {

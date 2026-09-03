@@ -1,6 +1,7 @@
 import {
   Component,
-  OnInit,ChangeDetectorRef
+  OnInit, ChangeDetectorRef,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import {
   Storage
@@ -22,6 +23,7 @@ import {
     selector: 'app-view-vl',
     templateUrl: './view-vl.page.html',
     styleUrls: ['./view-vl.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ViewVlPage implements OnInit {

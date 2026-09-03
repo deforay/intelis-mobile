@@ -1,4 +1,4 @@
-import { Component, OnInit,ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, NgZone, ChangeDetectionStrategy } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { PopoverController } from '@ionic/angular';
 import { SortingPopoverComponent } from 'src/app/component/sorting-popover/sorting-popover.component';
@@ -10,6 +10,7 @@ import _ from "lodash";
     selector: 'app-view-covid',
     templateUrl: './view-covid.page.html',
     styleUrls: ['./view-covid.page.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ViewCovidPage implements OnInit {
