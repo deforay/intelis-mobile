@@ -20,7 +20,7 @@ import {
 import { Network } from '@awesome-cordova-plugins/network/ngx';
 import { interval } from 'rxjs';
 import { addIcons } from 'ionicons';
-import { close, flask, cloudOfflineOutline } from 'ionicons/icons';
+import { close, flask, cloudOfflineOutline, checkmarkCircle, alertCircle, ellipseOutline } from 'ionicons/icons';
 import { DbMigrationService } from '../app/services/db-migration.service';
 
 @Component({
@@ -75,7 +75,7 @@ export class AppComponent {
     private dbMigrationService: DbMigrationService
   ) {
     // Standalone Ionic components do not auto-load icons; register the ones used in templates.
-    addIcons({ close, flask, 'cloud-offline-outline': cloudOfflineOutline });
+    addIcons({ close, flask, 'cloud-offline-outline': cloudOfflineOutline, 'checkmark-circle': checkmarkCircle, 'alert-circle': alertCircle, 'ellipse-outline': ellipseOutline });
     this.platform.ready().then(() => {
       this.getDeviceOSVersion();
     });

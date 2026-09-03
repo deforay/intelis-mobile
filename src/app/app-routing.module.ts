@@ -24,6 +24,10 @@ const routes: Routes = [
     loadChildren: () => import('../app/covid-19_form/view-covid/view-covid.module').then( m => m.ViewCovidPageModule)
   },
   {
+    path: 'setup',
+    loadChildren: () => import('./setup/setup.module').then( m => m.SetupPageModule)
+  },
+  {
     path: 'menu',
     loadChildren: () => import('./menu/menu.module').then( m => m.MenuPageModule)
   },

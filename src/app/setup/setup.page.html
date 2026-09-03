@@ -1,0 +1,25 @@
+<ion-content class="ion-padding">
+  <div class="setup-wrapper">
+    <h1>Setting up</h1>
+    <p class="lead">Preparing the app with data from your InteLIS server. This happens once per login.</p>
+
+    <ion-list lines="none">
+      <ion-item *ngFor="let step of progress.steps" [class.failed]="step.state === 'failed'">
+        <ion-spinner *ngIf="step.state === 'running'" name="dots" slot="start"></ion-spinner>
+        <ion-icon *ngIf="step.state === 'done'" name="checkmark-circle" color="success" slot="start"></ion-icon>
+        <ion-icon *ngIf="step.state === 'failed'" name="alert-circle" color="danger" slot="start"></ion-icon>
+        <ion-icon *ngIf="step.state === 'pending'" name="ellipse-outline" color="medium" slot="start"></ion-icon>
+        <ion-label>
+          <h2>{{ step.label }}</h2>
+          <p *ngIf="step.detail">{{ step.detail }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <div class="actions" *ngIf="progress.failed">
+      <p class="hint">Some data could not be downloaded. Check your connection and try again. You can also continue and sync later from the menu.</p>
+      <ion-button expand="block" (click)="retry()">Try again</ion-button>
+      <ion-button expand="block" fill="outline" (click)="continueAnyway()">Continue anyway</ion-button>
+    </div>
+  </div>
+</ion-content>
