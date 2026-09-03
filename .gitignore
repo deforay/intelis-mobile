@@ -54,3 +54,6 @@ yarn-error.log*
 Thumbs.db
 $RECYCLE.BIN/
 UserInterfaceState.xcuserstate
+
+# Local working notes
+TODO.md
