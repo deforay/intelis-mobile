@@ -65,8 +65,8 @@ export class BootstrapService {
     this.formID = this.loginDetails.form;
     this.appVersionNumber = await this.storage.get('appVersionNumber');
 
-    const needsInit = this.formID == '3' || this.formID == '1';
-    const initTask = needsInit ? this.runInit() : Promise.resolve().then(() => this.setStep('init', 'done', 'Not needed for this form'));
+    // Reference data is needed for every form; the login page used to skip it for some.
+    const initTask = this.runInit();
     const recordsTask = this.runRecords();
     await Promise.all([initTask, recordsTask]);
 

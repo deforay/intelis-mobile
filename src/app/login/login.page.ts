@@ -292,7 +292,7 @@ export class LoginPage implements OnInit {
               // Everything after the credential check runs inside the app on the setup
               // screen, so the user sees progress instead of a spinner on the login form.
               this.bootstrap.start(this.loginDetailsArray);
-              this.LoaderService.hide();
+              await this.LoaderService.hide();
               this.router.navigate(['/setup'], { replaceUrl: true });
             }
             else if (result['status'] == '2') {

@@ -120,12 +120,14 @@ export class AppPasswordPage implements OnInit {
   async onConfirmPinNumberChange( pin ) {
     this.confirmAppPin = pin;
 
+    pin = pin == null ? '' : String( pin ); // ng-otp-input 2 can emit null while clearing
+
     const regex = /^[0-9]*$/;
 
     const isValid = regex.test( pin );
 
-    const totalId = document.getElementsByClassName( 'wrapper' )[1].id;
-    const totalIdlen = document.getElementsByClassName( 'wrapper' )[1].id.length;
+    const totalId = ( ( document.getElementsByClassName( 'wrapper' )[1] as HTMLElement ) || { id: '' } ).id;
+    const totalIdlen = ( ( document.getElementsByClassName( 'wrapper' )[1] as HTMLElement ) || { id: '' } ).id.length;
     const mainId = totalId.slice( 2, totalIdlen );
 
     const prevInputId = 'otp_' + ( pin.length - 1 ).toString() + '_' + mainId;
@@ -189,12 +191,13 @@ export class AppPasswordPage implements OnInit {
 
   async onCreatePinNumberChange( pin ) {
     this.createAppPin = pin;
+    pin = pin == null ? '' : String( pin ); // ng-otp-input 2 can emit null while clearing
     const regex = /^[0-9]*$/;
 
     const isValid = regex.test( pin );
 
-    const totalId = document.getElementsByClassName( 'wrapper' )[0].id;
-    const totalIdlen = document.getElementsByClassName( 'wrapper' )[0].id.length;
+    const totalId = ( ( document.getElementsByClassName( 'wrapper' )[0] as HTMLElement ) || { id: '' } ).id;
+    const totalIdlen = ( ( document.getElementsByClassName( 'wrapper' )[0] as HTMLElement ) || { id: '' } ).id.length;
     const mainId = totalId.slice( 2, totalIdlen );
     console.log(mainId)
 

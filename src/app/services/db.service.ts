@@ -37,10 +37,15 @@ export class DbService {
 
   /** Marker (schema fingerprint) set when the database was rebuilt at logout and nothing has been written since. */
   private static readonly CLEAN_MARKER = 'dbCleanSchema';
+  /** Set while a logout wipe is running so a login started meanwhile waits for it. */
+  private wipeInProgress: Promise<void> | null = null;
 
   async loadSQLFile(from) {
     console.log('loadSQLFile', from);
     try {
+      if (this.wipeInProgress) {
+        await this.wipeInProgress.catch(() => undefined);
+      }
       await this.platform.ready();
       const db = await this.sqlite.create({
         name: 'vlsm_mobile.db',
@@ -71,6 +76,14 @@ export class DbService {
    * Records that the next login can reuse the clean database without rebuilding.
    */
   async wipeDatabase(): Promise<void> {
+    if (this.wipeInProgress) {
+      return this.wipeInProgress;
+    }
+    this.wipeInProgress = this.doWipe().finally(() => { this.wipeInProgress = null; });
+    return this.wipeInProgress;
+  }
+
+  private async doWipe(): Promise<void> {
     await this.platform.ready();
     const data = await this.httpClient.get('assets/vlsm-sqlite3db.sql', {
       responseType: 'text',

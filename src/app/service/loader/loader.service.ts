@@ -46,8 +46,7 @@ async show(message: string = 'Please wait'){
     backdropDismiss: false
   });
   await loading.present();
-
-  const { role, data } = await loading.onDidDismiss();
+  // Resolve once shown. Waiting for dismissal here would block callers that await show().
 }
 
   /** Update the text of the loader currently on screen, if any. */
@@ -59,17 +58,12 @@ async show(message: string = 'Please wait'){
   }
 
 async hide(){
-  const element = await this.loadingController.getTop();
-  if (element && element.dismiss) {
-    element.dismiss();
+  // Loaders can stack (the HTTP layer shows its own during requests); dismiss every one.
+  for (let i = 0; i < 5; i++) {
+    const element = await this.loadingController.getTop();
+    if (!element || !element.dismiss) { break; }
+    await element.dismiss();
   }
-  const loading = await this.loadingController.create({
-    message: 'Please wait',
-    mode:"ios",
-    spinner: 'dots',
-    backdropDismiss: false
-  });
-  await loading.dismiss();
 }
   async presentLoadingWithOptions() {
     const element = await this.loadingController.getTop();

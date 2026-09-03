@@ -173,8 +173,9 @@ export class AppComponent {
 
   async initializeApp() {
     console.log('initialize');
-    await this.createUser();
+    // Storage must exist before anything reads or writes it, including the device id below.
     await this.storage.create();
+    await this.createUser();
     this.platform.ready().then(async () => {
       await this.statusBar.styleLightContent();
       await this.splashScreen.hide();
@@ -334,12 +335,18 @@ export class AppComponent {
     });
   }
   private async getPersistedDeviceId(): Promise<string> {
-    let id = await this.storage.get('deviceId');
-    if (!id) {
-      id = uuidv4();
-      await this.storage.set('deviceId', id);
+    try {
+      let id = await this.storage.get('deviceId');
+      if (!id) {
+        id = uuidv4();
+        await this.storage.set('deviceId', id);
+      }
+      return id;
+    } catch (e) {
+      // Storage not ready yet: fall back to a per-launch id rather than aborting startup.
+      console.warn('device id fallback', e);
+      return uuidv4();
     }
-    return id;
   }
 
   async createUser() {
