@@ -214,9 +214,6 @@ export class LoginPage implements OnInit {
   }
 
   async login() {
-    this.LoaderService.show('Signing in...');
-    await this.db.loadSQLFile('login');
-    this.networkType = this.network.type;
 
     // if (this.network.type == 'none' || this.network.type == 'unknown') {
 
@@ -224,15 +221,18 @@ export class LoginPage implements OnInit {
 
     // } else {
 
-    this.userNameFormControl.setValue(this.userNameFormControl.value.trim());
-    this.pswdFormControl.setValue(this.pswdFormControl.value.trim());
+    // Validate before doing any work, so a typo does not cost a database rebuild.
+    this.userNameFormControl.setValue((this.userNameFormControl.value || '').trim());
+    this.pswdFormControl.setValue((this.pswdFormControl.value || '').trim());
     this.submitted = true;
-    // this.LoaderService.hide();
     if (this.userNameFormControl.invalid || this.pswdFormControl.invalid || this.serverHostFormControl.invalid) {
-      // this.LoaderService.show();
       this.alertService.alertWithSingleButton('Alert', 'OK', "Invalid Credentials", '');
-      this.LoaderService.hide();
-    } else {
+      return;
+    }
+    this.LoaderService.show('Signing in...');
+    await this.db.loadSQLFile('login');
+    this.networkType = this.network.type;
+    {
       let apiUrl = '';
       if (this.serverHostFormControl.value.indexOf('http://') == 0 || this.serverHostFormControl.value.indexOf('https://') == 0) {
         apiUrl = this.serverHostFormControl.value;
