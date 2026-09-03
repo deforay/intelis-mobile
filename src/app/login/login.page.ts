@@ -161,17 +161,43 @@ export class LoginPage implements OnInit {
       });
 
       // Prefer the health endpoint. Older InteLIS servers only have version.php, so fall back to it.
+      // Health answers 200 {status:"ok"} normally and 503 {status:"unavailable"} when the
+      // server's database is down; it may also carry the minimum app version the server accepts.
       this.http.get(URL + '/api/v1.1/health').subscribe((health: any) => {
-        if (health && (health.status === 'ok' || health.version)) {
-          resolve(true);
-        } else {
+        if (!health || health.status !== 'ok') {
           checkLegacyVersionEndpoint();
+          return;
         }
-      }, () => checkLegacyVersionEndpoint());
+        if (health.minAppVersion && this.isVersionBelow(this.appVersionNumber, health.minAppVersion)) {
+          this.CrudService.alertWithSingleButton('Update required', 'OK',
+            'This version of the app (' + this.appVersionNumber + ') is no longer supported by your server. Please update the app from Google Play.', '');
+          reject('app-version-unsupported');
+          return;
+        }
+        resolve(true);
+      }, (err) => {
+        if (err && err.status === 503 && err.error && err.error.status === 'unavailable') {
+          this.CrudService.alertWithSingleButton('Alert', 'OK', 'The InteLIS server is reachable but its database is unavailable. Please try again later.', '');
+          reject(err);
+          return;
+        }
+        checkLegacyVersionEndpoint();
+      });
 
       // }
     });
   }
+  /** True when `current` is an older dotted version than `minimum` (e.g. "1.4.2" < "1.5.0"). */
+  private isVersionBelow(current: string, minimum: string): boolean {
+    const parse = (v: string) => String(v || '').replace(/^v/i, '').split('.').map(p => parseInt(p, 10) || 0);
+    const a = parse(current), b = parse(minimum);
+    for (let i = 0; i < Math.max(a.length, b.length); i++) {
+      const x = a[i] || 0, y = b[i] || 0;
+      if (x !== y) { return x < y; }
+    }
+    return false;
+  }
+
   async login() { 
     this.LoaderService.show();
     await this.db.loadSQLFile('login');
