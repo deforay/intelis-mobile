@@ -56,7 +56,8 @@ export class CrudOperationsService {
   private withServerMessage( err: any ) {
     const body = err && err.error;
     if ( body && typeof body === 'object' ) {
-      const m = body.message || body.error || ( body.error && body.error.message );
+      // v2 envelope: error is an object with code and message. v1.1: message or a string error.
+      const m = ( body.error && typeof body.error === 'object' && body.error.message ) || body.message || ( typeof body.error === 'string' ? body.error : null );
       if ( typeof m === 'string' ) { err.serverMessage = m; }
     }
     return err;

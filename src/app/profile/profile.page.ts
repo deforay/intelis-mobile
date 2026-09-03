@@ -1,9 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import {FormControl,FormGroup} from '@angular/forms';
+import {FormControl,FormGroup,Validators} from '@angular/forms';
 import {SyncTestRequestsService,
   AlertService,
 } from '../../app/service/providers';
 import {Storage} from '@ionic/storage-angular';
+import { CrudOperationsService } from '../service/crud/crud-operations.service';
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.page.html',
@@ -14,16 +15,19 @@ import {Storage} from '@ionic/storage-angular';
 export class ProfilePage implements OnInit {
 
   profileForm = new FormGroup({
-    name: new FormControl('', []), 
+    name: new FormControl('', [Validators.required]),
     role: new FormControl('', []),
-    email: new FormControl('', []),
+    email: new FormControl('', [Validators.email]),
     phoneNo: new FormControl('', []),
   })
   testingLabsListArray:any=[];
   isDisabled: boolean = false;
+  isSaving = false;
+  private loginDetails: any;
 
   constructor(private storage: Storage,public SyncReq: SyncTestRequestsService,
     public alertService: AlertService,
+    private CrudService: CrudOperationsService,
     ) {
     console.log(this.isDisabled,'boolean = false;');
    }
@@ -44,6 +48,46 @@ export class ProfilePage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  /**
+   * Save name, email and phone through the v2 profile endpoint (InteLIS 5.7.51+).
+   * The user's own token may edit only its own profile; role and login id are not sent.
+   */
+  async saveProfile() {
+    if (this.profileForm.invalid || !this.loginDetails) {
+      this.alertService.alertWithSingleButton('Alert', 'OK', 'Enter a name, and a valid email address if you add one.', '');
+      return;
+    }
+    const v = this.profileForm.value;
+    const body = {
+      profile: {
+        userId: String(this.loginDetails.user.user_id),
+        userName: (v.name || '').trim(),
+        email: (v.email || '').trim(),
+        phoneNo: (v.phoneNo || '').trim(),
+      },
+    };
+    this.isSaving = true;
+    try {
+      const res: any = await this.CrudService.postDataWithLoader('/api/v2/user/profile', body, this.loginDetails.api_token, false);
+      if (res && res.status === 'success') {
+        this.loginDetails.user.user_name = body.profile.userName;
+        this.loginDetails.user.email = body.profile.email;
+        this.loginDetails.user.phone_number = body.profile.phoneNo;
+        await this.storage.set('loginDetails', this.loginDetails);
+        this.alertService.alertWithSingleButton('Profile', 'OK', 'Profile saved.', '');
+      } else {
+        this.alertService.alertWithSingleButton('Alert', 'OK', (res && res.error && res.error.message) || 'The server did not accept the profile.', '');
+      }
+    } catch (err: any) {
+      const msg = (err && err.serverMessage)
+        || (err && err.status === 404 ? 'This server does not support profile updates yet. Ask your administrator to update InteLIS.'
+                                      : 'Could not save the profile. Check your connection and try again.');
+      this.alertService.alertWithSingleButton('Alert', 'OK', msg, '');
+    } finally {
+      this.isSaving = false;
+    }
   }
 
   syncall(param){

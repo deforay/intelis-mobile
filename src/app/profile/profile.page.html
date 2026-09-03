@@ -15,7 +15,7 @@
           <mat-form-field appearance="fill">
             <mat-label>
             Name</mat-label>
-            <input matInput formControlName="name" readonly>
+            <input matInput formControlName="name">
             <mat-icon matSuffix class="matIcons">person</mat-icon>
           </mat-form-field>
 
@@ -32,25 +32,31 @@
           }
 
 
-          @if (profileForm.controls.email.value) {
-            <mat-form-field appearance="fill">
-              <mat-label>
-              Email</mat-label>
-              <input matInput formControlName="email" readonly>
-              <mat-icon matSuffix class="matIcons">email</mat-icon>
-            </mat-form-field>
-          }
+          <mat-form-field appearance="fill">
+            <mat-label>
+            Email</mat-label>
+            <input matInput formControlName="email" type="email">
+            <mat-icon matSuffix class="matIcons">email</mat-icon>
+          </mat-form-field>
 
 
-          @if (profileForm.controls.phoneNo.value) {
-            <mat-form-field appearance="fill">
-              <mat-label>
-              Phone no</mat-label>
-              <input matInput formControlName="phoneNo" readonly>
-              <mat-icon matSuffix class="matIcons">smartphone</mat-icon>
-            </mat-form-field>
-          }
+          <mat-form-field appearance="fill">
+            <mat-label>
+            Phone no</mat-label>
+            <input matInput formControlName="phoneNo" type="tel">
+            <mat-icon matSuffix class="matIcons">smartphone</mat-icon>
+          </mat-form-field>
 
+          <ion-row class="loginRow">
+            <ion-col>
+            </ion-col>
+            <button ion-col mat-raised-button class="form-btn1" color="primary" (click)="saveProfile()" [disabled]="isSaving || profileForm.invalid">
+              <mat-icon>save</mat-icon>
+              Save Profile
+            </button>
+            <ion-col>
+            </ion-col>
+          </ion-row>
           <ion-row class="loginRow">
             <ion-col>
             </ion-col>
