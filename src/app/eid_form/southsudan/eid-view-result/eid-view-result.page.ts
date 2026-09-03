@@ -110,6 +110,7 @@ export class EidViewResultPage implements OnInit {
         "patientName": this.searchRecordForm.controls.patientName.value ? this.searchRecordForm.controls.patientName.value : '',
         "facility": this.searchRecordForm.controls.facilities.value ? this.searchRecordForm.controls.facilities.value : [],
         "sampleStatus": this.searchRecordForm.controls.sampleStatus.value ? [this.searchRecordForm.controls.sampleStatus.value] : [],
+        "markAsSent": false,
         "sampleCollectionDate": []
       };
   
