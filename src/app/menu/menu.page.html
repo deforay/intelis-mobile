@@ -38,97 +38,75 @@
         <p>This app cannot create or view test requests for your InteLIS server yet. Please reach out to Technical Support.</p>
       </div>
     }
-    <ion-list lines="full">
-      @for (p of appPages; track p; let i = $index) {
-        @if (p.access) {
-          <ion-item
-            [routerDirection]="'root'"
-            (click)="toggleLevel1('idx'+i)"
-            [ngClass]="{active: isLevel1Shown('idx'+i)}"
-            >
-            <ion-label>
-              @if (p.name == 'COVID-19') {
-                <mat-icon
-                  class="matIcons firstLevelLeftIcon"
-                  >
-                  coronavirus
-                </mat-icon>
+    <div class="home">
+      <div class="homeGreeting">
+        <h1>Hello{{userName ? ', ' + userName : ''}}</h1>
+        <p>{{isTestingUser == 'yes' ? 'Testing lab' : 'Collection site'}}</p>
+      </div>
+
+      <div class="syncCard">
+        <div class="syncInfo">
+          <mat-icon [class.offline]="networkType == 'none'">{{networkType == 'none' ? 'cloud_off' : 'cloud_done'}}</mat-icon>
+          <div>
+            <strong>{{unsyncedTotal > 0 ? unsyncedTotal + ' waiting to sync' : 'Everything is synced'}}</strong>
+            <span (click)="showSyncTimeline()">{{lastSyncDateTime ? 'Last synced ' + (lastSyncDateTime | date :'d MMM, h:mm a') : 'Not synced yet'}}</span>
+          </div>
+        </div>
+        <button class="syncButton" [disabled]="networkType == 'none'" (click)="syncNow()">
+          <mat-icon>sync</mat-icon>Sync now
+        </button>
+      </div>
+
+      @for (p of visibleModules; track p.name) {
+        <div class="moduleCard" [class.compact]="compactModules" [class.open]="isModuleOpen(p)">
+          <div class="moduleHeader" (click)="toggleModule(p)">
+            <div class="moduleIcon">
+              @if (p.name == 'VL') { <ion-icon name="flask"></ion-icon> }
+              @if (p.name == 'EID') { <mat-icon>child_care</mat-icon> }
+              @if (p.name == 'COVID-19') { <mat-icon>coronavirus</mat-icon> }
+              @if (p.name != 'VL' && p.name != 'EID' && p.name != 'COVID-19') { <mat-icon>science</mat-icon> }
+            </div>
+            <div class="moduleTitle">
+              <h2>{{p.name == 'VL' ? 'Viral Load' : p.name}}</h2>
+              @if (compactModules && counts[p.name]) {
+                <span>{{counts[p.name].awaiting}} awaiting · {{counts[p.name].unsynced}} not synced</span>
               }
-              @if (p.name == 'EID') {
-                <mat-icon class="matIcons firstLevelLeftIcon"
-                  >child_care</mat-icon
-                  >
-                }
-                @if (p.name=='VL') {
-                  <ion-icon
-                    class="matIcons firstLevelLeftIcon vlIcon"
-                    name="flask"
-                  ></ion-icon>
-                }
-                <span class="level1Span">{{p.name}}</span>
-                <mat-icon class="matIcons firstLevelRightIcon">
-                  {{isLevel1Shown('idx'+i) ? 'expand_more' : 'expand_less'}}
-                </mat-icon>
-                @if (isLevel1Shown('idx'+i)) {
-                  <ul class="level1">
-                    @for (i1 of p.item; track i1; let j = $index) {
-                      @if (i1.access) {
-                        <li
-                          (click)="toggleLevel2('idx'+i+'idx'+j)"
-                          [ngClass]="{active: isLevel2Shown('idx'+i+'idx'+j)}"
-                          >
-                          <mat-icon class="matIcons secondLevelIcon">
-                            {{isLevel2Shown('idx'+i+'idx'+j) ? 'expand_more' :
-                            'expand_less'}}
-                          </mat-icon>
-                          <span class="level2Span">{{i1.name}}</span>
-                          @if (isLevel2Shown('idx'+i+'idx'+j)) {
-                            <ul class="level2">
-                              @for (i2 of i1.item; track i2; let k = $index) {
-                                @if (i2.access) {
-                                  <div>
-                                    @if ((i2.id!=1 || (i2.id==1 && isTestingUser=='yes'))) {
-                                      <li
-                                        (click)="toggleLevel3('idx'+i+'idx'+j+'idx'+k,i2)"
-                                        [ngClass]="{active: isLevel3Shown('idx'+i+'idx'+j+'idx'+k)}"
-                                        >
-                                        <mat-icon matPrefix class="matIcons thirdLevelIcon"
-                                          >keyboard_arrow_right</mat-icon
-                                          >
-                                          <span class="level3Span">{{i2.name}}</span>
-                                        </li>
-                                      }
-                                    </div>
-                                  }
-                                }
-                              </ul>
-                            }
-                          </li>
-                        }
-                      }
-                    </ul>
-                  }
-                </ion-label>
-              </ion-item>
+            </div>
+            @if (compactModules) {
+              @if (newRequestAction(p); as add) {
+                <button class="quickNew" (click)="$event.stopPropagation(); openAction(add)">
+                  <mat-icon>add</mat-icon>New
+                </button>
+              }
+              <mat-icon class="chevron">{{isModuleOpen(p) ? 'expand_less' : 'expand_more'}}</mat-icon>
             }
+          </div>
+          @if (isModuleOpen(p)) {
+            @if (counts[p.name]) {
+              <div class="moduleStats">
+                <div><strong>{{counts[p.name].total}}</strong><span>Requests</span></div>
+                <div class="awaiting"><strong>{{counts[p.name].awaiting}}</strong><span>Awaiting result</span></div>
+                <div class="unsynced"><strong>{{counts[p.name].unsynced}}</strong><span>Not synced</span></div>
+              </div>
+            }
+            <div class="actionGrid">
+              @for (a of actionsOf(p); track a.name) {
+                <button class="actionTile" [class.primaryAction]="a.name == 'Add New Request'" (click)="openAction(a)">
+                  <mat-icon>{{actionIcon(a)}}</mat-icon>
+                  <span>{{actionLabel(a)}}</span>
+                </button>
+              }
+            </div>
           }
-          <ion-item routerLink="/profile">
-            <ion-label>
-              <mat-icon matPrefix class="matIcons">portrait</mat-icon
-                ><span class="singleMenuSpan">Profile</span>
-              </ion-label>
-            </ion-item>
-          </ion-list>
+        </div>
+      }
+
+      <button class="profileRow" (click)="openAction({url: '/profile'})">
+        <mat-icon>account_circle</mat-icon>
+        <span>Profile</span>
+        <mat-icon class="chevron">chevron_right</mat-icon>
+      </button>
+    </div>
         </ion-content>
 
-        @if (lastSyncDateTime) {
-          <ion-footer class="ion-no-border" (click)="showSyncTimeline()">
-            <ion-toolbar class="footerToolbar">
-              <ion-title class="footerTitle">
-                <p class="syncDate">
-                  Last synced on {{lastSyncDateTime | date :'d MMM y h:mm a'}}
-                </p></ion-title
-                >
-              </ion-toolbar>
-            </ion-footer>
-          }
+

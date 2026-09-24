@@ -159,3 +159,160 @@
   color: var(--ion-color-primary);
   font-weight: 600;
 }
+
+/* ---- Home ---- */
+.home {
+  padding: 16px 16px 32px;
+  background: var(--app-bg);
+  min-height: 100%;
+}
+.homeGreeting {
+  margin: 4px 4px 16px;
+  h1 { font-size: 22px; font-weight: 600; color: var(--app-text); margin: 0; }
+  p { margin: 2px 0 0; font-size: 14px; color: var(--app-text-muted); }
+}
+.syncCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: var(--app-surface);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
+}
+.syncInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  mat-icon { color: var(--app-success); flex-shrink: 0; }
+  mat-icon.offline { color: var(--app-text-muted); }
+  div { display: flex; flex-direction: column; min-width: 0; }
+  strong { font-size: 15px; font-weight: 600; color: var(--app-text); }
+  span { font-size: 13px; color: var(--app-text-muted); }
+}
+.syncButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--app-primary);
+  color: #fff;
+  font-weight: 600;
+  font-size: 14px;
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+.syncButton[disabled] { background: var(--app-border); color: var(--app-text-muted); }
+.moduleCard {
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: var(--app-surface);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
+}
+.moduleHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  h2 { margin: 0; font-size: 17px; font-weight: 600; color: var(--app-text); }
+}
+.moduleIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--app-primary-soft);
+  color: var(--app-primary);
+  font-size: 22px;
+  ion-icon, mat-icon { color: var(--app-primary) !important; font-size: 22px; }
+}
+.moduleStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 14px 0;
+  div {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--app-neutral-soft);
+  }
+  strong { font-size: 20px; font-weight: 600; color: var(--app-text); }
+  span { font-size: 12px; color: var(--app-text-muted); }
+  .awaiting { background: var(--app-warning-soft); strong { color: var(--app-warning); } }
+  .unsynced { background: var(--app-primary-soft); strong { color: var(--app-primary); } }
+}
+.actionGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.actionTile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  mat-icon { color: var(--app-primary); flex-shrink: 0; }
+}
+.actionTile.primaryAction {
+  background: var(--app-primary);
+  border-color: var(--app-primary);
+  color: #fff;
+  mat-icon { color: #fff; }
+}
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  background: var(--app-surface);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
+  color: var(--app-text);
+  font-size: 15px;
+  font-weight: 600;
+  mat-icon { color: var(--app-primary); }
+  .chevron { margin-left: auto; color: var(--app-text-muted); }
+}
+
+.moduleTitle {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  span { font-size: 13px; color: var(--app-text-muted); }
+}
+.moduleCard.compact { padding: 12px 14px; margin-bottom: 10px; }
+.moduleCard.compact .moduleHeader { cursor: pointer; }
+.moduleCard.compact.open .moduleStats { margin-top: 12px; }
+.quickNew {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 10px;
+  border: 1px solid var(--app-primary);
+  border-radius: 8px;
+  background: var(--app-surface);
+  color: var(--app-primary);
+  font-weight: 600;
+  font-size: 13px;
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+.moduleHeader .chevron { color: var(--app-text-muted); }

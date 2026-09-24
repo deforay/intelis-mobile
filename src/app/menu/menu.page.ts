@@ -1,4 +1,5 @@
 import { AppUpdateService, PLAY_STORE_URL } from '../service/app-update/app-update.service';
+import { SyncTestRequestsService } from '../service/syncTestRequests/sync-test-requests.service';
 import { SynctimelinePage } from './../syncTimeline/synctimeline.page';
 import {
   Component,
@@ -53,6 +54,7 @@ export class MenuPage implements OnInit {
   appVersionNumber: any;
   authToken: any;
   formId: any;
+  userName = '';
   // The country forms this app has: South Sudan only for now.
   readonly supportedFormIds = [1];
 
@@ -68,6 +70,7 @@ export class MenuPage implements OnInit {
 
   constructor(private multilevelService: MultilevelService,
     private appUpdate: AppUpdateService,
+    private syncRequests: SyncTestRequestsService,
     private router: Router,
     public alertService: AlertService,
     private storage: Storage,
@@ -84,6 +87,7 @@ export class MenuPage implements OnInit {
 
   async ionViewWillEnter() {
     this.checkForNewerVersion();
+    this.loadCounts();
 
     console.log("Menu hit");
     await this.dbMigrationService.startMigration('menu');
@@ -117,6 +121,7 @@ export class MenuPage implements OnInit {
     await this.storage.get('loginDetails').then(async (loginDetails) => {
       if (loginDetails) {
         this.isTestingUser = loginDetails['user'].testing_user;
+        this.userName = loginDetails['user'].user_name;
         this.userID = loginDetails['user'].user_id;
         this.appMenuName = loginDetails.appMenuName;
         this.authToken = loginDetails['api_token'];
@@ -142,11 +147,89 @@ export class MenuPage implements OnInit {
     })
 
     this.events.subscribe('syncDateTimeChanged', (result: any) => {
+      this.loadCounts();
       if (result) {
         this.lastSyncDateTime = result;
       }
     })
 
+  }
+
+  // Local request counts per test, for the home screen.
+  counts: { [module: string]: { total: number; awaiting: number; unsynced: number } } = {};
+  private static readonly TABLES = { 'VL': 'vl_request_form', 'EID': 'eid_form', 'COVID-19': 'form_covid19' };
+
+  async loadCounts() {
+    const sqlite = (window as any).sqlitePlugin;
+    if (!sqlite) {
+      return;
+    }
+    const loginDetails = await this.storage.get('loginDetails');
+    const userId = loginDetails && loginDetails.user ? loginDetails.user.user_id : null;
+    const db = sqlite.openDatabase({ name: 'vlsm_mobile.db', location: 'default' });
+    const counts = {};
+    for (const [module, table] of Object.entries(MenuPage.TABLES)) {
+      counts[module] = await new Promise(resolve => db.executeSql(
+        `SELECT COUNT(*) AS total,
+                SUM(CASE WHEN IFNULL(is_sample_rejected, '') != 'yes' AND IFNULL(TRIM(result), '') = '' THEN 1 ELSE 0 END) AS awaiting,
+                SUM(CASE WHEN is_synced = 'false' THEN 1 ELSE 0 END) AS unsynced
+           FROM ${table} WHERE user_id = ?`, [userId],
+        rs => { const r = rs.rows.item(0); resolve({ total: r.total || 0, awaiting: r.awaiting || 0, unsynced: r.unsynced || 0 }); },
+        () => resolve({ total: 0, awaiting: 0, unsynced: 0 })));
+    }
+    this.counts = counts;
+  }
+
+  get unsyncedTotal(): number {
+    return Object.values(this.counts).reduce((sum, c) => sum + (c.unsynced || 0), 0);
+  }
+
+  // With more than two tests each shows as one row, opened one at a time, so the home screen
+  // stays short however many tests a server turns on.
+  openModule: string | null = null;
+
+  get visibleModules() {
+    return (this.appPages || []).filter(p => p.access);
+  }
+
+  get compactModules(): boolean {
+    return this.visibleModules.length > 2;
+  }
+
+  isModuleOpen(module): boolean {
+    return !this.compactModules || this.openModule === module.name;
+  }
+
+  toggleModule(module) {
+    if (this.compactModules) {
+      this.openModule = this.openModule === module.name ? null : module.name;
+    }
+  }
+
+  newRequestAction(module) {
+    return this.actionsOf(module).find(a => a.name == 'Add New Request');
+  }
+
+  // The module's actions the user may take, flattened from the menu tree.
+  actionsOf(module) {
+    return (module.item || []).filter(group => group.access)
+      .flatMap(group => (group.item || []).filter(action => action.access && (action.id != 1 || this.isTestingUser == 'yes')));
+  }
+
+  actionIcon(action): string {
+    return { 'Add New Request': 'note_add', 'View Test Request': 'list_alt', 'Enter Test Result': 'edit_note', 'View Test Result': 'fact_check' }[action.name] || 'arrow_forward';
+  }
+
+  actionLabel(action): string {
+    return { 'Add New Request': 'New request', 'View Test Request': 'Requests', 'Enter Test Result': 'Enter results', 'View Test Result': 'Results' }[action.name] || action.name;
+  }
+
+  openAction(action) {
+    this.router.navigate([action.url], { replaceUrl: true });
+  }
+
+  syncNow() {
+    this.syncRequests.syncReceiveTestRequest('menu');
   }
 
   async checkForNewerVersion() {
