@@ -232,7 +232,7 @@ export class MenuPage implements OnInit {
   }
 
   actionLabel(action): string {
-    return { 'Add New Request': 'New request', 'View Test Request': 'Requests', 'Enter Test Result': 'Enter results', 'View Test Result': 'Results' }[action.name] || action.name;
+    return { 'Add New Request': 'New Request', 'View Test Request': 'Requests', 'Enter Test Result': 'Enter Results', 'View Test Result': 'Results' }[action.name] || action.name;
   }
 
   openAction(action) {

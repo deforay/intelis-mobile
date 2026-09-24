@@ -44,7 +44,7 @@ ion-title,
 ion-button // ion-toast
 
   {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif !important;
   font-size: 12px !important;
 }
 
@@ -55,7 +55,7 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
   min-height: 100vh;
   background: #e2e2e2;
 }
@@ -537,4 +537,29 @@ mat-divider {
   font-weight: 600;
   font-size: 18px;
   letter-spacing: 0;
+}
+
+/* One typeface, bundled with the app so it works offline: Inter for all text, and for
+   numbers with even widths so counts and dates line up. */
+:root {
+  --ion-font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --mat-sys-body-large-font: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --mdc-typography-font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
+}
+body, .mat-typography, .mat-mdc-form-field, .mat-mdc-select, .mat-mdc-option, .mdc-button,
+.mat-mdc-card, .mat-expansion-panel, .mat-mdc-input-element {
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  font-feature-settings: 'tnum' 1;
+}
+/* Material's prebuilt theme sets Roboto on its fields, labels, menus and buttons. */
+.mat-mdc-form-field *:not(mat-icon):not(.mat-icon):not(.material-icons),
+.mat-mdc-select-panel *:not(mat-icon):not(.mat-icon):not(.material-icons),
+.mat-mdc-autocomplete-panel *:not(mat-icon):not(.mat-icon):not(.material-icons),
+.mdc-button, .mat-mdc-button, .mat-mdc-raised-button, .mat-datepicker-content *:not(mat-icon):not(.material-icons),
+.alert-wrapper, .mat-mdc-checkbox label, .mat-mdc-radio-button label {
+  font-family: 'Inter Variable', 'Inter', system-ui, sans-serif !important;
+}
+.mat-mdc-form-field .mdc-floating-label, .mat-mdc-form-field input, .mat-mdc-form-field textarea,
+.mat-mdc-select-value, .mat-mdc-option, .mdc-button, .mat-mdc-button {
+  letter-spacing: normal !important;
 }

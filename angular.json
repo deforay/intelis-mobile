@@ -32,6 +32,8 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "./node_modules/@fontsource-variable/inter/index.css",
+              "./node_modules/material-icons/iconfont/filled.css",
               "src/theme/variables.scss",
               "src/global.scss"
             ],

@@ -514,7 +514,7 @@ export class AddNewRequestPage implements OnInit {
 
   // The header: what the user is doing with which test.
   formTitle(test: string): string {
-    return { 'add': 'New ' + test + ' request', 'edit': 'Edit ' + test + ' request', 'view': test + ' request', 'result edit': 'Enter ' + test + ' result' }[this.mode] || test + ' request';
+    return { 'add': 'New ' + test + ' Request', 'edit': 'Edit ' + test + ' Request', 'view': test + ' Request', 'result edit': 'Enter ' + test + ' Result' }[this.mode] || test + ' Request';
   }
 
   ionViewWillLeave() {
