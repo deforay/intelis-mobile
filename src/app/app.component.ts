@@ -582,6 +582,25 @@ export class AppComponent {
     return this.showLevel2 === idx;
   }
   
+  // The side menu lists each test's actions directly, as the home screen does.
+  menuActions(module) {
+    return (module.item || []).filter(group => group.access)
+      .flatMap(group => (group.item || []).filter(action => action.access && (action.id != 1 || this.isTestingUser == 'yes')));
+  }
+
+  menuActionIcon(action): string {
+    return { 'Add New Request': 'note_add', 'View Test Request': 'list_alt', 'Enter Test Result': 'edit_note', 'View Test Result': 'fact_check' }[action.name] || 'arrow_forward';
+  }
+
+  menuActionLabel(action): string {
+    return { 'Add New Request': 'New Request', 'View Test Request': 'Requests', 'Enter Test Result': 'Enter Results', 'View Test Result': 'Results' }[action.name] || action.name;
+  }
+
+  menuNavigate(url: string) {
+    this.menu.close();
+    this.router.navigate([url], { replaceUrl: true });
+  }
+
   toggleLevel3(idx: string, item) {
     if (this.isLevel3Shown(idx)) {
       this.showLevel3 = null;

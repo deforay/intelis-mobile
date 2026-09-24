@@ -56,6 +56,11 @@ export class MenuPage implements OnInit {
   authToken: any;
   formId: any;
   userName = '';
+
+  // Servers still send the old product name; the app is InteLIS Mobile.
+  get headerTitle(): string {
+    return !this.appMenuName || /^vlsm$/i.test(String(this.appMenuName).trim()) ? 'InteLIS Mobile' : this.appMenuName;
+  }
   // The country forms this app has: South Sudan only for now.
   readonly supportedFormIds = [1];
 
@@ -195,7 +200,7 @@ export class MenuPage implements OnInit {
     return Object.values(this.counts).reduce((sum, c) => sum + (c.unsynced || 0), 0);
   }
 
-  // With more than two tests each shows as one row, opened one at a time, so the home screen
+  // With more than one test each shows as one row, opened one at a time, so the home screen
   // stays short however many tests a server turns on.
   openModule: string | null = null;
 
@@ -204,7 +209,7 @@ export class MenuPage implements OnInit {
   }
 
   get compactModules(): boolean {
-    return this.visibleModules.length > 2;
+    return this.visibleModules.length > 1;
   }
 
   isModuleOpen(module): boolean {

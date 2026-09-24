@@ -13,3 +13,29 @@ ion-row{
     background-color: #e1e1e1;
   }
 }
+
+.syncTimeline { --background: var(--app-bg); }
+.syncEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 48px 24px;
+  text-align: center;
+  color: var(--app-text-muted);
+  mat-icon { font-size: 40px; width: 40px; height: 40px; color: var(--app-primary); }
+  strong { color: var(--app-text); font-size: 16px; font-weight: 600; }
+}
+.syncList { display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+.syncEntry {
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--app-surface);
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
+  mat-icon { color: var(--app-primary); flex-shrink: 0; }
+  div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  strong { font-size: 14px; font-weight: 600; color: var(--app-text); }
+  span { font-size: 13px; color: var(--app-text-muted); word-break: break-word; }
+}

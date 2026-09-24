@@ -116,7 +116,7 @@ export class EidTestResultPage implements OnInit {
     this.filteredUserTestPendingResultArray = filteredArray;
     if (this.filteredUserTestPendingResultArray.length === 0) {
       this.isNoRecord = true;
-      this.isNoRecordText = "No pending test results found";
+      this.isNoRecordText = "No requests waiting for a result";
     } else {
       this.isNoRecord = false;
     }

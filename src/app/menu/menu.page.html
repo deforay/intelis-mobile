@@ -4,17 +4,7 @@
   </ion-menu-button>
 <!-- </button> -->
 <!-- *ngIf="(networkType != none || networkType != 'unknown')"  -->
-@if (networkType != 'none') {
-  <mat-icon suffix class="matIcons onlineIcon"
-    >cloud_done</mat-icon
-    >
-  }
-  @if (networkType == 'none') {
-    <mat-icon suffix class="matIcons offlineIcon"
-      >cloud_off</mat-icon
-      >
-    }
-    <p class="mainHeaderName" text-wrap>{{appMenuName}}</p>
+<p class="mainHeaderName" text-wrap>{{headerTitle}}</p>
   </mat-toolbar>
 
   <ion-content>

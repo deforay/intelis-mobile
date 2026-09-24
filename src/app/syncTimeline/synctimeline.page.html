@@ -1,37 +1,27 @@
 <mat-toolbar>
   <mat-icon matSuffix class="menuIcon" (click)="back()">arrow_back_ios</mat-icon>
-  <p class="mainHeaderName" style="text-transform: capitalize; font-size: 16px !important" text-wrap>
+  <p class="mainHeaderName" text-wrap>
     Sync Timeline
   </p>
 </mat-toolbar>
-<ion-content style="--background: #f9f9f9">
-  <ion-card style="border: 1px dashed #3b8cbb">
-    <ion-grid style="padding: 0px">
-      <ion-row style="border-bottom: 1px dashed #3b8cbb">
-        <ion-col class="table" size="2" style="text-align: center">
-          <h3 style="font-weight: 600; margin: 0px">S.no</h3>
-        </ion-col>
-        <ion-col class="table" size="4" style="text-align: center">
-          <h3 style="font-weight: 600; margin: 0px">Synced On</h3>
-        </ion-col>
-        <ion-col class="table" size="6" style="text-align: center">
-          <h3 style="font-weight: 600; margin: 0px">Synced Data</h3>
-        </ion-col>
-      </ion-row>
-      <!-- <ion-row *ngFor="let item of syncTimelineArray;let index = index;" style="border-bottom:1px dashed #3b8cbb;"> -->
-      @for (item of syncTimelineArray | slice:0:30; track item; let i = $index) {
-        <ion-row>
-          <ion-col class="table" size="2" style="text-align: center">
-            <p>{{i+1}}</p>
-          </ion-col>
-          <ion-col class="table" size="4">
-            <p>{{item['syncedOn']| date:'medium' }}</p>
-          </ion-col>
-          <ion-col class="table" size="6">
-            <p>{{item['syncMessage'] }}</p>
-          </ion-col>
-        </ion-row>
+<ion-content class="syncTimeline">
+  @if (!syncTimelineArray || syncTimelineArray.length == 0) {
+    <div class="syncEmpty">
+      <mat-icon>history</mat-icon>
+      <strong>No syncs yet</strong>
+      <span>Each sync with the server shows here, newest first.</span>
+    </div>
+  } @else {
+    <div class="syncList">
+      @for (item of syncTimelineArray | slice:0:30; track $index) {
+        <div class="syncEntry">
+          <mat-icon>sync</mat-icon>
+          <div>
+            <strong>{{item['syncedOn'] | date:'d MMM y, h:mm a'}}</strong>
+            <span>{{item['syncMessage']}}</span>
+          </div>
+        </div>
       }
-    </ion-grid>
-  </ion-card>
+    </div>
+  }
 </ion-content>

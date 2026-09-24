@@ -47,48 +47,27 @@
             <mat-icon matSuffix class="matIcons">smartphone</mat-icon>
           </mat-form-field>
 
-          <ion-row class="loginRow">
-            <ion-col>
-            </ion-col>
-            <button ion-col mat-raised-button class="form-btn1" color="primary" (click)="saveProfile()" [disabled]="isSaving || profileForm.invalid">
+          <div class="profileActions">
+            <button mat-raised-button class="form-btn1" color="primary" (click)="saveProfile()" [disabled]="isSaving || profileForm.invalid">
               <mat-icon>save</mat-icon>
               Save Profile
             </button>
-            <ion-col>
-            </ion-col>
-          </ion-row>
-          <ion-row class="loginRow">
-            <ion-col>
-            </ion-col>
-            <button ion-col mat-raised-button class="form-btn1" color="primary" (click)="syncall('syncall')" [disabled]="isDisabled">
-              <mat-icon>360</mat-icon>
+            <button mat-raised-button class="resetButton" (click)="syncall('syncall')" [disabled]="isDisabled">
+              <mat-icon>sync</mat-icon>
               Sync All Requests
             </button>
-            <ion-col>
-            </ion-col>
-          </ion-row>
-          <br>
+          </div>
 
-            <mat-card class="intelis_inner_mat_card">
-              <ion-row class="facilityDetailsRow">
-                <ion-col size="12">
-                  <p text-wrap>
-                    <span class="facilityDetailSpan">Facilities</span>
-                  </p>
-                </ion-col>
-              </ion-row>
-
-              <ion-row>
-                <ion-col size="12">
-                  @for (item of testingLabsListArray; track item) {
-                    <ul>
-                      <li>{{item.show}}</li>
-                    </ul>
-                  }
-                </ion-col>
-              </ion-row>
-
-            </mat-card>
+          @if (testingLabsListArray && testingLabsListArray.length) {
+            <div class="facilities">
+              <p class="facilitiesTitle">Facilities</p>
+              <ul>
+                @for (item of testingLabsListArray; track $index) {
+                  <li>{{item.show}}</li>
+                }
+              </ul>
+            </div>
+          }
           </form>
         </ion-grid>
       </mat-card-content>

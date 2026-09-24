@@ -5,8 +5,9 @@
     <mat-card class="box">
       <mat-card-header class="header">
         <div class="text-center">
-          <img class="logoImage" src="assets/imgs/icon.png">
-          <mat-card-title>InteLIS</mat-card-title>
+          <img class="logoImage" src="assets/imgs/icon.png" alt="">
+          <mat-card-title>InteLIS Mobile</mat-card-title>
+          <p class="loginTagline">Sign in with your InteLIS account</p>
         </div>
       </mat-card-header>
 
@@ -71,13 +72,7 @@
           </p>
 
 
-          <ion-row class="loginRow">
-            <ion-col>
-            </ion-col>
-            <button ion-col mat-raised-button class="form-btn" color="primary" (click)="login()">Login</button>
-            <ion-col>
-            </ion-col>
-          </ion-row>
+          <button mat-raised-button class="form-btn loginButton" color="primary" (click)="login()">Log in</button>
 
           <!-- <ion-row>
           <ion-col></ion-col>

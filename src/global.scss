@@ -563,3 +563,79 @@ body, .mat-typography, .mat-mdc-form-field, .mat-mdc-select, .mat-mdc-option, .m
 .mat-mdc-select-value, .mat-mdc-option, .mdc-button, .mat-mdc-button {
   letter-spacing: normal !important;
 }
+
+/* ---- Buttons: one set for every page. Material's raised-button theme sets its own dark
+   label colour, which is why coloured buttons read black; the label colour is set here. ---- */
+button.mat-mdc-raised-button.searchButton,
+button.mat-mdc-raised-button.form-btn,
+button.mat-mdc-raised-button.form-btn1,
+button.mat-mdc-raised-button[color="primary"]:not(.viewButton):not(.viewButton1) {
+  background-color: var(--app-primary) !important;
+  color: #fff !important;
+  --mdc-protected-button-label-text-color: #fff;
+  --mat-button-protected-label-text-color: #fff;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  font-weight: 600;
+  * { color: #fff !important; }
+}
+button.mat-mdc-raised-button.searchButton[disabled],
+button.mat-mdc-raised-button.form-btn[disabled],
+button.mat-mdc-raised-button.form-btn1[disabled] {
+  background-color: var(--app-border) !important;
+  color: var(--app-text-muted) !important;
+  * { color: var(--app-text-muted) !important; }
+}
+button.mat-mdc-raised-button.resetButton {
+  background-color: var(--app-surface) !important;
+  color: var(--app-text) !important;
+  border: 1px solid var(--app-border) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  font-weight: 600;
+  * { color: var(--app-text) !important; }
+}
+button.mat-mdc-raised-button.sortButton {
+  background-color: var(--app-surface) !important;
+  color: var(--app-primary) !important;
+  border: 1px solid var(--app-primary) !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  * { color: var(--app-primary) !important; }
+}
+.noRecord {
+  color: var(--app-text-muted);
+  font-weight: 500;
+}
+
+/* ---- Fields everywhere (the forms, search pages, profile, login) ---- */
+// Fields: white with a light border instead of grey filled boxes.
+.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper {
+  background: var(--app-surface) !important;
+  border: 1px solid var(--app-border);
+  border-radius: 8px !important;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.mat-form-field-appearance-fill .mdc-line-ripple { display: none; }
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 3px var(--app-primary-soft);
+}
+.mat-mdc-form-field.mat-form-field-invalid .mat-mdc-text-field-wrapper {
+  border-color: var(--app-danger);
+}
+.mat-mdc-form-field.mat-form-field-disabled .mat-mdc-text-field-wrapper {
+  background: var(--app-neutral-soft) !important;
+}
+.mat-mdc-form-field .mdc-floating-label,
+.mat-mdc-form-field mat-label {
+  color: var(--app-text-muted);
+}
+.mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--app-primary);
+}
+.mat-mdc-form-field { margin-bottom: 4px; }
+.mat-mdc-form-field-error { font-size: 12px !important; color: var(--app-danger); }
+
+
+ion-content { --background: var(--app-bg); }

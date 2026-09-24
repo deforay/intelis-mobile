@@ -103,3 +103,38 @@
   justify-content: center;
   align-items: center;
 }
+
+/* ---- Login ---- */
+:host ion-content { --background: var(--app-bg); }
+:host ::ng-deep .login-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+:host ::ng-deep .login-wrapper .mat-mdc-card.box, :host ::ng-deep .login-wrapper mat-card.box {
+  width: 100% !important;
+  max-width: 420px;
+  height: auto !important;
+  margin: 0 auto !important;
+  padding: 28px 20px 24px;
+  border-radius: 16px !important;
+  background: var(--app-surface) !important;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1) !important;
+}
+:host ::ng-deep .login-wrapper .header { justify-content: center; margin: 0 0 16px !important; padding: 0; }
+.logoImage { width: 72px; }
+:host ::ng-deep .login-wrapper mat-card-title {
+  margin-top: 10px !important;
+  font-size: 24px !important;
+  font-weight: 700;
+  color: var(--app-text) !important;
+}
+.loginTagline { margin: 4px 0 0 !important; font-size: 14px; color: var(--app-text-muted); }
+:host ::ng-deep .login-wrapper .example-form { min-width: 0; max-width: none; width: 100%; }
+:host ::ng-deep .login-wrapper .example-form p { margin: 0 0 4px !important; }
+:host ::ng-deep .login-wrapper .mat-mdc-form-field { width: 100%; }
+.loginButton { width: 100%; height: 48px; margin-top: 8px; font-size: 16px; }
+.matIcons { color: var(--app-primary) !important; }

@@ -114,7 +114,7 @@ export class EnterVlResultPage implements OnInit {
     this.filtereduserVlPendingResultArray = filteredArray;
     if (this.filtereduserVlPendingResultArray.length === 0) {
       this.isNoRecord = true;
-      this.isNoRecordText = "No pending test results found";
+      this.isNoRecordText = "No requests waiting for a result";
     } else {
       this.isNoRecord = false;
     }

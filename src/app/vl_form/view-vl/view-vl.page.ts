@@ -135,7 +135,7 @@ export class ViewVlPage implements OnInit {
     if (this.userTestRequestOrgArray.length === 0 || this.outerLength === 0) {
       this.skeltonArray = [];
       this.isNoRecord = true;
-      this.isNoRecordText = "No view test request found";
+      this.isNoRecordText = "No requests found";
     }
   }
   
@@ -157,7 +157,7 @@ export class ViewVlPage implements OnInit {
     this.userTestRequestArray = filteredArray;
     if (this.userTestRequestArray.length === 0) {
       this.isNoRecord = true;
-      this.isNoRecordText = "No view test request found";
+      this.isNoRecordText = "No requests found";
     } else {
       this.isNoRecord = false;
     }
