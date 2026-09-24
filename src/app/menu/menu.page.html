@@ -18,6 +18,19 @@
   </mat-toolbar>
 
   <ion-content>
+    @if (newerVersion) {
+      <div class="updateNotice">
+        <mat-icon class="updateNoticeIcon">system_update</mat-icon>
+        <div class="updateNoticeText">
+          <strong>A new version ({{newerVersion}}) is available</strong>
+          <span>Update from Google Play to get the latest fixes.</span>
+        </div>
+        <div class="updateNoticeActions">
+          <a class="updateNoticeButton" [href]="playStoreUrl" target="_blank">Update</a>
+          <button class="updateNoticeLater" (click)="dismissNewerVersion()">Later</button>
+        </div>
+      </div>
+    }
     @if (isFormUnsupported) {
       <div class="unsupportedForm">
         <mat-icon class="unsupportedFormIcon">info</mat-icon>

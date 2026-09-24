@@ -1,3 +1,4 @@
+import { AppUpdateService, PLAY_STORE_URL } from '../service/app-update/app-update.service';
 import { SynctimelinePage } from './../syncTimeline/synctimeline.page';
 import {
   Component,
@@ -61,7 +62,12 @@ export class MenuPage implements OnInit {
   initArray: any;
   tmpPg: any = [];
 
+  // The newer version published on Google Play, when there is one.
+  newerVersion: string | null = null;
+  readonly playStoreUrl = PLAY_STORE_URL;
+
   constructor(private multilevelService: MultilevelService,
+    private appUpdate: AppUpdateService,
     private router: Router,
     public alertService: AlertService,
     private storage: Storage,
@@ -77,6 +83,7 @@ export class MenuPage implements OnInit {
   }
 
   async ionViewWillEnter() {
+    this.checkForNewerVersion();
 
     console.log("Menu hit");
     await this.dbMigrationService.startMigration('menu');
@@ -140,6 +147,19 @@ export class MenuPage implements OnInit {
       }
     })
 
+  }
+
+  async checkForNewerVersion() {
+    if (this.appUpdate.dismissed) {
+      return;
+    }
+    const installed = await this.storage.get('appVersionNumber');
+    this.newerVersion = await this.appUpdate.newerPublishedVersion(installed);
+  }
+
+  dismissNewerVersion() {
+    this.appUpdate.dismissed = true;
+    this.newerVersion = null;
   }
 
   ngOnInit() {
