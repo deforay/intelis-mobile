@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="cordova-plugin-play-app-update" version="1.0.0">
+    <name>PlayAppUpdate</name>
+    <description>Google Play in-app updates (flexible and immediate).</description>
+    <license>MIT</license>
+    <js-module src="www/playAppUpdate.js" name="PlayAppUpdate">
+        <clobbers target="window.PlayAppUpdate" />
+    </js-module>
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PlayAppUpdate">
+                <param name="android-package" value="com.deforay.intelis.appupdate.PlayAppUpdate" />
+            </feature>
+        </config-file>
+        <framework src="com.google.android.play:app-update:2.1.0" />
+        <source-file src="src/android/PlayAppUpdate.java" target-dir="src/com/deforay/intelis/appupdate" />
+    </platform>
+</plugin>

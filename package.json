@@ -75,6 +75,7 @@
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^5.0.1",
     "cordova-plugin-network-information": "^3.1.0",
+    "cordova-plugin-play-app-update": "file:local-plugins/cordova-plugin-play-app-update",
     "jasmine-core": "^6.3.0",
     "karma": "^6.4.4",
     "karma-chrome-launcher": "~3.2.0",
@@ -96,7 +97,8 @@
       "cordova-plugin-network-information": {},
       "cordova-sqlite-storage": {},
       "uk.co.workingedge.cordova.plugin.sqliteporter": {},
-      "cordova-plugin-fingerprint-aio": {}
+      "cordova-plugin-fingerprint-aio": {},
+      "cordova-plugin-play-app-update": {}
     },
     "platforms": [
       "browser",

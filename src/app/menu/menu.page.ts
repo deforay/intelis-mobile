@@ -1,9 +1,10 @@
-import { AppUpdateService, PLAY_STORE_URL } from '../service/app-update/app-update.service';
+import { AppUpdateService, PLAY_STORE_URL, playUpdates } from '../service/app-update/app-update.service';
 import { SyncTestRequestsService } from '../service/syncTestRequests/sync-test-requests.service';
 import { SynctimelinePage } from './../syncTimeline/synctimeline.page';
 import {
   Component,
   OnInit,
+  NgZone,
   ChangeDetectionStrategy
 } from '@angular/core';
 import {
@@ -66,11 +67,17 @@ export class MenuPage implements OnInit {
 
   // The newer version published on Google Play, when there is one.
   newerVersion: string | null = null;
+  // Play's own in-app update: 'available' to download in the background, 'downloading',
+  // then 'ready' to restart into. Null when Play does not answer, as for a non-Play install;
+  // the notice then links to the Play listing instead.
+  playUpdate: 'available' | 'downloading' | 'ready' | null = null;
+  playProgress = 0;
   readonly playStoreUrl = PLAY_STORE_URL;
 
   constructor(private multilevelService: MultilevelService,
     private appUpdate: AppUpdateService,
     private syncRequests: SyncTestRequestsService,
+    private zone: NgZone,
     private router: Router,
     public alertService: AlertService,
     private storage: Storage,
@@ -240,14 +247,45 @@ export class MenuPage implements OnInit {
     if (this.appUpdate.dismissed) {
       return;
     }
-    const newer = await this.appUpdate.newerPublishedVersion(await this.appUpdate.installedVersion());
+    const [play, newer] = await Promise.all([
+      this.playUpdate === 'downloading' ? Promise.resolve(null) : playUpdates.state(),
+      this.appUpdate.newerPublishedVersion(await this.appUpdate.installedVersion()),
+    ]);
+    if (this.playUpdate !== 'downloading') {
+      this.playUpdate = play;
+    }
     // Later may have been tapped while the lookup ran.
     this.newerVersion = this.appUpdate.dismissed ? null : newer;
+  }
+
+  get showUpdateNotice(): boolean {
+    return !this.appUpdate.dismissed && (!!this.playUpdate || !!this.newerVersion);
+  }
+
+  startPlayUpdate() {
+    this.playUpdate = 'downloading';
+    this.playProgress = 0;
+    playUpdates.start((e) => this.zone.run(() => {
+      if (e.status === 'downloading' && e.total > 0) {
+        this.playProgress = Math.round((e.bytes / e.total) * 100);
+      } else if (e.status === 'downloaded') {
+        this.playUpdate = 'ready';
+      } else if (e.status === 'canceled' || e.status === 'failed') {
+        this.playUpdate = 'available';
+      }
+    }), () => this.zone.run(() => { this.playUpdate = 'available'; }));
+  }
+
+  restartIntoUpdate() {
+    playUpdates.complete().catch(() => this.zone.run(() => { this.playUpdate = 'available'; }));
   }
 
   dismissNewerVersion() {
     this.appUpdate.dismissed = true;
     this.newerVersion = null;
+    if (this.playUpdate !== 'downloading' && this.playUpdate !== 'ready') {
+      this.playUpdate = null;
+    }
   }
 
   ngOnInit() {

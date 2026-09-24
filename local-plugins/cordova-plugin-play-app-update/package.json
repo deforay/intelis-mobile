@@ -1,0 +1,8 @@
+{
+  "name": "cordova-plugin-play-app-update",
+  "version": "1.0.0",
+  "description": "Google Play in-app updates (flexible and immediate) for InteLIS Mobile",
+  "cordova": { "id": "cordova-plugin-play-app-update", "platforms": ["android"] },
+  "keywords": ["ecosystem:cordova", "cordova-android"],
+  "license": "MIT"
+}

@@ -45,6 +45,39 @@ export class AppUpdateService {
   }
 }
 
+export interface PlayUpdateEvent { status: string; bytes: number; total: number; }
+
+// Google Play in-app updates, through the local cordova-plugin-play-app-update. Only a Play
+// install gets an answer; anywhere else these fail and the caller uses the published version.
+export const playUpdates = {
+  get plugin(): any { return (window as any).PlayAppUpdate; },
+
+  // 'ready' when an update was already downloaded, 'available' when Play offers one we can
+  // download in the background, null otherwise.
+  async state(): Promise<'available' | 'ready' | null> {
+    if (!this.plugin) {
+      return null;
+    }
+    try {
+      const info = await this.plugin.check();
+      if (info && info.installStatus === 'downloaded') {
+        return 'ready';
+      }
+      return info && info.available && info.flexibleAllowed ? 'available' : null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  start(onEvent: (e: PlayUpdateEvent) => void, onError: (e: any) => void) {
+    this.plugin.startFlexible(onEvent, onError);
+  },
+
+  complete(): Promise<void> {
+    return this.plugin.complete();
+  },
+};
+
 export function isVersionBelow(current: string, other: string): boolean {
   const parse = (v: string) => String(v || '').replace(/^v/i, '').split('.').map(p => parseInt(p, 10) || 0);
   const a = parse(current), b = parse(other);

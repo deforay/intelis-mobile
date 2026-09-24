@@ -18,16 +18,41 @@
   </mat-toolbar>
 
   <ion-content>
-    @if (newerVersion) {
+    @if (showUpdateNotice || playUpdate == 'downloading' || playUpdate == 'ready') {
       <div class="updateNotice">
         <mat-icon class="updateNoticeIcon">system_update</mat-icon>
         <div class="updateNoticeText">
-          <strong>A new version ({{newerVersion}}) is available</strong>
-          <span>Update from Google Play to get the latest fixes.</span>
+          @switch (playUpdate) {
+            @case ('downloading') {
+              <strong>Downloading the update{{playProgress ? ' (' + playProgress + '%)' : ''}}</strong>
+              <span>You can keep working; it installs when you restart.</span>
+            }
+            @case ('ready') {
+              <strong>The update is ready</strong>
+              <span>Restart the app to finish updating.</span>
+            }
+            @default {
+              <strong>A new version{{newerVersion ? ' (' + newerVersion + ')' : ''}} is available</strong>
+              <span>Update to get the latest fixes.</span>
+            }
+          }
         </div>
         <div class="updateNoticeActions">
-          <a class="updateNoticeButton" [href]="playStoreUrl" target="_blank">Update</a>
-          <button class="updateNoticeLater" (click)="dismissNewerVersion()">Later</button>
+          @switch (playUpdate) {
+            @case ('available') {
+              <button class="updateNoticeButton" (click)="startPlayUpdate()">Update</button>
+            }
+            @case ('ready') {
+              <button class="updateNoticeButton" (click)="restartIntoUpdate()">Restart</button>
+            }
+            @case ('downloading') { }
+            @default {
+              <a class="updateNoticeButton" [href]="playStoreUrl" target="_blank">Update</a>
+            }
+          }
+          @if (playUpdate != 'downloading' && playUpdate != 'ready') {
+            <button class="updateNoticeLater" (click)="dismissNewerVersion()">Later</button>
+          }
         </div>
       </div>
     }

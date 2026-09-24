@@ -236,7 +236,7 @@
         [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null" matInput type="tel" required formControlName="age">
     </mat-form-field>
     <mat-form-field appearance="fill">
-      <mat-label style="color: black;">Gender</mat-label>
+      <mat-label>Gender</mat-label>
       <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="gender"
         [(value)]="genderSelected" required [errorStateMatcher]="matcher"
         [ngClass]="{ 'mat-form-field-invalid':submitted }">
