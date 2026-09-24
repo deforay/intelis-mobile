@@ -1814,9 +1814,9 @@ export class VlNewRequestPage implements OnInit {
     }
     const lab = (this.initArray['testingLabsList'] || []).find(item => item.show == this.clinicInfoPanelForm.get('labName').value);
     const facilityName = this.clinicInfoPanelForm.get('POE').value;
-    const facility = (this.initArray['districtList'] || [])
-      .map(district => (district.facilityDetails || []).find(item => item.show === facilityName))
-      .find(Boolean);
+    // The chosen county's facilities; the same name can appear in another county.
+    const chosen = (this.POEArray || []).find(item => item.facility_name === facilityName);
+    const facility = chosen ? { value: chosen.facility_id } : null;
     const collected = this.sampleInfoPanelForm.get('sampleCollectionDateTime').value;
     if (!lab || !facility || lab.value != facility.value || !collected) {
       return;
