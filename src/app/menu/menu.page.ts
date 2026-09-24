@@ -247,20 +247,27 @@ export class MenuPage implements OnInit {
     if (this.appUpdate.dismissed) {
       return;
     }
-    const [play, newer] = await Promise.all([
-      this.playUpdate === 'downloading' ? Promise.resolve(null) : playUpdates.state(),
-      this.appUpdate.newerPublishedVersion(await this.appUpdate.installedVersion()),
-    ]);
-    // A download in progress, or one already downloaded, stays as it is when a recheck fails.
-    const keep = this.playUpdate === 'downloading' || (this.playUpdate === 'ready' && play === null);
-    if (!keep) {
-      this.playUpdate = play;
-      if (play === 'downloading') {
-        playUpdates.listen(this.onPlayUpdateEvent, () => this.zone.run(() => { this.playUpdate = 'available'; }));
-      }
-    }
+    // Play and the published version are asked separately, so a slow version file does not
+    // hold back what Play says.
+    this.checkPlay();
+    const newer = await this.appUpdate.newerPublishedVersion(await this.appUpdate.installedVersion());
     // Later may have been tapped while the lookup ran.
     this.newerVersion = this.appUpdate.dismissed ? null : newer;
+  }
+
+  async checkPlay() {
+    if (this.playUpdate === 'downloading') {
+      return;
+    }
+    const play = await playUpdates.state();
+    // A download already downloaded stays as it is when a recheck fails.
+    if (this.playUpdate === 'ready' && play === null) {
+      return;
+    }
+    this.zone.run(() => { this.playUpdate = play; });
+    if (play === 'downloading') {
+      playUpdates.listen(this.onPlayUpdateEvent, () => this.zone.run(() => { this.playUpdate = 'available'; }));
+    }
   }
 
   get showUpdateNotice(): boolean {

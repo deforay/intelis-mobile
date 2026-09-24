@@ -42,7 +42,19 @@ public class PlayAppUpdate extends CordovaPlugin {
             case "startImmediate": start(AppUpdateType.IMMEDIATE, callback); return true;
             case "complete": complete(callback); return true;
             // Reattach to a flexible download started before the app was restarted.
-            case "listen": listenForProgress(callback); return true;
+            case "listen":
+                listenForProgress(callback);
+                // Report where the download is now, in case it finished before the listener was on.
+                manager().getAppUpdateInfo().addOnSuccessListener(info -> {
+                    int status = info.installStatus();
+                    boolean done = status == InstallStatus.DOWNLOADED || status == InstallStatus.INSTALLED
+                        || status == InstallStatus.FAILED || status == InstallStatus.CANCELED;
+                    send(callback, event(statusName(status), 0, 0), !done);
+                    if (done) {
+                        stopListening();
+                    }
+                });
+                return true;
             default: return false;
         }
     }
