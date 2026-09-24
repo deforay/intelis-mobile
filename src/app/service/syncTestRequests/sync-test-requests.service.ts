@@ -222,62 +222,76 @@ public CrudService: CrudOperationsService,
   // Writes a pulled result to the local sample, unless the sample has an edit
   // not yet posted. Returns the local sample as it was, and whether it brings a
   // lab decision this device had not seen; null when the sample was not stored.
-  async storePulledResult( db: SQLiteObject, table: string, item: any, columns: { [column: string]: any } ): Promise<any> {
+  //
+  // columns must hold every lab-owned field the sample's payload sends back:
+  // the app then holds the current result version, so a lab field left stale
+  // here would pass the server's version check on the next post and replace the
+  // lab's value. childRows writes rows that belong to the sample, in the same
+  // transaction, so an edit saved meanwhile cannot slip between them.
+  async storePulledResult( db: SQLiteObject, table: string, item: any, columns: { [column: string]: any }, childRows?: ( tx: any, sample: any ) => void ): Promise<any> {
     const where = '(server_unique_id = ? OR unique_id = ?) AND (is_synced IS NULL OR is_synced != "false")';
-    const before = await db.executeSql( `SELECT * FROM ${table} WHERE ${where}`, [item.uniqueId, item.uniqueId] );
-    if ( before.rows.length == 0 ) {
-      return null;
-    }
-    const held = before.rows.item( 0 );
     const names = Object.keys( columns );
-    const updated = await db.executeSql(
-      `UPDATE ${table} SET ${names.map( ( name ) => name + ' = ?' ).join( ', ' )} WHERE ${where}`,
-      [...names.map( ( name ) => columns[name] ?? null ), item.uniqueId, item.uniqueId]
-    );
-    // An edit saved since the SELECT keeps the sample out of the UPDATE.
-    if ( updated.rowsAffected == 0 ) {
-      return null;
-    }
-    // The result version also moves when the lab edits a tester, an approver or
-    // the like, so the result and the rejection themselves decide what is new.
-    const decided = ( item.result ?? '' ) !== '' || columns.is_sample_rejected == 'yes';
-    const changed = ( held.result ?? '' ) !== ( item.result ?? '' ) || held.is_sample_rejected !== columns.is_sample_rejected;
-    return { sample: held, isNew: decided && changed };
+    let outcome = null;
+    await db.transaction( ( tx ) => {
+      tx.executeSql( `SELECT * FROM ${table} WHERE ${where}`, [item.uniqueId, item.uniqueId], ( _tx, before ) => {
+        if ( before.rows.length == 0 ) {
+          return;
+        }
+        const held = before.rows.item( 0 );
+        tx.executeSql(
+          `UPDATE ${table} SET ${names.map( ( name ) => name + ' = ?' ).join( ', ' )} WHERE ${where}`,
+          [...names.map( ( name ) => columns[name] ?? null ), item.uniqueId, item.uniqueId],
+          () => {
+            // The result version also moves when the lab edits a tester, an
+            // approver or the like, so the result and the rejection themselves
+            // decide what is new.
+            const decided = ( item.result ?? '' ) !== '' || columns.is_sample_rejected == 'yes';
+            const changed = ( held.result ?? '' ) !== ( item.result ?? '' ) || held.is_sample_rejected !== columns.is_sample_rejected;
+            outcome = { sample: held, isNew: decided && changed };
+            childRows?.( tx, held );
+          }
+        );
+      } );
+    } );
+    return outcome;
   }
 
   // A COVID-19 result also carries its test rows, replaced as a whole.
   async storeCovid19Result( db: SQLiteObject, item: any ): Promise<any> {
-    const stored = await this.storePulledResult( db, 'form_covid19', item, {
+    return this.storePulledResult( db, 'form_covid19', item, {
       sample_received_at_vl_lab_datetime: item.sampleReceivedDate,
       lab_id: item.labId,
       lab_name: item.labName,
       sample_condition: item.sampleCondition,
       lab_technician: item.labTechnician,
       lab_technician_name: item.labTechnicianName,
-      is_sample_rejected: item.sampleRejected,
+      is_sample_rejected: item.isSampleRejected ?? item.sampleRejected,
       reason_for_sample_rejection: item.rejectionReason,
+      sample_rejection_id: item.rejectionReasonId,
       rejection_on: item.rejectionDate,
       tested_by: item.testedBy,
       tested_by_name: item.testedByName,
-      is_result_authorised: item.isAuthorised,
-      authorized_by: item.authorisedBy,
-      authorized_on: item.authorisedOn,
+      is_result_authorised: item.isResultAuthorized ?? item.isAuthorised,
+      authorized_by: item.authorizedBy ?? item.authorisedBy,
+      authorized_on: item.authorizedOn ?? item.authorisedOn,
+      result_reviewed_by: item.reviewedBy,
+      result_reviewed_datetime: item.reviewedOn,
+      result_approved_by: item.approvedBy,
+      result_approved_datetime: item.approvedOn,
       result: item.result,
       result_status: item.resultStatus,
       result_version: item.resultVersion,
-    } );
-    if ( stored ) {
-      const sample = stored.sample;
-      await db.executeSql( 'DELETE FROM covid19_tests WHERE unique_id = ?', [sample.unique_id] );
+    }, ( tx, sample ) => {
+      tx.executeSql( 'DELETE FROM covid19_tests WHERE unique_id = ?', [sample.unique_id] );
       for ( const test of item.c19Tests || [] ) {
-        await db.executeSql(
+        tx.executeSql(
           'INSERT INTO covid19_tests (unique_id, covid19_id, facility_id, test_name, tested_by, sample_tested_datetime, testing_platform, kitLotNo, kitExpiryDate, result) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
           [sample.unique_id, sample.covid19_id, item.facilityId, test.testName, item.testedByName, test.testDate, test.testingPlatform, test.kitLotNo, test.kitExpiryDate, test.testResult ?? test.result].map( ( value ) => value ?? null )
         );
       }
-    }
-    return stored;
+    } );
   }
+
 
   async ionViewWillEnter( param ) {
     this.networkType = this.network.type;
@@ -1322,9 +1336,17 @@ public CrudService: CrudOperationsService,
       this.storePulledResult( db, 'eid_form', item, {
         sample_received_at_vl_lab_datetime: item.sampleReceivedDate,
         lab_id: item.labId,
+        eid_test_platform: item.eidPlatform,
+        import_machine_name: item.machineName,
         is_sample_rejected: item.isSampleRejected,
-        reason_for_sample_rejection: item.rejectionReason ?? item.sampleRejectionReason ?? '',
+        reason_for_sample_rejection: item.rejectionReason,
+        sample_rejection_id: item.rejectionReasonId ?? item.sampleRejectionReason,
+        rejection_on: item.rejectionDate,
+        reason_for_changing: item.reasonForEidResultChanges,
+        sample_tested_datetime: item.sampleTestedDateTime,
         tested_by: item.testedBy,
+        result_reviewed_by: item.reviewedBy,
+        result_reviewed_datetime: item.reviewedOn,
         result_approved_by: item.approvedBy,
         result_approved_datetime: item.approvedOn,
         result: item.result,
@@ -1335,13 +1357,29 @@ public CrudService: CrudOperationsService,
     this.unSyncedVlResultArray = await this.samplesAwaitingResult( 'vl_request_form', 'sample_code != ""' );
     this.vlSampleResultArray = await this.pullResults( '/api/v1.1/vl/fetch-results.php', this.unSyncedVlResultArray, postData, ( db, item ) =>
       this.storePulledResult( db, 'vl_request_form', item, {
+        sample_received_at_hub_datetime: item.sampleReceivedAtHubOn,
         sample_received_at_vl_lab_datetime: item.sampleReceivedDate,
         lab_id: item.labId,
+        vl_focal_person: item.vlFocalPerson,
+        vl_focal_person_phone_number: item.vlFocalPersonPhoneNumber,
+        vl_test_platform: item.testingPlatform,
         is_sample_rejected: item.isSampleRejected,
         reason_for_sample_rejection: item.rejectionReason,
+        sample_rejection_id: item.rejectionReasonId,
+        rejection_on: item.rejectionDate,
+        sample_testing_date: item.sampleTestingDateAtLab,
+        sample_tested_datetime: item.sampleTestingDateAtLab,
         tested_by: item.testedBy,
+        result_reviewed_by: item.reviewedBy,
+        result_reviewed_datetime: item.reviewedOn,
         result_approved_by: item.approvedBy,
         result_approved_datetime: item.approvedOn,
+        result_dispatched_datetime: item.resultDispatchedOn,
+        facility_comments: item.labComments,
+        // The payload sends these as vlResult and vlLog, and the server works the
+        // result out from vlResult ahead of result, so they carry the lab's.
+        result_value_absolute: item.result,
+        result_value_log: item.vlLog,
         result: item.result,
         result_status: item.resultStatus,
         result_version: item.resultVersion,

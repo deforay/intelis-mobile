@@ -483,7 +483,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleReceivedDate": item.sample_received_at_vl_lab_datetime,
         "eidPlatform": item.eid_test_platform,
         "isSampleRejected": item.is_sample_rejected,
-        "sampleRejectionReason": item.reason_for_sample_rejection,
+        "sampleRejectionReason": item.sample_rejection_id,
         "rejectionReasonId": item.sample_rejection_id,
         "reasonForEidResultChanges": item.reason_for_changing,
         "rejectionDate": item.rejection_on,
