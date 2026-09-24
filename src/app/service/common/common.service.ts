@@ -9,6 +9,13 @@ import {
 import {
   Storage
 } from '@ionic/storage-angular';
+// For the request-form-fields keys the server writes whatever key is present, and an empty
+// one clears the field. get-request does not return these fields, so a downloaded request
+// holds them empty here; sending that would wipe what the web form saved. Send a value only.
+function formField(value: any): any {
+  return value === null || value === undefined || String(value).trim() === '' ? undefined : value;
+}
+
 // reason_for_changing holds a JSON list of changes: the app writes {reason, change_datetime,
 // changed_by}, a pulled request carries the server's {msg, dtime, usr}. The server reads the whole
 // list back as reasonForResultChanges and overwrites what it has, so send every entry.
@@ -513,9 +520,9 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleCollectionDate": item.sample_collection_date,
         "specimenType": specimenTypeId(item.specimen_type),
         "sampleDispatchedOn": item.sample_dispatched_datetime,
-        "clinicianName": item.clinician_name,
-        "locationOfSampleCollection": item.location_of_sample_collection,
-        "reasonForRepeatPcrOther": item.reason_for_repeat_pcr_other,
+        "clinicianName": formField(item.clinician_name),
+        "locationOfSampleCollection": formField(item.location_of_sample_collection),
+        "reasonForRepeatPcrOther": formField(item.reason_for_repeat_pcr_other),
         "sampleRequestorName": item.sample_requestor_name,
         "sampleRequestorPhone": item.sample_requestor_phone,
 
@@ -687,7 +694,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleDispatchedOn": item.sample_dispatched_datetime,
         "specimenType": item.sample_type,
         "reasonForFailure": item.reason_for_failure,
-        "locationOfSampleCollection": item.location_of_sample_collection,
+        "locationOfSampleCollection": formField(item.location_of_sample_collection),
 
         "dateOfArtInitiation": item.treatment_initiated_date,
         "artRegimen": item.current_regimen,
