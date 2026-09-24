@@ -324,6 +324,7 @@ ion-menu.sideMenu {
   font-size: 15px;
   font-weight: 500;
   text-align: left;
+  margin: 0; // an older .sideMenuItem rule above pulls items together with a negative margin
   mat-icon { color: var(--app-primary); flex-shrink: 0; }
 }
 .sideMenuItem:active { background: var(--app-primary-soft); }
