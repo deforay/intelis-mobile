@@ -33,7 +33,7 @@ ion-content { --background: var(--app-bg); }
 .setup-wrapper {
   max-width: 480px;
   margin: 24px auto;
-  h1 { font-size: 22px; font-weight: 600; color: var(--app-text); margin: 0 0 4px; }
+  h1 { font-size: 22px !important; font-weight: 600; color: var(--app-text); margin: 0 0 4px !important; }
   .lead { color: var(--app-text-muted); font-size: 14px; margin: 0 0 16px; }
   ion-list { border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1); padding: 4px 0; background: var(--app-surface); }
   ion-item { --background: var(--app-surface); }
