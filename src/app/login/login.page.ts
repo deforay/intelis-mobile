@@ -22,7 +22,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { trimmedCharsValidator } from '../../validators/validators';
 import { Storage } from '@ionic/storage-angular';
 import { Network } from '@awesome-cordova-plugins/network/ngx';
-import _ from 'lodash';
 import { DbService } from '../services/db.service';
 import { InitDataService } from '../service/init-data/init-data.service';
 import { BootstrapService } from '../service/bootstrap/bootstrap.service';

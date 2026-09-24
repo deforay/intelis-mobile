@@ -2,7 +2,6 @@ import { PrivilegeService } from './../../service/privilage/privilege.service';
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
 import { Router } from '@angular/router';
-import _ from 'lodash';
 import { Events } from '../../../app/service/providers';
 import { CommonService } from '../../service/common/common.service';
 @Component({

@@ -7,7 +7,6 @@ import {
 import {
   LoaderService,
 } from '../../../app/service/providers';
-import _ from "lodash";
 import {
   LoadingController
 } from '@ionic/angular';
@@ -82,14 +81,10 @@ export class LocalTestRequestFormService {
 
             } else {
 
-              this.existingTestReqIndex = _.findIndex(this.localTestRequestFormArray, {
-                userID: loginDetails['user'].user_id
-              });
+              this.existingTestReqIndex = this.localTestRequestFormArray.findIndex(item => item.userID === loginDetails['user'].user_id);
 
               //find existing old shipment id and removing it start...
-              let existingOldTestReqIndex = _.findIndex(this.localTestRequestFormArray[this.existingTestReqIndex].testFormArray, {
-                appSampleCode: formJSON.appSampleCode
-              });
+              let existingOldTestReqIndex = this.localTestRequestFormArray[this.existingTestReqIndex].testFormArray.findIndex(item => item.appSampleCode === formJSON.appSampleCode);
               if (existingOldTestReqIndex != -1) {
                 this.localTestRequestFormArray[this.existingTestReqIndex].testFormArray.splice(existingOldTestReqIndex, 1);
               }

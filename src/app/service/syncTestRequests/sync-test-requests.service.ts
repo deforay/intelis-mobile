@@ -6,7 +6,6 @@ import { syncAllDataLimit } from '../../service/constant';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { CommonService } from '../../service/common/common.service';
 import { InitDataService } from '../init-data/init-data.service';
 @Injectable( {
@@ -531,7 +530,7 @@ public CrudService: CrudOperationsService,
         this.failureAlertCount = 0;
         this.errSyncAllCount = 0;
 
-        _.times( this.syncDataCount, () => {
+        Array.from( { length: this.syncDataCount } ).forEach( () => {
           this.testRequestSubListArray =
             this.copylocalStorageUnSyncedArray.splice( 0, this.syncLimit );
           if ( this.testRequestSubListArray.length != 0 ) {
@@ -788,7 +787,7 @@ public CrudService: CrudOperationsService,
         this.failureAlertEidCount = 0;
         this.errSyncAllEidCount = 0;
 
-        _.times( this.syncDataEidCount, () => {
+        Array.from( { length: this.syncDataEidCount } ).forEach( () => {
           this.testRqstEidSubListArray =
             this.copylocalStorageUnSyncedEid.splice( 0, this.syncLimit );
 
@@ -1034,7 +1033,7 @@ public CrudService: CrudOperationsService,
         this.failureAlertVlCount = 0;
         this.errSyncAllVlCount = 0;
 
-        _.times( this.syncDataVlCount, () => {
+        Array.from( { length: this.syncDataVlCount } ).forEach( () => {
           this.testRqstVlSubListArray = this.copylocalStorageUnSyncedVl.splice( 0, this.syncLimit );
           if ( this.testRqstVlSubListArray.length != 0 ) {
             this.syncTestVlJSON = { appVersion: this.appVersionNumber, data: this.testRqstVlSubListArray, };

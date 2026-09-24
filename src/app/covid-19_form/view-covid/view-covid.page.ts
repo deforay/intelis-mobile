@@ -4,7 +4,6 @@ import { PopoverController } from '@ionic/angular';
 import { SortingPopoverComponent } from 'src/app/component/sorting-popover/sorting-popover.component';
 import { Events } from 'src/app/service/providers';
 import { Storage } from '@ionic/storage-angular';
-import _ from "lodash";
 
 @Component({
     selector: 'app-view-covid',

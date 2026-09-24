@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppModule } from './app.module';
 import { AppComponent } from './app.component';
@@ -9,6 +10,8 @@ describe('smoke: upgraded stack bootstraps', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppModule, LoginPageModule, RouterTestingModule],
+      // No Cordova in the browser: the real plugin returns undefined instead of a promise.
+      providers: [{ provide: SQLite, useValue: { create: () => new Promise(() => {}) } }],
     }).compileComponents();
   });
 
