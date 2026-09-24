@@ -260,8 +260,9 @@ export class MenuPage implements OnInit {
       return;
     }
     const play = await playUpdates.state();
-    // A download started while Play was being asked is newer than its answer.
-    if (this.playUpdate === 'downloading') {
+    // A download started while Play was being asked is newer than its answer. (Read afresh:
+    // the field can change during the await.)
+    if (this.currentPlayUpdate() === 'downloading') {
       return;
     }
     // A download already downloaded stays as it is when a recheck fails.
@@ -272,6 +273,10 @@ export class MenuPage implements OnInit {
     if (play === 'downloading') {
       playUpdates.listen(this.onPlayUpdateEvent, () => this.zone.run(() => { this.playUpdate = 'available'; }));
     }
+  }
+
+  private currentPlayUpdate(): string | null {
+    return this.playUpdate;
   }
 
   get showUpdateNotice(): boolean {
