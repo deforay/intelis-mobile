@@ -64,7 +64,7 @@
           <mat-icon [class.offline]="networkType == 'none'">{{networkType == 'none' ? 'cloud_off' : 'cloud_done'}}</mat-icon>
           <div>
             <strong>{{unsyncedTotal > 0 ? unsyncedTotal + ' waiting to sync' : 'Everything is synced'}}</strong>
-            <span (click)="showSyncTimeline()">{{lastSyncDateTime ? 'Last synced ' + (lastSyncDateTime | date :'d MMM, h:mm a') : 'Not synced yet'}}</span>
+            <span (click)="showSyncTimeline()">{{lastSyncDateTime ? 'Last synced ' + (lastSyncDateTime | date :'d MMM, h:mm a') : 'Up to date since login'}}</span>
           </div>
         </div>
         <button class="syncButton" [disabled]="networkType == 'none'" (click)="syncNow()">

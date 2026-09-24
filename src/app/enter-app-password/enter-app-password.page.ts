@@ -111,6 +111,10 @@ export class EnterAppPasswordPage implements OnInit {
     const ele = document.getElementById(eleId);
   }
   async onPinNumberChange(pin) {
+    // The boxes report null when they are cleared.
+    if (!pin) {
+      return;
+    }
     this.appPin = pin;
 
     const regex = /^[0-9]*$/;
@@ -133,7 +137,7 @@ export class EnterAppPasswordPage implements OnInit {
       if (element && element.dismiss) {
         element.dismiss();
       }
-      const loading = await this.loadingCtrl.create({
+      const loading = this.lazyLoading({
         message: 'Please wait...',
         spinner: 'dots',
         mode: 'ios',
@@ -188,6 +192,10 @@ export class EnterAppPasswordPage implements OnInit {
     }
   }
   async onCreatePinNumberChange(pin) {
+    // The boxes report null when they are cleared.
+    if (!pin) {
+      return;
+    }
     this.createAppPin = pin;
     const regex = /^[0-9]*$/;
 
@@ -213,7 +221,7 @@ export class EnterAppPasswordPage implements OnInit {
     // }
   }
   async showFingerprintAuthDlg() {
-    const loading = await this.loadingCtrl.create({
+    const loading = this.lazyLoading({
       message: 'Please wait...',
       spinner: 'dots',
       mode: 'ios',
@@ -293,7 +301,7 @@ export class EnterAppPasswordPage implements OnInit {
       });
   }
   async showFingerprintAdd() {
-    const loading = await this.loadingCtrl.create({
+    const loading = this.lazyLoading({
       message: 'Please wait...',
       spinner: 'dots',
       mode: 'ios',
@@ -351,4 +359,14 @@ export class EnterAppPasswordPage implements OnInit {
       replaceUrl: true,
     });
   }
+  // A loader made only when it is shown. The PIN handlers run on every digit and used to create
+  // one each time but show it only on the last, leaving the rest in the page for good.
+  private lazyLoading(options: any) {
+    let created: Promise<any> | null = null;
+    return {
+      present: () => (created = this.loadingCtrl.create(options).then(l => l.present().then(() => l))),
+      dismiss: () => created ? created.then(l => l.dismiss()) : Promise.resolve(),
+    };
+  }
+
 }

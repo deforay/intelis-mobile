@@ -118,6 +118,10 @@ export class AppPasswordPage implements OnInit {
   }
 
   async onConfirmPinNumberChange( pin ) {
+    // The boxes report null when they are cleared.
+    if (!pin) {
+      return;
+    }
     this.confirmAppPin = pin;
 
     pin = pin == null ? '' : String( pin ); // ng-otp-input 2 can emit null while clearing
@@ -142,12 +146,12 @@ export class AppPasswordPage implements OnInit {
       if ( element && element.dismiss ) {
         element.dismiss();
       }
-      const loading = await this.loadingCtrl.create( {
+      const loading = this.lazyLoading({
         message: 'Please wait...',
         spinner: 'dots',
         mode: 'ios',
         backdropDismiss: false,
-      } );
+      });
 
       if ( pin.length == 4 && this.confirmAppPin == this.createAppPin ) {
         loading.present();
@@ -190,6 +194,10 @@ export class AppPasswordPage implements OnInit {
   }
 
   async onCreatePinNumberChange( pin ) {
+    // The boxes report null when they are cleared.
+    if (!pin) {
+      return;
+    }
     this.createAppPin = pin;
     pin = pin == null ? '' : String( pin ); // ng-otp-input 2 can emit null while clearing
     const regex = /^[0-9]*$/;
@@ -220,12 +228,12 @@ export class AppPasswordPage implements OnInit {
     // }
   }
   async showFingerprintAuthDlg() {
-    const loading = await this.loadingCtrl.create( {
+    const loading = this.lazyLoading({
       message: 'Please wait...',
       spinner: 'dots',
       mode: 'ios',
       backdropDismiss: false,
-    } );
+    });
     this.faio
       .show( {
         cancelButtonTitle: 'Use PIN',
@@ -307,4 +315,14 @@ export class AppPasswordPage implements OnInit {
   //     this.registerBiometricSecret();
   //     });
   // }
+  // A loader made only when it is shown. The PIN handlers run on every digit and used to create
+  // one each time but show it only on the last, leaving the rest in the page for good.
+  private lazyLoading(options: any) {
+    let created: Promise<any> | null = null;
+    return {
+      present: () => (created = this.loadingCtrl.create(options).then(l => l.present().then(() => l))),
+      dismiss: () => created ? created.then(l => l.dismiss()) : Promise.resolve(),
+    };
+  }
+
 }
