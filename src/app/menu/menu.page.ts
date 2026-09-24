@@ -251,7 +251,9 @@ export class MenuPage implements OnInit {
       this.playUpdate === 'downloading' ? Promise.resolve(null) : playUpdates.state(),
       this.appUpdate.newerPublishedVersion(await this.appUpdate.installedVersion()),
     ]);
-    if (this.playUpdate !== 'downloading') {
+    // A download in progress, or one already downloaded, stays as it is when a recheck fails.
+    const keep = this.playUpdate === 'downloading' || (this.playUpdate === 'ready' && play === null);
+    if (!keep) {
       this.playUpdate = play;
     }
     // Later may have been tapped while the lookup ran.
