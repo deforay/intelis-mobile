@@ -1378,6 +1378,7 @@ CREATE TABLE IF NOT EXISTS "vl_request_form" (
 	"sample_dispatched_datetime" datetime DEFAULT NULL,
 	"result_version"	TEXT DEFAULT NULL,
 	"server_unique_id"	TEXT DEFAULT NULL,
+	"reason_for_failure"	TEXT DEFAULT NULL,
 	FOREIGN KEY("result_status") REFERENCES "r_sample_status"("status_id"),
 	FOREIGN KEY("funding_source") REFERENCES "r_funding_sources"("funding_source_id"),
 	PRIMARY KEY("vl_sample_id")

@@ -264,7 +264,7 @@
   <mat-form-field appearance="fill">
     <mat-label style="color: black;">Gender</mat-label>
     <mat-select [readonly]="mode=='view' || mode=='result edit'"
-      formControlName="gender" [(value)]="genderSelected" required [errorStateMatcher]="matcher"
+      formControlName="gender" [(value)]="genderSelected" (selectionChange)="onGenderChange()" required [errorStateMatcher]="matcher"
       [ngClass]="{ 'mat-form-field-invalid':submitted }">
       @for (item of genderArray; track item) {
         <mat-option [value]="item.value" [disabled]="isOptionDisabled()">
@@ -278,6 +278,32 @@
       </mat-error>
     }
   </mat-form-field>
+  @if (patientInfoPanelForm.controls.gender.value === 'female') {
+    <mat-form-field appearance="fill">
+      <mat-label>Is Patient Pregnant?</mat-label>
+      <mat-select [readonly]="mode=='view' || mode=='result edit'"
+        formControlName="isPatientPregnant">
+        @for (item of PatientConsent; track item) {
+          <mat-option [value]="item.value" [disabled]="isOptionDisabled()">
+            {{item.name}}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  }
+  @if (patientInfoPanelForm.controls.gender.value === 'female') {
+    <mat-form-field appearance="fill">
+      <mat-label>Is Patient Breastfeeding?</mat-label>
+      <mat-select [readonly]="mode=='view' || mode=='result edit'"
+        formControlName="isPatientBreastfeeding">
+        @for (item of PatientConsent; track item) {
+          <mat-option [value]="item.value" [disabled]="isOptionDisabled()">
+            {{item.name}}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  }
   <mat-form-field appearance="fill">
     <mat-label>Patient consent to receive SMS?</mat-label>
     <mat-select [readonly]="mode=='view' || mode=='result edit'"
@@ -576,32 +602,6 @@
         }
       </mat-select>
     </mat-form-field>
-    @if (genderSelected === 'female') {
-      <mat-form-field appearance="fill">
-        <mat-label>Is Patient Pregnant?</mat-label>
-        <mat-select [readonly]="mode=='view' || mode=='result edit'"
-          formControlName="isPatientPregnant">
-          @for (item of PatientConsent; track item) {
-            <mat-option [value]="item.value" [disabled]="isOptionDisabled()">
-              {{item.name}}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    }
-    @if (genderSelected === 'female') {
-      <mat-form-field appearance="fill">
-        <mat-label>Is Patient Breastfeeding?</mat-label>
-        <mat-select [readonly]="mode=='view' || mode=='result edit'"
-          formControlName="isPatientBreastfeeding">
-          @for (item of PatientConsent; track item) {
-            <mat-option [value]="item.value" [disabled]="isOptionDisabled()">
-              {{item.name}}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    }
     <mat-action-row>
       <button mat-button class="previousButton" (click)="prevStep()">Previous</button>
       <button mat-button color="primary" (click)="nextStepTreatmentInfo(treatmentInfoPanelForm.valid)">Next</button>
@@ -897,7 +897,7 @@
 @if (labResultPanelForm.controls.vlTestPlatform.value=='GeneXpert') {
   <mat-form-field appearance="fill">
     <mat-label>HIV Detection</mat-label>
-    <mat-select [readonly]="mode=='view'"  formControlName="resultValueHivDetection"
+    <mat-select [readonly]="mode=='view'"  formControlName="resultValueHivDetection" (selectionChange)="onChangeHivDetection()"
       [required]="labResultPanelForm.controls.vlTestPlatform.value=='GeneXpert'">
       <mat-option value="HIV-1 Detected" [disabled]="isOptionDisableds()">HIV-1 Detected</mat-option>
       <mat-option value="HIV-1 Not Detected" [disabled]="isOptionDisableds()">HIV-1 Not Detected</mat-option>
@@ -955,9 +955,9 @@
   }
 </mat-form-field>
 }
-@if (labResultPanelForm.controls.isSampleRejected.value=='no') {
+@if (labResultPanelForm.controls.isSampleRejected.value=='no' && !isHivNotDetected()) {
   <mat-form-field appearance="fill">
-    <mat-label>Viral Load Result (copiesl/ml)</mat-label>
+    <mat-label>Viral Load Result (copies/mL)</mat-label>
     <input [readonly]="mode=='view' || checkedT || checkedB" [disabled]="mode=='view' || checkedT || checkedB"
       type="text" matInput formControlName="vlResult" (focusout)="onChangeVl('vlResult')">
   </mat-form-field>
@@ -965,16 +965,29 @@
 <!-- <mat-checkbox formControlName="targetNotDetected" [readonly]="mode=='view'" [disabled]="mode=='view'" [checked]="checkedT" *ngIf="labResultPanelForm.controls.isSampleRejected.value=='no'" [disabled]="checkedB || (labResultPanelForm.controls.vlResult.value!='' && labResultPanelForm.controls.vlLog.value!='')"
 (change)="onChangeTarget()">Target Not Detected</mat-checkbox> -->
 <!-- [disabled]="mode=='view'" -->
-@if (labResultPanelForm.controls.isSampleRejected.value=='no') {
+@if (labResultPanelForm.controls.isSampleRejected.value=='no' && !isHivNotDetected()) {
   <mat-checkbox formControlName="belowDetectionLevel" [readonly]="mode=='view'" [checked]='checkedB'
     [disabled]="checkedT || (labResultPanelForm.controls.vlResult.value!='' && labResultPanelForm.controls.vlLog.value!='') || mode=='view'"
   (change)="onChangeBelow()">Below Detection Level</mat-checkbox>
 }
-@if (labResultPanelForm.controls.isSampleRejected.value=='no') {
+@if (labResultPanelForm.controls.isSampleRejected.value=='no' && !isHivNotDetected()) {
   <mat-form-field appearance="fill">
     <mat-label>Viral Load Log</mat-label>
     <input [readonly]="mode=='view' || checkedT || checkedB" [disabled]="mode=='view' || checkedT || checkedB"
       type="text" matInput formControlName="vlLog" (change)="onChangeVl('vlLog')">
+  </mat-form-field>
+}
+@if (labResultPanelForm.controls.isSampleRejected.value=='no' && isFailedResult()) {
+  <mat-form-field appearance="fill">
+    <mat-label>Reason for Failure</mat-label>
+    <mat-select [readonly]="mode=='view'" formControlName="reasonForFailure" required [errorStateMatcher]="matcher">
+      @for (item of vlInitArray['reasonForFailure'] || []; track item.failure_id) {
+        <mat-option [value]="item.failure_id" [disabled]="isOptionDisableds()">{{item.failure_reason}}</mat-option>
+      }
+    </mat-select>
+    @if (labResultPanelForm.controls.reasonForFailure.hasError('required')) {
+      <mat-error>Please choose the reason for failure</mat-error>
+    }
   </mat-form-field>
 }
 @if ((mode=='edit' && isTestingUser=='yes' && (previousRejectedValue=='no' || previousRejectedValue=='yes') && (labResultPanelForm.controls.vlResult.dirty || labResultPanelForm.controls.isSampleRejected.dirty))) {
@@ -1082,14 +1095,11 @@
 </mat-form-field>
 <mat-form-field appearance="fill">
   <mat-label>Approved On</mat-label>
-  <input [readonly]="true"
-    [attr.readonly]="mode === 'view'  ? true : null" matInput [matDatepicker]="approvedOnPicker"
-    formControlName="approvedOn" [errorStateMatcher]="matcher" [max]="maxDate"
-    [required]="labResultPanelForm.controls.isSampleRejected.value=='yes' || labResultPanelForm.controls.isSampleRejected.value=='no'"
-    [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value}">
-  <mat-datepicker-toggle matSuffix [for]="approvedOnPicker" [disabled]="mode === 'view' "
-  [attr.readonly]="mode === 'view'  ? true : null"></mat-datepicker-toggle>
-  <mat-datepicker #approvedOnPicker></mat-datepicker>
+  <input [readonly]="mode=='view'"
+    [attr.readonly]="mode === 'view' ? true : null" matInput type="datetime-local" [max]="maxDatetime"
+    formControlName="approvedOn" [errorStateMatcher]="matcher"
+    [required]="labResultPanelForm.controls.isSampleRejected.value=='yes' || labResultPanelForm.controls.isSampleRejected.value=='no'">
+  <mat-datepicker-toggle matSuffix [disabled]="mode === 'view'"></mat-datepicker-toggle>
 </mat-form-field>
 <mat-form-field appearance="fill">
   <mat-label>Lab Tech. Comments</mat-label>

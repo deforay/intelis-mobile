@@ -116,6 +116,11 @@ export class DbMigrationService {
                 await this.storage.executeSql(`INSERT INTO version_history (versionNumber,updatedAt) VALUES ("${item}","${date}")`);
               } catch (error) {
                 console.log(error);
+                // A file is imported in one transaction, so a column it adds already being there
+                // means it was applied and the app stopped before recording it; record it now.
+                if (/duplicate column name/i.test(String((error && error.message) || error))) {
+                  await this.storage.executeSql(`INSERT INTO version_history (versionNumber,updatedAt) VALUES ("${item}","${date}")`).catch((e) => console.log(e));
+                }
               }
               console.log('app version is updated', date);
             }

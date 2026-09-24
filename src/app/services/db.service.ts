@@ -720,9 +720,9 @@ export class DbService {
                 date_test_ordered_by_physician, is_patient_new, has_patient_changed_regimen, reason_for_regimen_change, 
                 regimen_change_date, reason_for_vl_testing, vl_test_number, last_viral_load_result, last_viral_load_date, 
                 date_dispatched_from_clinic_to_lab, result_reviewed_by, result_reviewed_datetime, result_value_hiv_detection, 
-                pregnancy_trimester
+                pregnancy_trimester, reason_for_failure
             ) VALUES (
-                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
             )
             ON CONFLICT (unique_id) DO UPDATE SET 
                 user_id = EXCLUDED.user_id, app_sample_code = EXCLUDED.app_sample_code, remote_sample_code = EXCLUDED.remote_sample_code, 
@@ -762,7 +762,8 @@ export class DbService {
                 last_viral_load_result = EXCLUDED.last_viral_load_result, last_viral_load_date = EXCLUDED.last_viral_load_date, 
                 date_dispatched_from_clinic_to_lab = EXCLUDED.date_dispatched_from_clinic_to_lab, 
                 result_reviewed_by = EXCLUDED.result_reviewed_by, result_reviewed_datetime = EXCLUDED.result_reviewed_datetime, 
-                result_value_hiv_detection = EXCLUDED.result_value_hiv_detection, pregnancy_trimester = EXCLUDED.pregnancy_trimester
+                result_value_hiv_detection = EXCLUDED.result_value_hiv_detection, pregnancy_trimester = EXCLUDED.pregnancy_trimester,
+                reason_for_failure = EXCLUDED.reason_for_failure
             `;
         const values = [
             saveVlSSJSON.user_id, saveVlSSJSON.uniqueId, saveVlSSJSON.appSampleCode, saveVlSSJSON.remoteSampleCode, 
@@ -785,7 +786,8 @@ export class DbService {
             saveVlSSJSON.isPatientNew, saveVlSSJSON.hasChangedRegimen, saveVlSSJSON.reasonForArvRegimenChange, 
             saveVlSSJSON.dateOfArvRegimenChange, saveVlSSJSON.vlTestReason, saveVlSSJSON.viralLoadNo, 
             saveVlSSJSON.lastViralLoadResult, saveVlSSJSON.lastViralLoadTestDate, saveVlSSJSON.dateDispatchedFromClinicToLab, 
-            saveVlSSJSON.reviewedBy, saveVlSSJSON.reviewedOn, saveVlSSJSON.resultValueHivDetection, saveVlSSJSON.trimester
+            saveVlSSJSON.reviewedBy, saveVlSSJSON.reviewedOn, saveVlSSJSON.resultValueHivDetection, saveVlSSJSON.trimester,
+            saveVlSSJSON.reasonForFailure
         ];
 
         const res = await this.storage.executeSql(insertSQL, values);

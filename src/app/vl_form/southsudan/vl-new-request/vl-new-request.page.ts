@@ -304,6 +304,15 @@ export class VlNewRequestPage implements OnInit {
           value: '',
           disabled: this.mode === 'view' || this.mode === 'result edit'
         }, []),
+        // In the patient section, as on the web form.
+        isPatientPregnant: new FormControl({
+          value: '',
+          disabled: this.mode === 'view' || this.mode === 'result edit'
+        }, []),
+        isPatientBreastfeeding: new FormControl({
+          value: '',
+          disabled: this.mode === 'view' || this.mode === 'result edit'
+        }, []),
        
         patientPhoneNo: new FormControl({
           value: '',
@@ -364,14 +373,6 @@ export class VlNewRequestPage implements OnInit {
           disabled: this.mode === 'view' || this.mode === 'result edit'
         }, []),
        
-        isPatientPregnant: new FormControl({
-          value: '',
-          disabled: this.mode === 'view' || this.mode === 'result edit'
-        }, []),
-        isPatientBreastfeeding: new FormControl({
-          value: '',
-          disabled: this.mode === 'view' || this.mode === 'result edit'
-        }, []),
         
       
        
@@ -445,6 +446,12 @@ export class VlNewRequestPage implements OnInit {
         approvedOn: new FormControl({
           value: '',
           disabled: this.mode === 'view' 
+        }, []),
+
+        // Asked when the result is "failed", as on the web form.
+        reasonForFailure: new FormControl({
+          value: '',
+          disabled: this.mode === 'view'
         }, []),
        
         reviewedBy: new FormControl({
@@ -787,8 +794,8 @@ export class VlNewRequestPage implements OnInit {
     this.treatmentInfoPanelForm.get('currentRegimen').setValue(this.getSelectedTestReqForm.currentRegimen ? this.getSelectedTestReqForm.currentRegimen : "");
     this.treatmentInfoPanelForm.get('doInitCuurentRegimen').setValue(this.getSelectedTestReqForm.doInitCuurentRegimen ? new Date(this.getSelectedTestReqForm.doInitCuurentRegimen) : '');
     this.treatmentInfoPanelForm.get('arvAdherence').setValue(this.getSelectedTestReqForm.arvAdherence ? this.getSelectedTestReqForm.arvAdherence : "");
-    this.treatmentInfoPanelForm.get('isPatientPregnant').setValue(this.getSelectedTestReqForm.isPatientPregnant ? this.getSelectedTestReqForm.isPatientPregnant : "");
-    this.treatmentInfoPanelForm.get('isPatientBreastfeeding').setValue(this.getSelectedTestReqForm.isPatientBreastfeeding ? this.getSelectedTestReqForm.isPatientBreastfeeding : "");
+    this.patientInfoPanelForm.get('isPatientPregnant').setValue(this.getSelectedTestReqForm.isPatientPregnant ? this.getSelectedTestReqForm.isPatientPregnant : "");
+    this.patientInfoPanelForm.get('isPatientBreastfeeding').setValue(this.getSelectedTestReqForm.isPatientBreastfeeding ? this.getSelectedTestReqForm.isPatientBreastfeeding : "");
     if (this.getSelectedTestReqForm.rtnDoViralLoadTest != '' && this.getSelectedTestReqForm.rtnDoViralLoadTest != null) {
       this.indication4VlTestingPanelForm.get('rtnDoViralLoadTest').setValue(this.getSelectedTestReqForm.rtnDoViralLoadTest ? new Date(this.getSelectedTestReqForm.rtnDoViralLoadTest) : '');
       this.indication4VlTestingPanelForm.get('rtnVlValue').setValue(this.getSelectedTestReqForm.rtnVlValue ? this.getSelectedTestReqForm.rtnVlValue : "");
@@ -825,6 +832,7 @@ export class VlNewRequestPage implements OnInit {
     if (this.getSelectedTestReqForm.isSampleRejected) {
       this.previousRejectedValue = this.getSelectedTestReqForm.isSampleRejected;
     }
+    this.labResultPanelForm.get('reasonForFailure').setValue(this.getSelectedTestReqForm.reasonForFailure ? this.getSelectedTestReqForm.reasonForFailure : "");
     this.labResultPanelForm.get('resultValueHivDetection').setValue(this.getSelectedTestReqForm.resultValueHivDetection ? this.getSelectedTestReqForm.resultValueHivDetection : "");
     this.labResultPanelForm.get('rejectionReason').setValue(this.getSelectedTestReqForm.rejectionReason ? this.getSelectedTestReqForm.rejectionReason : "");
     this.onChangeRejectReason();
@@ -1535,8 +1543,8 @@ export class VlNewRequestPage implements OnInit {
         "currentRegimen": this.treatmentInfoPanelForm.controls.currentRegimen.value,
         "doInitCuurentRegimen": this.treatmentInfoPanelForm.controls.doInitCuurentRegimen.value ? this.dateFormat(new Date(this.treatmentInfoPanelForm.controls.doInitCuurentRegimen.value)) : '',
         "arvAdherence": this.treatmentInfoPanelForm.controls.arvAdherence.value,
-        "isPatientPregnant": this.treatmentInfoPanelForm.controls.isPatientPregnant.value,
-        "isPatientBreastfeeding": this.treatmentInfoPanelForm.controls.isPatientBreastfeeding.value,
+        "isPatientPregnant": this.patientInfoPanelForm.controls.isPatientPregnant.value,
+        "isPatientBreastfeeding": this.patientInfoPanelForm.controls.isPatientBreastfeeding.value,
 
         "vlTestReason": this.indication4VlTestingPanelForm.controls.VLTesting.value,
         "rtnDoViralLoadTest": this.indication4VlTestingPanelForm.controls.rtnDoViralLoadTest.value ? this.dateFormat(new Date(this.indication4VlTestingPanelForm.controls.rtnDoViralLoadTest.value)) : '',
@@ -1571,7 +1579,8 @@ export class VlNewRequestPage implements OnInit {
         "dateResultDispatch": this.labResultPanelForm.controls.dateResultDispatch.value ? this.dateTimeFormat(new Date(this.labResultPanelForm.controls.dateResultDispatch.value)) : '',
         "testedBy": this.testedByID ? this.testedByID : '',
         "approvedBy": this.approvedByID ? this.approvedByID : '',
-        "approvedOn": this.labResultPanelForm.controls.approvedOn.value ? this.dateFormat(new Date(this.labResultPanelForm.controls.approvedOn.value)) : '',
+        "approvedOn": this.labResultPanelForm.controls.approvedOn.value ? this.dateTimeFormat(new Date(this.labResultPanelForm.controls.approvedOn.value)) : '',
+        "reasonForFailure": this.isFailedResult() ? this.labResultPanelForm.controls.reasonForFailure.value : '',
         "reviewedBy": this.reviewedByID ? this.reviewedByID : '',
         "reviewedOn": this.labResultPanelForm.controls.reviewedOn.value ? this.dateTimeFormat(new Date(this.labResultPanelForm.controls.reviewedOn.value)) : '',
         "labTechComments": this.labResultPanelForm.controls.labTechComments.value ? this.labResultPanelForm.controls.labTechComments.value : '',
@@ -1829,6 +1838,34 @@ export class VlNewRequestPage implements OnInit {
     if (this.isTestingUser == 'yes' && received && !received.value) {
       received.setValue(collected);
     }
+  }
+
+  // As on the web form: pregnancy and breastfeeding apply to women only.
+  onGenderChange() {
+    if (this.patientInfoPanelForm.get('gender').value != 'female') {
+      this.patientInfoPanelForm.get('isPatientPregnant').setValue('');
+      this.patientInfoPanelForm.get('isPatientBreastfeeding').setValue('');
+    }
+  }
+
+  // As on the web form: HIV-1 Not Detected on GeneXpert stands for the result, so there is no
+  // copies or log value to enter.
+  isHivNotDetected() {
+    return this.labResultPanelForm.controls.vlTestPlatform.value == 'GeneXpert'
+      && this.labResultPanelForm.controls.resultValueHivDetection.value == 'HIV-1 Not Detected';
+  }
+
+  onChangeHivDetection() {
+    if (this.isHivNotDetected()) {
+      this.labResultPanelForm.get('vlResult').setValue('');
+      this.labResultPanelForm.get('vlLog').setValue('');
+    }
+  }
+
+  // Only asked when the server has failure reasons, as on the web form.
+  isFailedResult() {
+    const reasons = (this.vlInitArray && this.vlInitArray['reasonForFailure']) || [];
+    return reasons.length > 0 && String(this.labResultPanelForm.controls.vlResult.value || '').trim().toLowerCase() == 'failed';
   }
 
   // The server calls it unreported; older app requests saved notrecorded, the web form once not_record.

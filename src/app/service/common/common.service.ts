@@ -573,6 +573,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
 
         "sampleCollectionDate": item.sample_collection_date,
         "specimenType": item.sample_type,
+        "reasonForFailure": item.reason_for_failure,
 
         "doTreatmentInit": item.treatment_initiated_date,
         "currentRegimen": item.current_regimen,
@@ -678,6 +679,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleCollectionDate": item.sample_collection_date,
         "sampleDispatchedOn": item.sample_dispatched_datetime,
         "specimenType": item.sample_type,
+        "reasonForFailure": item.reason_for_failure,
 
         "dateOfArtInitiation": item.treatment_initiated_date,
         "artRegimen": item.current_regimen,
