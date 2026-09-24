@@ -149,6 +149,24 @@
               }
             </mat-autocomplete>
           </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Testing Lab</mat-label>
+            <mat-select [readonly]="mode=='view'" formControlName="labName" required
+              [errorStateMatcher]="matcher">
+              @for (item of initArray['testingLabsList']; track item) {
+                @if (item.test_type == 'vl') {
+                  <mat-option [value]="item.show" [disabled]="mode=='view'">
+                    {{item.show}}
+                  </mat-option>
+                }
+              }
+            </mat-select>
+            @if (clinicInfoPanelForm.controls.labName.hasError('required')) {
+              <mat-error>
+                Please select the testing lab
+              </mat-error>
+            }
+          </mat-form-field>
           <mat-action-row>
             <button mat-button color="primary" (click)="nextStepClinicInfo(clinicInfoPanelForm.valid)">Next</button>
           </mat-action-row>
@@ -772,26 +790,6 @@
           <mat-icon>keyboard_arrow_down</mat-icon>
         </mat-expansion-panel-header>
         <div class="panel-gap"></div>
-        <mat-form-field appearance="fill">
-          <mat-label>Lab Name</mat-label>
-          <mat-select [readonly]="mode=='view'"  formControlName="labName"
-            [required]="labResultPanelForm.controls.isSampleRejected.value=='yes' || labResultPanelForm.controls.isSampleRejected.value=='no'"
-            [errorStateMatcher]="matcher"
-            [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.isSampleRejected.value}">
-            @for (item of initArray['testingLabsList']; track item) {
-              @if (item.test_type == 'vl') {
-                <mat-option [value]="item.show" [disabled]="isOptionDisableds()">
-                  {{item.show}}
-                </mat-option>
-              }
-            }
-          </mat-select>
-          @if (labResultPanelForm.controls.labName.hasError('required')) {
-            <mat-error>
-              Please select Testing Platform
-            </mat-error>
-          }
-        </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>VL Focal Person</mat-label>
           <input [readonly]="mode=='view'" [disabled]="mode=='view'" type="text" matInput

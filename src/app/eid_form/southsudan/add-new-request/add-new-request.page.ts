@@ -309,6 +309,13 @@ export class AddNewRequestPage implements OnInit {
           disabled: this.mode === 'view' || this.mode === 'result edit'
         }, [Validators.required]),
 
+        // Required by the server form; disabled when viewing or entering results so older
+        // requests without it can still take a result.
+        sampleDispatchedOn: new FormControl({
+          value: '',
+          disabled: this.mode === 'view' || this.mode === 'result edit'
+        }, [Validators.required]),
+
         requestingOfficerPhone: new FormControl({
           value: '',
           disabled: this.mode === 'view' || this.mode === 'result edit'
@@ -527,9 +534,6 @@ export class AddNewRequestPage implements OnInit {
       testingLabs = this.initArray['testingLabsList'].filter(item => item.value == this.getSelectedTestReqForm.labId);
       console.log(testingLabs)
     }
-    if (this.mode == 'add') {
-console.log(this.labResultPanelForm.controls.reasonForChanging.value);
-    }
 
   }
 
@@ -646,8 +650,6 @@ console.log(this.labResultPanelForm.controls.reasonForChanging.value);
     console.log(this.getSelectedTestReqForm, 'getSelected CovidID', this.getSelectedTestReqForm.resultIn);
     this.districtdata=this.getSelectedTestReqForm.district_id;
     this.reason= this.getSelectedTestReqForm.reasonForChanging;
-    let reasons = JSON.parse(this.reason)
-    
     if (this.reason) {
       let reasons = JSON.parse(this.reason);
       console.log(reasons);
@@ -655,7 +657,7 @@ console.log(this.labResultPanelForm.controls.reasonForChanging.value);
           reasons.forEach((item: any) => {
               this.reasonArray.push(item);
           });
-          this.labResultPanelForm.get('reasonForChanging').setValue(reasons[reasons.length - 1]?.reason || '');
+          this.labResultPanelForm.get('reasonForChanging').setValue(reasons[reasons.length - 1]?.reason || reasons[reasons.length - 1]?.msg || '');
       }
   }
     if (this.getSelectedTestReqForm.sampleCode) {
@@ -789,7 +791,11 @@ console.log(this.labResultPanelForm.controls.reasonForChanging.value);
     this.infantMotherHealthInfoPanelForm.get('testDate').setValue(this.getSelectedTestReqForm.testDate ? new Date(this.getSelectedTestReqForm.testDate) : '');
 
     this.specimenInfoPanelForm.get('sampleCollectionDateTime').setValue(this.dateTimeFormat2(new Date(this.getSelectedTestReqForm.sampleCollectionDate)));
-    this.specimenInfoPanelForm.get('specimenType').setValue(this.getSelectedTestReqForm.specimenType);
+    // The server stores the sample type id; requests saved before 1.6.1 kept its name instead.
+    const specimenTypes = (this.initArray && this.initArray.eid && this.initArray.eid.specimenTypeList) || [];
+    const savedSpecimen = specimenTypes.find(item => item.value == this.getSelectedTestReqForm.specimenType || item.show == this.getSelectedTestReqForm.specimenType);
+    this.specimenInfoPanelForm.get('specimenType').setValue(savedSpecimen ? savedSpecimen.value : this.getSelectedTestReqForm.specimenType);
+    this.specimenInfoPanelForm.get('sampleDispatchedOn').setValue(this.getSelectedTestReqForm.sampleDispatchedOn ? this.dateTimeFormat2(new Date(this.getSelectedTestReqForm.sampleDispatchedOn)) : '');
     this.specimenInfoPanelForm.get('requestingOfficer').setValue(this.getSelectedTestReqForm.requestingOfficer);
     this.specimenInfoPanelForm.get('requestingOfficerPhone').setValue(this.getSelectedTestReqForm.requestingOfficerPhone);
 
@@ -1437,7 +1443,12 @@ console.log(this.labResultPanelForm.controls.reasonForChanging.value);
     // reasonForChangingArray.push(reasonForChangingObj);
     array.push(reasonForChangingObj)
     
-    this.reasonArray.push(reasonForChangingObj)
+    // The field is pre-filled with the last reason, so only a new, different reason is a new change.
+    const lastReason = this.reasonArray.length ? this.reasonArray[this.reasonArray.length - 1] : null;
+    const lastReasonText = lastReason ? (lastReason.reason ?? lastReason.msg ?? '') : '';
+    if (String(reasonForChangingObj.reason).trim() !== '' && reasonForChangingObj.reason !== lastReasonText) {
+      this.reasonArray.push(reasonForChangingObj);
+    }
 
       let saveEidSSJSON  =
       {
@@ -1486,6 +1497,7 @@ console.log(this.labResultPanelForm.controls.reasonForChanging.value);
         "reasonPcr2Test": this.infantMotherHealthInfoPanelForm.controls.reasonPcr2Test.value,
 
         "sampleCollectionDate": this.dateTimeFormat(this.specimenInfoPanelForm.controls.sampleCollectionDateTime.value),
+        "sampleDispatchedOn": this.specimenInfoPanelForm.controls.sampleDispatchedOn.value ? this.dateTimeFormat(new Date(this.specimenInfoPanelForm.controls.sampleDispatchedOn.value)) : '',
         "specimenType": this.specimenInfoPanelForm.controls.specimenType.value,
         "requestingOfficer": this.specimenInfoPanelForm.controls.requestingOfficer.value,
         "requestingOfficerPhone": this.specimenInfoPanelForm.controls.requestingOfficerPhone.value,
@@ -1631,6 +1643,10 @@ console.log(this.labResultPanelForm.controls.reasonForChanging.value);
 
 
 
+
+  clearSampleDispatchedOn() {
+    this.specimenInfoPanelForm.get('sampleDispatchedOn').setValue('');
+  }
 
   clearSampleCollection() {
     this.specimenInfoPanelForm.get('sampleCollectionDateTime').setValue('');

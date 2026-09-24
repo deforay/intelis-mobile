@@ -253,6 +253,12 @@ export class VlNewRequestPage implements OnInit {
           value: '',
           disabled: this.mode === 'view' || this.mode === 'result edit'
         }, []),
+
+        // The testing lab is required by the server for every request, not only lab users'.
+        labName: new FormControl({
+          value: '',
+          disabled: this.mode === 'view'
+        }, [Validators.required]),
         
         implementingPartner: new FormControl({
           value: '',
@@ -376,11 +382,6 @@ export class VlNewRequestPage implements OnInit {
         this.treatmentInfoPanelForm.get(inner).setErrors(null);
       }
       this.labResultPanelForm = this.fb.group({
-        labName: new FormControl({
-          value: '',
-          disabled: this.mode === 'view' 
-        }, []),
-        
         vlFocalPerson: new FormControl('', []),
         vlFocalPhoneNo: new FormControl({
           value: '',
@@ -643,7 +644,7 @@ export class VlNewRequestPage implements OnInit {
       this.patientInfoPanelForm.get('dob').setValue(this.selectedPatientDetail.patient_dob ? new Date(this.selectedPatientDetail.patient_dob) : '');
       this.patientInfoPanelForm.get('ageInYears').setValue(this.selectedPatientDetail.patient_age_in_years);
       this.patientInfoPanelForm.get('ageInMonths').setValue(this.selectedPatientDetail.patient_age_in_months);
-      this.patientInfoPanelForm.get('gender').setValue(this.selectedPatientDetail.patient_gender);
+      this.patientInfoPanelForm.get('gender').setValue(this.serverGender(this.selectedPatientDetail.patient_gender));
       this.genderSelected = this.selectedPatientDetail.patientGender;
       this.patientInfoPanelForm.get('patientPhoneNo').setValue(this.selectedPatientDetail.patient_mobile_number);
       // this.patientInfoPanelForm.get('address').setValue(this.selectedPatientDetail.patient_address);
@@ -680,8 +681,6 @@ export class VlNewRequestPage implements OnInit {
     console.log(this.getSelectedTestReqForm, 'getSelected Vl', this.getSelectedTestReqForm.provinceId, this.getSelectedTestReqForm.provinceName);
     this.districtdata=this.getSelectedTestReqForm.district_id;
     this.reason= this.getSelectedTestReqForm.reasonForChanging;
-    let reasons = JSON.parse(this.reason)
-    
     if (this.reason) {
       let reasons = JSON.parse(this.reason);
       console.log(reasons);
@@ -689,7 +688,7 @@ export class VlNewRequestPage implements OnInit {
           reasons.forEach((item: any) => {
               this.reasonArray.push(item);
           });
-          this.labResultPanelForm.get('reasonForChanging').setValue(reasons[reasons.length - 1]?.reason || '');
+          this.labResultPanelForm.get('reasonForChanging').setValue(reasons[reasons.length - 1]?.reason || reasons[reasons.length - 1]?.msg || '');
       }
   }
     if (this.getSelectedTestReqForm.sampleCode) {
@@ -766,7 +765,7 @@ export class VlNewRequestPage implements OnInit {
         this.testingLab = testingLabs[0].show ? testingLabs[0].show : '';
         console.log('labId', this.testingLab);
       }
-      this.labResultPanelForm.get('labName').setValue(this.testingLab);
+      this.clinicInfoPanelForm.get('labName').setValue(this.testingLab);
     }
 
 
@@ -776,7 +775,7 @@ export class VlNewRequestPage implements OnInit {
     this.patientInfoPanelForm.get('dob').setValue(this.getSelectedTestReqForm.patientDob ? new Date(this.getSelectedTestReqForm.patientDob) : '');
     this.patientInfoPanelForm.get('ageInYears').setValue(this.getSelectedTestReqForm.patientAge ? this.getSelectedTestReqForm.patientAge : "");
     this.patientInfoPanelForm.get('ageInMonths').setValue(this.getSelectedTestReqForm.patientAgeinMonths ? this.getSelectedTestReqForm.patientAgeinMonths : "");
-    this.patientInfoPanelForm.get('gender').setValue(this.getSelectedTestReqForm.patientGender ? this.getSelectedTestReqForm.patientGender : "");
+    this.patientInfoPanelForm.get('gender').setValue(this.serverGender(this.getSelectedTestReqForm.patientGender));
     this.genderSelected = this.getSelectedTestReqForm.patientGender;
     this.patientInfoPanelForm.get('patientPhoneNo').setValue(this.getSelectedTestReqForm.patientPhoneNumber ? this.getSelectedTestReqForm.patientPhoneNumber : "");
     this.patientInfoPanelForm.get('patientConsent').setValue(this.getSelectedTestReqForm.patientConsent ? this.getSelectedTestReqForm.patientConsent : "");
@@ -814,7 +813,7 @@ export class VlNewRequestPage implements OnInit {
     this.indication4VlTestingPanelForm.get('phoneNumber').setValue(this.getSelectedTestReqForm.phoneNumber ? this.getSelectedTestReqForm.phoneNumber : "");
     this.indication4VlTestingPanelForm.get('requestDate').setValue(this.getSelectedTestReqForm.requestDate ? new Date(this.getSelectedTestReqForm.requestDate) : '');
 
-    // this.labResultPanelForm.get('labName').setValue(this.getSelectedTestReqForm.labName ? this.getSelectedTestReqForm.labName : "");
+    // this.clinicInfoPanelForm.get('labName').setValue(this.getSelectedTestReqForm.labName ? this.getSelectedTestReqForm.labName : "");
     this.labResultPanelForm.get('vlFocalPerson').setValue(this.getSelectedTestReqForm.vlFocalPerson ? this.getSelectedTestReqForm.vlFocalPerson : "");
     this.labResultPanelForm.get('vlFocalPhoneNo').setValue(this.getSelectedTestReqForm.vlFocalPhoneNo ? this.getSelectedTestReqForm.vlFocalPhoneNo : "");
     this.sampleInfoPanelForm.get('sampleReceivedDateTimeAtHub').setValue(this.getSelectedTestReqForm.sampleReceivedDateTimeAtHub ? this.dateTimeFormat2(new Date(this.getSelectedTestReqForm.sampleReceivedDateTimeAtHub)) : "");
@@ -1402,9 +1401,9 @@ export class VlNewRequestPage implements OnInit {
 
 
       let filteredTestLabRecord = this.initArray['testingLabsList'].filter(item =>
-        item.show == this.labResultPanelForm.controls.labName.value);
+        item.show == this.clinicInfoPanelForm.controls.labName.value);
       this.labId = filteredTestLabRecord[0] ? filteredTestLabRecord[0].value : '';
-      this.labName = this.labResultPanelForm.controls.labName.value;
+      this.labName = this.clinicInfoPanelForm.controls.labName.value;
 
 
       let filteredTestedByRecord = this.initArray['labTechniciansList'].filter(item => item.show == this.labResultPanelForm.controls.testedBy.value);
@@ -1481,7 +1480,12 @@ export class VlNewRequestPage implements OnInit {
     // reasonForChangingArray.push(reasonForChangingObj);
     array.push(reasonForChangingObj)
     
-    this.reasonArray.push(reasonForChangingObj)
+    // The field is pre-filled with the last reason, so only a new, different reason is a new change.
+    const lastReason = this.reasonArray.length ? this.reasonArray[this.reasonArray.length - 1] : null;
+    const lastReasonText = lastReason ? (lastReason.reason ?? lastReason.msg ?? '') : '';
+    if (String(reasonForChangingObj.reason).trim() !== '' && reasonForChangingObj.reason !== lastReasonText) {
+      this.reasonArray.push(reasonForChangingObj);
+    }
 
       let saveVlSSJSON =
 
@@ -1544,7 +1548,7 @@ export class VlNewRequestPage implements OnInit {
         "requestDate": this.indication4VlTestingPanelForm.controls.requestDate.value ? this.dateFormat(new Date(this.indication4VlTestingPanelForm.controls.requestDate.value)) : '',
 
 
-        "labName": this.labResultPanelForm.controls.labName.value,
+        "labName": this.clinicInfoPanelForm.controls.labName.value,
         "vlFocalPerson": this.labResultPanelForm.controls.vlFocalPerson.value,
         "vlFocalPhoneNo": this.labResultPanelForm.controls.vlFocalPhoneNo.value,
         "sampleReceivedDateTimeAtHub": this.sampleInfoPanelForm.controls.sampleReceivedDateTimeAtHub.value ? this.dateTimeFormat(new Date(this.sampleInfoPanelForm.controls.sampleReceivedDateTimeAtHub.value)) : '',
@@ -1669,8 +1673,8 @@ export class VlNewRequestPage implements OnInit {
       "value": "female"
     },
     {
-      "name": "Not Recorded",
-      "value": "notrecorded"
+      "name": "Unreported",
+      "value": "unreported"
     }
     ]
     this.PatientConsent = [{
@@ -1798,6 +1802,11 @@ export class VlNewRequestPage implements OnInit {
   onItemChange() {
     console.log(this.indication4VlTestingPanelForm.get('VLTesting').value, 'indication4VlTestingPanelForm.get().value');
     this.isVisible = this.indication4VlTestingPanelForm.get('VLTesting').value;
+  }
+
+  // The server calls it unreported; older app requests saved notrecorded, the web form once not_record.
+  serverGender(gender) {
+    return gender == 'notrecorded' || gender == 'not_record' ? 'unreported' : (gender || '');
   }
 
   isOptionDisabled(): boolean{

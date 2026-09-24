@@ -539,10 +539,10 @@ export class DbService {
             eid_test_platform, import_machine_name, sample_tested_datetime, rapid_test_date, rejection_on,
             reason_for_changing, child_treatment, choice_of_feeding, is_cotrimoxazole_being_administered_to_the_infant,
             mother_treatment_other, mother_vl_result, mother_cd4, mother_dob, mother_marital_status, mother_name,
-            result_reviewed_by, result_reviewed_datetime
+            result_reviewed_by, result_reviewed_datetime, sample_dispatched_datetime
           ) VALUES (
             ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-            ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+            ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
           )
           ON CONFLICT (app_sample_code) DO UPDATE SET
             user_id = EXCLUDED.user_id, vlsm_country_id = EXCLUDED.vlsm_country_id,
@@ -577,7 +577,8 @@ export class DbService {
             mother_treatment_other = EXCLUDED.mother_treatment_other, mother_vl_result = EXCLUDED.mother_vl_result,
             mother_cd4 = EXCLUDED.mother_cd4, mother_dob = EXCLUDED.mother_dob,
             mother_marital_status = EXCLUDED.mother_marital_status, mother_name = EXCLUDED.mother_name,
-            result_reviewed_by = EXCLUDED.result_reviewed_by, result_reviewed_datetime = EXCLUDED.result_reviewed_datetime
+            result_reviewed_by = EXCLUDED.result_reviewed_by, result_reviewed_datetime = EXCLUDED.result_reviewed_datetime,
+            sample_dispatched_datetime = EXCLUDED.sample_dispatched_datetime
         `;
   
         let updateSQL = `
@@ -597,7 +598,7 @@ export class DbService {
             sample_tested_datetime = ?, rapid_test_date = ?, rejection_on = ?, reason_for_changing = ?,
             child_treatment = ?, choice_of_feeding = ?, is_cotrimoxazole_being_administered_to_the_infant = ?,
             mother_treatment_other = ?, mother_vl_result = ?, mother_cd4 = ?, mother_dob = ?, mother_marital_status = ?,
-            mother_name = ?, result_reviewed_by = ?, result_reviewed_datetime = ?
+            mother_name = ?, result_reviewed_by = ?, result_reviewed_datetime = ?, sample_dispatched_datetime = ?
           WHERE app_sample_code = ?
         `;
   
@@ -621,12 +622,12 @@ export class DbService {
           reasonForChangingString, saveEidSSJSON.childTreatment, saveEidSSJSON.choiceOfFeeding,
           saveEidSSJSON.isCotrimoxazoleBeingAdministered, saveEidSSJSON.motherTreatmentOther, saveEidSSJSON.motherViralLoad,
           saveEidSSJSON.mothercd4, saveEidSSJSON.mothersDob, saveEidSSJSON.mothersMaritalStatus,
-          saveEidSSJSON.mothersName, saveEidSSJSON.reviewedBy, saveEidSSJSON.reviewedOn
+          saveEidSSJSON.mothersName, saveEidSSJSON.reviewedBy, saveEidSSJSON.reviewedOn, saveEidSSJSON.sampleDispatchedOn
         ];
   
         let updateValues = [
-          saveEidSSJSON.user_id, saveEidSSJSON.uniqueId, saveEidSSJSON.formId, 'no', 'no', 0,
-          saveEidSSJSON.sampleCollectionDate, saveEidSSJSON.appSampleCode, saveEidSSJSON.sampleCode,
+          saveEidSSJSON.user_id, saveEidSSJSON.formId, saveEidSSJSON.remoteSampleCode, 'no', 'no', 0,
+          saveEidSSJSON.sampleCollectionDate, saveEidSSJSON.sampleCode, saveEidSSJSON.sampleCode,
           saveEidSSJSON.updatedOn, saveEidSSJSON.provinceId, saveEidSSJSON.provinceName, saveEidSSJSON.district,
           saveEidSSJSON.districtId, saveEidSSJSON.facilityName, saveEidSSJSON.facilityId, saveEidSSJSON.implementingPartner,
           saveEidSSJSON.fundingSource, saveEidSSJSON.labId, saveEidSSJSON.child_id, saveEidSSJSON.firstName,
@@ -643,7 +644,7 @@ export class DbService {
           saveEidSSJSON.rejectionDate, reasonForChangingString, saveEidSSJSON.childTreatment, saveEidSSJSON.choiceOfFeeding,
           saveEidSSJSON.isCotrimoxazoleBeingAdministered, saveEidSSJSON.motherTreatmentOther, saveEidSSJSON.motherViralLoad,
           saveEidSSJSON.mothercd4, saveEidSSJSON.mothersDob, saveEidSSJSON.mothersMaritalStatus, saveEidSSJSON.mothersName,
-          saveEidSSJSON.reviewedBy, saveEidSSJSON.reviewedOn, saveEidSSJSON.appSampleCode
+          saveEidSSJSON.reviewedBy, saveEidSSJSON.reviewedOn, saveEidSSJSON.sampleDispatchedOn, saveEidSSJSON.appSampleCode
         ];
   
         return this.storage.executeSql(isAddOrUpdate === 'add' ? insertSQL : updateSQL, isAddOrUpdate === 'add' ? insertValues : updateValues)

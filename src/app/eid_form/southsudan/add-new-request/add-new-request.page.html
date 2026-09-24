@@ -406,7 +406,7 @@
   }
   @if (infantMotherHealthInfoPanelForm.controls.pcrTest.value=='yes') {
     <mat-form-field appearance="fill">
-      <mat-label>Reason for 2nd PCR </mat-label>
+      <mat-label>Reason for Repeat PCR</mat-label>
       <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="reasonPcr2Test">
         @for (item of eidInitArray['pcrTestReason']; track item) {
           <mat-option [value]="item.value"  [disabled]="isOptionDisabled()">
@@ -491,11 +491,34 @@
     }
   </mat-form-field>
   <mat-form-field appearance="fill">
+    <mat-label>Sample Dispatched On</mat-label>
+    <input
+      [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null"
+      matInput
+      type="datetime-local"
+      [max]="maxDatetime"
+      [min]="specimenInfoPanelForm.controls.sampleCollectionDateTime.value"
+      formControlName="sampleDispatchedOn"
+      required
+      [errorStateMatcher]="matcher"
+      />
+    <ion-icon name="close" class="clearDateIcon"
+      ios="ios-close"
+      [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
+      (click)="mode !== 'view' && mode !== 'result edit' && clearSampleDispatchedOn()">
+    </ion-icon>
+    @if (specimenInfoPanelForm.controls.sampleDispatchedOn.hasError('required')) {
+      <mat-error>
+        Please enter the date the sample was dispatched
+      </mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field appearance="fill">
     <mat-label>Specimen Type</mat-label>
     <mat-select [readonly]="mode=='view' || mode=='result edit'"  formControlName="specimenType" required
       [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted }">
       @for (item of eidInitArray['specimenTypeList']; track item) {
-        <mat-option [value]="item.show"  [disabled]="isOptionDisabled()">
+        <mat-option [value]="item.value" [disabled]="isOptionDisabled()">
           {{item.show}}
         </mat-option>
       }

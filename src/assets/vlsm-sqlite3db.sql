@@ -193,6 +193,7 @@ CREATE TABLE IF NOT EXISTS "eid_form" (
 	"result"	TEXT DEFAULT NULL,
 	"result_version"	TEXT DEFAULT NULL,
 	"server_unique_id"	TEXT DEFAULT NULL,
+	"sample_dispatched_datetime"	datetime DEFAULT NULL,
 	"rejection_on"	date DEFAULT NULL,
 	"reason_for_changing"	text,
 	"tested_by"	TEXT DEFAULT NULL,

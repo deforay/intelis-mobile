@@ -9,6 +9,30 @@ import {
 import {
   Storage
 } from '@ionic/storage-angular';
+// reason_for_changing holds a JSON list of changes: the app writes {reason, change_datetime,
+// changed_by}, a pulled request carries the server's {msg, dtime, usr}. The server reads the whole
+// list back as reasonForResultChanges and overwrites what it has, so send every entry.
+function resultChangeReasons(raw: any): any[] | undefined {
+  let list: any;
+  try {
+    list = typeof raw === 'string' ? JSON.parse(raw) : raw;
+  } catch (e) {
+    return undefined;
+  }
+  if (!Array.isArray(list)) {
+    return undefined;
+  }
+  const reasons = list
+    .filter(row => row && typeof row === 'object')
+    .map(row => ({
+      reason: row.reason ?? row.msg ?? '',
+      change_datetime: row.change_datetime ?? row.dtime ?? '',
+      changed_by: row.changed_by ?? row.usr ?? '',
+    }))
+    .filter(row => String(row.reason).trim() !== '');
+  return reasons.length ? reasons : undefined;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -265,6 +289,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "isSampleRejected": item.is_sample_rejected,
         "rejectionDate": item.rejection_on,
         "reasonForCovid19ResultChanges": item.reason_for_changing,
+        "reasonForResultChanges": resultChangeReasons(item.reason_for_changing),
         "sampleRejectionReason": item.reason_for_sample_rejection,
         "rejectionReasonId": item.sample_rejection_id,
         "c19Tests": item.c19Tests,
@@ -390,6 +415,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
 
         "sampleCollectionDate": item.sample_collection_date,
         "specimenType": item.specimen_type,
+        "sampleDispatchedOn": item.sample_dispatched_datetime,
         "requestingOfficer": item.sample_requestor_name,
         "requestingOfficerPhone": item.sample_requestor_phone,
 
@@ -476,6 +502,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
 
         "sampleCollectionDate": item.sample_collection_date,
         "specimenType": item.specimen_type,
+        "sampleDispatchedOn": item.sample_dispatched_datetime,
         "sampleRequestorName": item.sample_requestor_name,
         "sampleRequestorPhone": item.sample_requestor_phone,
 
@@ -486,6 +513,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleRejectionReason": item.sample_rejection_id,
         "rejectionReasonId": item.sample_rejection_id,
         "reasonForEidResultChanges": item.reason_for_changing,
+        "reasonForResultChanges": resultChangeReasons(item.reason_for_changing),
         "rejectionDate": item.rejection_on,
         "machineName": item.import_machine_name,
         "sampleTestedDateTime": item.sample_tested_datetime,
@@ -674,6 +702,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "rejectionReason": item.sample_rejection_id,
         "rejectionReasonId": item.reason_for_sample_rejection,
         "reasonForVlResultChanges": item.reason_for_changing,
+        "reasonForResultChanges": resultChangeReasons(item.reason_for_changing),
         "vlResult": item.result_value_absolute,
         "vlResultAbsoluteDecimal": item.result_value_log,
         "result": item.result,
