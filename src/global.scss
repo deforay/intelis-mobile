@@ -494,3 +494,39 @@ mat-divider {
 .mat-mdc-form-field{
   display: block !important;
 }
+
+/* ---- Palette (see src/theme/variables.scss) ---- */
+.headerName {
+  background: transparent;
+  color: var(--app-text);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.text-title-color {
+  color: var(--app-text-muted) !important;
+  font-weight: 500;
+}
+.text-title-color.unSynced {
+  color: var(--app-warning) !important;
+}
+.viewButton, .viewButton1 {
+  background: var(--app-surface) !important;
+  color: var(--app-primary) !important;
+  border: 1px solid var(--app-primary) !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+.editButton, .editButton1, .syncAllButton {
+  background-color: var(--app-primary) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+.mat_footer {
+  background: var(--app-neutral-soft) !important;
+}
+.intelis_mat_card {
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1) !important;
+}

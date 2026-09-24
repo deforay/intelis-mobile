@@ -62,19 +62,19 @@
   
   
     .count.total {
-      color: #4a4e4d !important;
+      color: var(--app-neutral) !important;
     }
   
     .count.result {
-      color: #50C878 !important;
+      color: var(--app-success) !important;
     }
   
     .count.pending {
-      color: #7f670cd1 !important;
+      color: var(--app-warning) !important;
     }
   
     .count.rejected {
-      color: #ff5349 !important;
+      color: var(--app-danger) !important;
     }
   }
   
@@ -111,3 +111,44 @@
     box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px !important;
   }
   
+/* ---- Palette: the counts as neutral cards with a coloured number; see variables.scss ---- */
+.mat_header.total, .mat_header.result, .mat_header.pending, .mat_header.rejected {
+  background: transparent !important;
+}
+.countHeaderName {
+  color: var(--app-text-muted) !important;
+  font-weight: 600;
+}
+/* Doubled class to beat the older nested .count .count.* rules. */
+p.count.count.total { color: var(--app-neutral) !important; font-weight: 600; }
+p.count.count.result { color: var(--app-success) !important; font-weight: 600; }
+p.count.count.pending { color: var(--app-warning) !important; font-weight: 600; }
+p.count.count.rejected { color: var(--app-danger) !important; font-weight: 600; }
+.intelis_mat_card.count {
+  opacity: 1;
+  border-radius: 12px !important;
+  border-top: 4px solid var(--app-border);
+}
+.intelis_mat_card.count:has(.mat_header.result) { border-top-color: var(--app-success); }
+.intelis_mat_card.count:has(.mat_header.pending) { border-top-color: var(--app-warning); }
+.intelis_mat_card.count:has(.mat_header.rejected) { border-top-color: var(--app-danger); }
+.intelis_mat_card.count:has(.mat_header.total) { border-top-color: var(--app-neutral); }
+.highlightedTotal, .highlightedWithResult, .highlightedWithoutResult, .highlightedRejected {
+  box-shadow: 0 0 0 2px var(--app-primary) !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+.NoHighlighted {
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1) !important;
+}
+.sortButton {
+  background-color: var(--app-surface) !important;
+  color: var(--app-primary) !important;
+  border: 1px solid var(--app-primary);
+  box-shadow: none !important;
+  border-radius: 8px !important;
+}
+.matIcons.sort {
+  color: var(--app-primary) !important;
+}

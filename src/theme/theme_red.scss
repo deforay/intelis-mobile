@@ -1,59 +1,64 @@
+// Collection-site users. Once red; now the same palette as labs; see variables.scss.
 .red-theme {
   .mat-toolbar.mat-toolbar-single-row {
-    background: #d73925 !important;
+    background: var(--app-primary) !important;
   }
 
   .matIcons {
-    color: #d73925 !important;
+    color: var(--app-primary) !important;
   }
 
   .InteLISText {
-    color: #d73925 !important;
-  }
-
-  .main-toolbar {
-    --background: linear-gradient(315deg, #ffdde1 0%, rgb(232 216 216 / 40%) 74%);
-  }
-
-  .sideMenuItem{
-    --background:  rgb(246 239 239)!important;
+    color: var(--app-primary) !important;
   }
 
   .appContent {
-    --background: rgb(232 216 216 / 40%) !important;
-    //--background: linear-gradient(315deg, #ffdde1 0%, rgb(232 216 216 / 40%) 74%)!important;
+    --background: var(--app-bg) !important;
+  }
+
+  .main-toolbar {
+    --background: var(--app-primary);
+  }
+
+  .sideMenuItem {
+    --background: var(--app-surface);
   }
 
   .footerToolbar {
-    --background: rgb(232 216 216 / 40%) !important;
+    --background: var(--app-bg) !important;
   }
 
   .matIcons.arrowForward {
-    color: #d73925 !important;
+    color: var(--app-primary-dark) !important;
+  }
+
+  .matIcons.firstLevelLeftIcon {
+    color: var(--app-primary) !important;
+    margin-top: 3%;
+    margin-right: 2%;
   }
 
   .matIcons.secondLevelIcon {
-    color: #B64F4F !important
+    color: var(--app-primary) !important
   }
 
   .matIcons.thirdLevelIcon {
-    color: #ff5252 !important
+    color: var(--app-text-muted) !important
   }
 
   .previousButton {
-    color: #d73925 !important
+    color: var(--app-primary) !important
   }
 
   .action-sheet-icon.sc-ion-action-sheet-md {
-    color: #d73925 !important;
+    color: var(--app-primary) !important;
   }
 
   .mat-radio-button.mat-accent .mat-radio-inner-circle {
-    background-color: #d73925 !important;
+    background-color: var(--app-primary) !important;
   }
 
   .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-    border-color: #d73925!important;
+    border-color: var(--app-primary) !important;
   }
-
 }

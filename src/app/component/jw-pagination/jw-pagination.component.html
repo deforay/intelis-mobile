@@ -2,35 +2,16 @@
   <!-- | filter:search  -->
   @for (item of itemsArray | paginate: { itemsPerPage: 5, currentPage: cp }; track item) {
     <div>
-      <mat-card class="intelis_mat_card">
-        <mat-card-header class="mat-card-header-text" [ngStyle]="{'background':getColor(item.result ,item.isSampleRejected)}">
-          @if (item.sampleCode || item.remoteSampleCode) {
-            <span text-wrap class="headerName">
-              {{item.sampleCode || item.remoteSampleCode}}
-              @if (item.isSynced=='false') {
-                <span class="material-icons"
-                style="float: right; font-weight: 600;color: black !important; font-size: 20px; margin-right: 2%;">cloud_off</span>
-              }
-              <!-- <span class="material-icons">cloud_off</span> -->
-              <!-- <ion-icon
-            ></ion-icon> -->
-          </span>
-        }
-        @if (item.appSampleCode && (item.sampleCode=='' || !item.sampleCode) && (item.remoteSampleCode=='' || !item.remoteSampleCode)) {
-          <span text-wrap class="headerName">
-            {{item.appSampleCode}}
-            @if (item.isSynced==='false') {
-              <ion-icon
-                class="matIcons firstLevelLeftIcon vlIcon"
-            name="cloud-offline-outline" style="float: right;
-            font-weight: 600;color: black !important;
-            font-size: 20px !important;"
-              ></ion-icon>
+      <mat-card class="intelis_mat_card requestCard" [ngClass]="'status-' + statusOf(item)">
+        <mat-card-header class="requestCardHeader">
+          <div class="requestCardTitle">
+            <span class="requestCode">{{item.sampleCode || item.remoteSampleCode || item.appSampleCode}}</span>
+            @if (item.isSynced == 'false') {
+              <span class="notSynced"><span class="material-icons">cloud_off</span>Not synced</span>
             }
-          </span>
-        }
-        <!-- <ion-icon name="cloud-offline-outline"></ion-icon> -->
-      </mat-card-header>
+          </div>
+          <span class="statusChip">{{statusLabel(item)}}</span>
+        </mat-card-header>
       <mat-card-content class="matContent">
         <ion-grid class="viewGrid">
           <div style="width:100%">
@@ -266,8 +247,7 @@
               </ion-row>
             }
             @if (item.result || item.result=='' && item.isSampleRejected=='yes') {
-              <ion-row
-                [ngStyle]="{'background':item.result === 'negative' ? '#bbe4bb' : '#ff6961' }">
+              <ion-row class="resultRow">
                 <ion-col size="5">
                   <p text-wrap>
                     <span class="text-title-color">Result</span>

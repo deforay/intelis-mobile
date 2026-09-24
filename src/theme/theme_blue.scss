@@ -1,65 +1,64 @@
+// Testing-lab users. Same palette as collection sites; see variables.scss.
 .blue-theme {
   .mat-toolbar.mat-toolbar-single-row {
-    background: #3c8dbc !important;
+    background: var(--app-primary) !important;
   }
 
   .matIcons {
-    color: #3c8dbc !important;
+    color: var(--app-primary) !important;
   }
 
   .InteLISText {
-    color: #3c8dbc !important;
+    color: var(--app-primary) !important;
   }
 
   .appContent {
-    --background: #d0dadf !important;
-    //--background: linear-gradient(315deg, #ffdde1 0%, rgb(232 216 216 / 40%) 74%)!important;
+    --background: var(--app-bg) !important;
   }
 
   .main-toolbar {
-    --background: linear-gradient(315deg, #3c8dbc 0%, rgb(0 0 0 / 10%) 74%);
+    --background: var(--app-primary);
   }
 
-  .sideMenuItem{
-    --background:  #d0dadf;
+  .sideMenuItem {
+    --background: var(--app-surface);
   }
+
   .footerToolbar {
-    --background: #d0dadf !important;
+    --background: var(--app-bg) !important;
   }
 
   .matIcons.arrowForward {
-    color: #0c5682 !important;
+    color: var(--app-primary-dark) !important;
   }
 
   .matIcons.firstLevelLeftIcon {
-    color: #0871ae !important;
+    color: var(--app-primary) !important;
     margin-top: 3%;
     margin-right: 2%;
   }
 
   .matIcons.secondLevelIcon {
-    color: #2f8bc0 !important
+    color: var(--app-primary) !important
   }
 
   .matIcons.thirdLevelIcon {
-    color: #79b7db !important
+    color: var(--app-text-muted) !important
   }
 
   .previousButton {
-    color: #3c8dbc !important
+    color: var(--app-primary) !important
   }
 
   .action-sheet-icon.sc-ion-action-sheet-md {
-    color: #3c8dbc !important;
+    color: var(--app-primary) !important;
   }
 
   .mat-radio-button.mat-accent .mat-radio-inner-circle {
-    background-color: #3c8dbc !important;
+    background-color: var(--app-primary) !important;
   }
 
   .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-    border-color: #3c8dbc!important;
+    border-color: var(--app-primary) !important;
   }
-
-
 }

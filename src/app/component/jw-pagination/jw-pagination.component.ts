@@ -102,6 +102,10 @@ export class JwPaginationComponent implements OnInit {
       this.itemsArray = this.items;
     }
     this.itemsArray.forEach(element => {
+      // Kept for the card's colour: the lookup below does not know VL copy numbers.
+      if (element.rawResult === undefined) {
+        element.rawResult = element.result;
+      }
       if (this.resultArray) {
         this.resultArray.forEach(Object => {
           if (parseInt(element.result) === Object.value) {
@@ -200,25 +204,18 @@ export class JwPaginationComponent implements OnInit {
     }
 
   }
-  getColor(result, isSampleRejected) {
-    if (result) {
-      this.resultCondition = result;
-    } else {
-      this.resultCondition = isSampleRejected;
+  // A request is rejected, has a result, or is waiting for one; the card's stripe and chip show it.
+  statusOf(item): 'rejected' | 'result' | 'waiting' {
+    if (item.isSampleRejected === 'yes') {
+      return 'rejected';
     }
-    switch (this.resultCondition) {
-      case 'negative':
-        return '#50C878';
-      case 'positive':
-        return '#50C878';
-      case 'indeterminate':
-        return '#50C878';
-      case 'yes':
-        return '#ff726f';
-      case '':
-        return '#f6cd61';
-      case null:
-        return '#f6cd61';
-    }
+    const result = item.rawResult ?? item.result;
+    return result !== null && result !== undefined && String(result).trim() !== '' ? 'result' : 'waiting';
   }
+
+  statusLabel(item): string {
+    return { rejected: 'Rejected', result: 'Result', waiting: 'Awaiting result' }[this.statusOf(item)];
+  }
+
+
 }

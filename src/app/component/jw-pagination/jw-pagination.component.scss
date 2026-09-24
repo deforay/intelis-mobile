@@ -33,3 +33,110 @@
     max-width: 50%;
   }
 }
+
+/* ---- Request card ---- */
+.requestCard {
+  border-left: 4px solid var(--app-border) !important;
+  margin: 12px 4px !important;
+  background: var(--app-surface) !important;
+}
+.requestCard.status-result { border-left-color: var(--app-success) !important; }
+.requestCard.status-waiting { border-left-color: var(--app-warning) !important; }
+.requestCard.status-rejected { border-left-color: var(--app-danger) !important; }
+
+.requestCardHeader {
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 16px 10px !important;
+  border-bottom: 1px solid var(--app-border);
+}
+.requestCardTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.requestCode {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--app-text);
+  word-break: break-all;
+}
+.notSynced {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--app-warning);
+  .material-icons { font-size: 15px; }
+}
+.statusChip {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--app-neutral-soft);
+  color: var(--app-neutral);
+}
+.status-result .statusChip { background: var(--app-success-soft); color: var(--app-success); }
+.status-waiting .statusChip { background: var(--app-warning-soft); color: var(--app-warning); }
+.status-rejected .statusChip { background: var(--app-danger-soft); color: var(--app-danger); }
+
+/* Body: a two-column grid, each label above its value. */
+.viewGrid { padding: 8px 12px 0 !important; }
+.viewGrid > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+}
+.viewGrid ion-row {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 4px;
+  background: transparent !important;
+}
+.viewGrid ion-col {
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  padding: 0 !important;
+}
+.viewGrid ion-col[size="1"] { display: none; }
+.viewGrid p { margin: 0 !important; }
+.viewGrid .text-title-color {
+  font-size: 12px !important;
+  color: var(--app-text-muted) !important;
+  font-weight: 500;
+}
+.viewGrid .patientValues {
+  font-size: 14px;
+  color: var(--app-text);
+  word-break: break-word;
+}
+.resultRow .patientValues { font-weight: 600; }
+
+/* Actions: side by side, nothing pulled over the content. */
+.cardActions {
+  margin: 8px 0 0 !important;
+  padding: 12px !important;
+  --background: transparent !important;
+}
+.cardActions mat-divider { display: none; }
+.cardActions ion-col { padding: 0 6px !important; }
+.cardActions button {
+  width: 100% !important;
+  height: 44px !important;
+  margin: 0 !important;
+  float: none !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 600;
+  .material-icons { font-size: 18px !important; }
+}
+.requestCard .matContent { padding-top: 0 !important; margin-top: 0 !important; }
+.requestCard .viewGrid { margin-top: 0 !important; padding-top: 6px !important; }
