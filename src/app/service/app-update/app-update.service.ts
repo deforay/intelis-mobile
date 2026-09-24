@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, timeout } from 'rxjs';
+import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
+import { Storage } from '@ionic/storage-angular';
 
 // The version published on Google Play, kept in docs/version.json on main and served by the
 // app's GitHub Pages site. It is raised by hand once a release is live on Play, so the app
@@ -13,7 +15,17 @@ export class AppUpdateService {
   // Dismissing the notice hides it until the app is started again.
   dismissed = false;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private appVersion: AppVersion, private storage: Storage) { }
+
+  // Asked of the device each time: the stored copy is written after start-up, so right after
+  // an update it can still hold the previous version.
+  async installedVersion(): Promise<string | null> {
+    try {
+      return await this.appVersion.getVersionNumber();
+    } catch (e) {
+      return await this.storage.get('appVersionNumber');
+    }
+  }
 
   // The published version when it is newer than the one installed; null otherwise, and
   // whenever the file cannot be read, so being offline shows nothing.

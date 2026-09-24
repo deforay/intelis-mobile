@@ -153,8 +153,9 @@ export class MenuPage implements OnInit {
     if (this.appUpdate.dismissed) {
       return;
     }
-    const installed = await this.storage.get('appVersionNumber');
-    this.newerVersion = await this.appUpdate.newerPublishedVersion(installed);
+    const newer = await this.appUpdate.newerPublishedVersion(await this.appUpdate.installedVersion());
+    // Later may have been tapped while the lookup ran.
+    this.newerVersion = this.appUpdate.dismissed ? null : newer;
   }
 
   dismissNewerVersion() {
