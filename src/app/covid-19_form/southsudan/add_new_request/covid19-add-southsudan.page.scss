@@ -170,3 +170,37 @@
   margin-top: -2px;
   font-size: 16px;
 }
+
+@import "../../../../theme/request-form";
+
+/* Form sections: one card style, readable headers, even spacing. */
+:host ::ng-deep .mat-expansion-panel {
+  margin: 12px 16px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(16, 24, 40, 0.12) !important;
+}
+:host ::ng-deep .mat-expansion-panel-header {
+  height: 56px;
+  padding: 0 16px;
+}
+:host ::ng-deep .mat-expansion-panel-header.mat-expanded {
+  background: var(--ion-color-light, #f4f5f8);
+}
+:host ::ng-deep .mat-expansion-panel-header-title {
+  font-size: 15px;
+  font-weight: 600 !important;
+  color: var(--ion-color-primary);
+  text-transform: none;
+  letter-spacing: 0;
+}
+:host ::ng-deep .mat-expansion-panel-body {
+  padding: 8px 16px 16px !important;
+}
+:host ::ng-deep .mat-mdc-form-field {
+  width: 100%;
+}
+:host ::ng-deep .mat-action-row {
+  border-top: none;
+  padding: 8px 0 0;
+}
+

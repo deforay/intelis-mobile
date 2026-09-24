@@ -369,15 +369,20 @@ export class Covid19AddSouthsudanPage implements OnInit {
         this.step = 3;
       }
       this.isMenuOrBackButton = 'back';
-      this.titleHeader = this.mode + ' ' + 'COVID-19 VIRUS LABORATORY TEST REQUEST FORM';
+      this.titleHeader = this.formTitle('COVID-19');
     } else {
       this.isMenuOrBackButton = 'menu';
       this.mode = 'add';
-      this.titleHeader = this.mode + ' ' + 'COVID-19 VIRUS LABORATORY TEST REQUEST FORM';
+      this.titleHeader = this.formTitle('COVID-19');
     }
     this.maxmindate();
     
 
+  }
+
+  // The header: what the user is doing with which test.
+  formTitle(test: string): string {
+    return { 'add': 'New ' + test + ' request', 'edit': 'Edit ' + test + ' request', 'view': test + ' request', 'result edit': 'Enter ' + test + ' result' }[this.mode] || test + ' request';
   }
 
   ionViewWillLeave() {

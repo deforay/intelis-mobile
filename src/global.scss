@@ -530,3 +530,11 @@ mat-divider {
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1) !important;
 }
+
+/* Headers read as written: titles are in title or sentence case. */
+.mainHeaderName {
+  text-transform: none !important;
+  font-weight: 600;
+  font-size: 18px;
+  letter-spacing: 0;
+}

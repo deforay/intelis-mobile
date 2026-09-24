@@ -1,0 +1,81 @@
+// Shared look of the VL, EID and COVID-19 request forms. Imported by each form page.
+
+// Page
+:host ::ng-deep ion-content { --background: var(--app-bg); }
+
+// Sections: numbered steps.
+:host ::ng-deep .mat-accordion { counter-reset: formStep; }
+:host ::ng-deep .mat-expansion-panel { counter-increment: formStep; }
+:host ::ng-deep .mat-expansion-panel-header-title::before {
+  content: counter(formStep);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: var(--app-primary-soft);
+  color: var(--app-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+:host ::ng-deep .mat-expansion-panel.mat-expanded .mat-expansion-panel-header-title::before {
+  background: var(--app-primary);
+  color: #fff;
+}
+
+// Fields: white with a light border instead of grey filled boxes.
+:host ::ng-deep .mat-form-field-appearance-fill .mat-mdc-text-field-wrapper {
+  background: var(--app-surface) !important;
+  border: 1px solid var(--app-border);
+  border-radius: 8px !important;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+:host ::ng-deep .mat-form-field-appearance-fill .mdc-line-ripple { display: none; }
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 3px var(--app-primary-soft);
+}
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-invalid .mat-mdc-text-field-wrapper {
+  border-color: var(--app-danger);
+}
+:host ::ng-deep .mat-mdc-form-field.mat-form-field-disabled .mat-mdc-text-field-wrapper {
+  background: var(--app-neutral-soft) !important;
+}
+:host ::ng-deep .mat-mdc-form-field .mdc-floating-label,
+:host ::ng-deep .mat-mdc-form-field mat-label {
+  color: var(--app-text-muted);
+}
+:host ::ng-deep .mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: var(--app-primary);
+}
+:host ::ng-deep .mat-mdc-form-field { margin-bottom: 4px; }
+:host ::ng-deep .mat-mdc-form-field-error { font-size: 12px !important; color: var(--app-danger); }
+
+// Step buttons: Next and Save solid, Previous quiet.
+:host ::ng-deep .mat-action-row {
+  gap: 8px;
+  padding: 12px 0 0 !important;
+  border-top: none !important;
+}
+:host ::ng-deep .mat-action-row button {
+  min-width: 96px;
+  height: 40px;
+  border-radius: 8px !important;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+:host ::ng-deep .mat-action-row button[color="primary"] {
+  background: var(--app-primary) !important;
+  color: #fff !important;
+}
+:host ::ng-deep .mat-action-row .previousButton {
+  background: transparent !important;
+  color: var(--app-primary) !important;
+}
+:host ::ng-deep .mat-form-field-appearance-fill .mat-mdc-form-field-focus-overlay { display: none; }
+// A long section title must not squeeze the arrow into its icon name.
+:host ::ng-deep .mat-expansion-panel-header mat-icon { flex-shrink: 0; width: 24px; overflow: visible; }
+:host ::ng-deep .mat-expansion-panel-header-title { min-width: 0; }

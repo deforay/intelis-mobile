@@ -502,15 +502,20 @@ export class AddNewRequestPage implements OnInit {
     }
     if ((this.mode == 'edit' || this.mode == 'view' || this.mode == 'result edit') && this.mode != undefined) {
       this.isMenuOrBackButton = "back";
-      this.titleHeader = this.mode + ' ' + "EID TEST REQUEST FORM"
+      this.titleHeader = this.formTitle('EID')
     } else {
       this.isMenuOrBackButton = "menu";
       this.mode = 'add';
-      this.titleHeader = this.mode + ' ' + "EID TEST REQUEST FORM";
+      this.titleHeader = this.formTitle('EID');
     }
     this.maxmindate();
   }
 
+
+  // The header: what the user is doing with which test.
+  formTitle(test: string): string {
+    return { 'add': 'New ' + test + ' request', 'edit': 'Edit ' + test + ' request', 'view': test + ' request', 'result edit': 'Enter ' + test + ' result' }[this.mode] || test + ' request';
+  }
 
   ionViewWillLeave() {
     console.log('leaving');
