@@ -118,11 +118,11 @@ export class AppPasswordPage implements OnInit {
   }
 
   async onConfirmPinNumberChange( pin ) {
-    // The boxes report null when they are cleared.
+    // The boxes report null when they are cleared: forget what was typed and stop there.
+    this.confirmAppPin = pin || '';
     if (!pin) {
       return;
     }
-    this.confirmAppPin = pin;
 
     pin = pin == null ? '' : String( pin ); // ng-otp-input 2 can emit null while clearing
 
@@ -194,11 +194,11 @@ export class AppPasswordPage implements OnInit {
   }
 
   async onCreatePinNumberChange( pin ) {
-    // The boxes report null when they are cleared.
+    // The boxes report null when they are cleared: forget what was typed and stop there.
+    this.createAppPin = pin || '';
     if (!pin) {
       return;
     }
-    this.createAppPin = pin;
     pin = pin == null ? '' : String( pin ); // ng-otp-input 2 can emit null while clearing
     const regex = /^[0-9]*$/;
 

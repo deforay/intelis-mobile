@@ -111,11 +111,11 @@ export class EnterAppPasswordPage implements OnInit {
     const ele = document.getElementById(eleId);
   }
   async onPinNumberChange(pin) {
-    // The boxes report null when they are cleared.
+    // The boxes report null when they are cleared: forget what was typed and stop there.
+    this.appPin = pin || '';
     if (!pin) {
       return;
     }
-    this.appPin = pin;
 
     const regex = /^[0-9]*$/;
 
@@ -192,11 +192,11 @@ export class EnterAppPasswordPage implements OnInit {
     }
   }
   async onCreatePinNumberChange(pin) {
-    // The boxes report null when they are cleared.
+    // The boxes report null when they are cleared: forget what was typed and stop there.
+    this.createAppPin = pin || '';
     if (!pin) {
       return;
     }
-    this.createAppPin = pin;
     const regex = /^[0-9]*$/;
 
     const isValid = regex.test(pin);
