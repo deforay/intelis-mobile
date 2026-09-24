@@ -88,46 +88,6 @@ const routes: Routes = [
     loadChildren: () => import('../app/vl_form/southsudan/vl-view-result/vl-view-result.module').then( m => m.VlViewResultPageModule)
   },
   {
-    path: 'new-eid-drc',
-    loadChildren: () => import('../app/eid_form/drc/new-eid-drc/new-eid-drc.module').then( m => m.NewEidDrcPageModule)
-  },
-  {
-    path: 'eid-view-drc',
-    loadChildren: () => import('../app/eid_form/view-eid/view-eid.module').then( m => m.ViewEidPageModule)
-  },
-  {
-    path: 'enter-result-drc',
-    loadChildren: () => import('../app/eid_form/drc/enter-result-drc/enter-result-drc.module').then( m => m.EnterResultDrcPageModule)
-  },
-  {
-    path: 'view-result-drc',
-    loadChildren: () => import('../app/eid_form/drc/view-result-drc/view-result-drc.module').then( m => m.ViewResultDrcPageModule)
-  },
-  {
-    path: 'new-vl-drc',
-    loadChildren: () => import('../app/vl_form/drc/new-vl-drc/new-vl-drc.module').then( m => m.NewVlDrcPageModule)
-  },
-  {
-    path: 'view-vl-drc',
-    loadChildren: () => import('../app/vl_form/view-vl/view-vl.module').then( m => m.ViewVlPageModule)
-  },
-  {
-    path: 'vl-result-drc',
-    loadChildren: () => import('../app/vl_form/drc/vl-result-drc/vl-result-drc.module').then( m => m.VlResultDrcPageModule)
-  },
-  {
-    path: 'view-vl-result-drc',
-    loadChildren: () => import('../app/vl_form/drc/view-vl-result-drc/view-vl-result-drc.module').then( m => m.ViewVlResultDrcPageModule)
-  },
-  {
-    path: 'mohdrc-add-new-request',
-    loadChildren: () => import('../app/covid-19_form/mohdrc/drc-add-new-request/drc-add-new-request.module').then( m => m.DRCAddNewRequestPageModule)
-  },
-  {
-    path: 'mohdrc-view-test-request',
-    loadChildren: () => import('../app/covid-19_form/view-covid/view-covid.module').then( m => m.ViewCovidPageModule)
-  },
-  {
     path: 'view-vl',
     loadChildren: () => import('../app/vl_form/view-vl/view-vl.module').then( m => m.ViewVlPageModule)
   },
@@ -138,26 +98,6 @@ const routes: Routes = [
   {
     path: 'view-covid',
     loadChildren: () => import('../app/covid-19_form/view-covid/view-covid.module').then( m => m.ViewCovidPageModule)
-  },
-  {
-    path: 'mohdrc-enter-test-result',
-    loadChildren: () => import('./covid-19_form/mohdrc/mohdrc-enter-test-result/mohdrc-enter-test-result.module').then( m => m.MohdrcEnterTestResultPageModule)
-  },
-  {
-    path: 'mohdrc-view-test-result',
-    loadChildren: () => import('./covid-19_form/mohdrc/mohdrc-view-test-result/mohdrc-view-test-result.module').then( m => m.MohdrcViewTestResultPageModule)
-  },
-  {
-    path: 'mohdrc-select-patient-details',
-    loadChildren: () => import('./covid-19_form/mohdrc/mohdrc-select-patient-details/mohdrc-select-patient-details.module').then( m => m.MohdrcSelectPatientDetailsPageModule)
-  },
-  {
-    path: 'select-patient-details-drc',
-    loadChildren: () => import('./eid_form/drc/select-patient-details-drc/select-patient-details-drc.module').then( m => m.SelectPatientDetailsDrcPageModule)
-  },
-  {
-    path: 'vl-select-patient-details',
-    loadChildren: () => import('./vl_form/drc/vl-select-patient-details/vl-select-patient-details.module').then( m => m.VlSelectPatientDetailsPageModule)
   },
   {
     path: 'eid-select-patient-details',

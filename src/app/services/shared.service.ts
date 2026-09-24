@@ -45,28 +45,6 @@ export class SharedService {
   
   
 
-  /* DRC for VL */
-  calculateAge(patientInfoPanelForm: FormGroup) {
-    const dob = new Date(patientInfoPanelForm.controls.dob.value);
-    const timeDiff = Math.abs(Date.now() - dob.getTime());
-    const ageInYears = Math.floor((timeDiff / (1000 * 3600 * 24)) / 365);
-    patientInfoPanelForm.get('ageInYears').setValue(ageInYears);
-    console.log(ageInYears, 'ageInYears');
-    
-    if (ageInYears < 1) {
-      const ageInMonths = Math.floor((timeDiff / (1000 * 3600 * 24)) / 30);
-      patientInfoPanelForm.get('ageInMonths').setValue(ageInMonths);
-    }
-
-    const maxSampleCollectionDate = dob;
-    const month = this.formatDate(maxSampleCollectionDate.getMonth() + 1);
-    const day = this.formatDate(maxSampleCollectionDate.getDate());
-    const formattedDate = `${maxSampleCollectionDate.getFullYear()}-${month}-${day}T00:00`;
-    console.log(formattedDate, 'maxSampleCollectionDate');
-
-    return formattedDate;
-  }
-
   /* South Sudan for VL */
   calculateAged(clinicInfoPanelForm: FormGroup) {
     const convertAge = new Date(clinicInfoPanelForm.controls.dob.value);
@@ -80,7 +58,7 @@ export class SharedService {
     console.log(maxSampleCollectionDate, 'maxSampleCollectionDate');
   }
 
-  /* DRC and South Sudan for EID */
+  /* South Sudan for EID */
 calculateEidAged(childMotherDetailsPanelForm: FormGroup) {
   const convertAge = new Date(childMotherDetailsPanelForm.controls.dob.value);
   const timeDiff = Math.abs(Date.now() - convertAge.getTime());
@@ -109,23 +87,23 @@ calculateEidAged(childMotherDetailsPanelForm: FormGroup) {
     return { rejectionReasonId: '', rejectionReason: '' }; // Return default values if no match found
   }
 
-  /* DRC and South Sudan for EID */
+  /* South Sudan for EID */
   clearSampleReceived() {
     this.labResultPanelForm.get('sampleReceivedDateTime').setValue('');
   }
 
-  /* DRC and South Sudan for EID */
+  /* South Sudan for EID */
   clearSampleCollection() {
     this.childInfoPanelForm.get('sampleCollectionDateTime').setValue('');
   }
 
-  /* DRC and South Sudan for VL */
+  /* South Sudan for VL */
   clearReviewedByOn() {
     this.labResultPanelForm.get('reviewedOn').setValue('');
   }
 
 
-  /* DRC and South Sudan for EID */
+  /* South Sudan for EID */
   clearDOB() {
     this.childMotherDetailsPanelForm.get('dob').setValue('');
   }

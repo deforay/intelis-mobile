@@ -34,23 +34,14 @@ export class JwPaginationComponent implements OnInit {
     
     console.log(this.router.url, 'this.router.url in Pagination Component');
 
-    if (this.router.url == '/eid-view-southsudan' || this.router.url == '/eid-view-drc' ||
-      this.router.url == '/eid-test-result' || this.router.url == '/enter-result-drc') {
+    if (this.router.url == '/eid-view-southsudan' || this.router.url == '/eid-test-result') {
       this.formCondition = 'eid';
     } 
-    else if (this.router.url == '/covid19-view-southsudan' ||
-      this.router.url == '/mohdrc-enter-test-result' || this.router.url == 'enter-test-result'  || this.router.url == '/mohdrc-add-new-request' || this.router.url == '/mohdrc-view-test-request') {
+    else if (this.router.url == '/covid19-view-southsudan' || this.router.url == '/enter-test-result') {
       this.formCondition = 'covid';
     } 
 
-  
-    else if (this.router.url == '/covid19-view-southsudan' || this.router.url == '/mohdrc-view-test-request' ||
-      this.router.url == '/enter-test-result' || this.router.url == 'mohdrc-enter-test-result') {
-      this.formCondition = 'covid';
-    } 
-
-    else if (this.router.url == '/vl-view-southsudan' || this.router.url == '/view-vl-drc' ||
-      this.router.url == '/enter-vl-result' || this.router.url == '/vl-result-drc') {
+    else if (this.router.url == '/vl-view-southsudan' || this.router.url == '/enter-vl-result') {
       this.formCondition = 'vl';
     }
 
@@ -130,14 +121,6 @@ export class JwPaginationComponent implements OnInit {
       await this.storage.set('selectedEidTestReq', item);
       this.navToPage = 'add-new-request';
     }
-    else if (this.router.url == '/eid-view-drc' || this.router.url == '/enter-result-drc') {
-      if (this.router.url == '/enter-result-drc' && mode != 'view') {
-        mode = 'result edit';
-      }
-      console.log(item); 
-      await this.storage.set('selectedEidTestReq', item);
-      this.navToPage = 'new-eid-drc';
-    }
     else if (this.router.url == '/covid19-view-southsudan' || this.router.url == '/view-test-result' || this.router.url == '/enter-test-result') {
       if (this.router.url == '/enter-test-result' && mode != 'view') {
         mode = 'result edit';
@@ -145,14 +128,6 @@ export class JwPaginationComponent implements OnInit {
       await this.storage.set('selectedCovid19TestReq', item);
       this.navToPage = 'covid19-add-southsudan';
     } 
-    else if (this.router.url == '/mohdrc-view-test-request' || this.router.url == '/mohdrc-view-test-result'  || this.router.url == '/mohdrc-enter-test-result') {
-      if (this.router.url == '/mohdrc-enter-test-result' && mode != 'view') {
-        mode = 'result edit';
-      }
-      console.log(item); 
-      await this.storage.set('selectedCovid19TestReq', item);
-      this.navToPage = 'mohdrc-add-new-request';
-    }
     else if (this.router.url == '/vl-view-southsudan' || this.router.url == '/enter-vl-result') {
       if (this.router.url == '/enter-vl-result' && mode != 'view') {
         mode = 'result edit';
@@ -160,15 +135,6 @@ export class JwPaginationComponent implements OnInit {
       console.log(item); 
       await this.storage.set('selectedVlTestReq', item);
       this.navToPage = 'vl-new-request';
-    }
-    
-    else if (this.router.url == '/view-vl-drc' || this.router.url == '/vl-result-drc') {
-      if (this.router.url == '/vl-result-drc' && mode != 'view'){
-        mode = 'result edit';
-      }
-      console.log(item); 
-      await this.storage.set('selectedVlTestReq', item);
-      this.navToPage = 'new-vl-drc';
     }
 
     this.router.navigate([ this.navToPage, { data_mode: mode, previuosPageURL: this.router.url.split(';'), }, ]);
@@ -182,14 +148,7 @@ export class JwPaginationComponent implements OnInit {
       if (this.privilegeService.canCovidRequestView) {
         this.showView = true;
       }
-    } else if (this.router.url == '/mohdrc-view-test-request') {
-      if (this.privilegeService.canCovidRequestEdit) {
-        this.showEdit = true;
-      }
-      if (this.privilegeService.canCovidRequestView) {
-        this.showView = true;
-      }
-    } 
+    }
     else if (this.router.url == '/view-test-result') {
       if (this.privilegeService.canCovidResultEnterResultManually) {
         this.showView = true;
@@ -201,54 +160,28 @@ export class JwPaginationComponent implements OnInit {
         this.showView = true;
       }
     } 
-    else if (this.router.url == '/mohdrc-view-test-result') {
-      if (this.privilegeService.canCovidResultEnterResultManually) {
-        this.showView = true;
-      }
-    }
-    else if (this.router.url == '/mohdrc-enter-test-result') {
-      if (this.privilegeService.canCovidResultEnterResultManually) {
-        this.showEdit = true;
-        this.showView = true;
-      }
-    } 
 
-    // if(this.router.url == '/covid19-view-southsudan' || this.router.url == '/mohdrc-view-test-request') {
-    //   if (this.privilegeService.canCovidRequestEdit) {
-    //     this.showEdit = true;
-    //   } if ( this.privilegeService.canCovidRequestEdit){
-    //     this.showView = true;
-    //   }
-    // }
-
-    // else if (this.router.url == '/enter-test-result' || this.router.url == '/mohdrc-enter-test-result') {
-    //   if (this.privilegeService.canEIDResultsEnterResultManually) {
-    //     this.showEdit = true;
-    //     this.showView = true;
-    //   }
-    // } 
-
-    else if (this.router.url == '/eid-view-southsudan' || this.router.url == '/eid-view-drc') {
+    else if (this.router.url == '/eid-view-southsudan') {
       if (this.privilegeService.canEIDRequestEdit) {
         this.showEdit = true;
       } if (this.privilegeService.canEIDRequestView) {
         this.showView = true;
       }
     } 
-    else if (this.router.url == '/eid-test-result' || this.router.url == '/enter-result-drc') {
+    else if (this.router.url == '/eid-test-result') {
       if (this.privilegeService.canEIDResultsEnterResultManually) {
         this.showEdit = true;
         this.showView = true;
       }
     } 
-    else if (this.router.url == '/vl-view-southsudan' || this.router.url == '/view-vl-drc') {
+    else if (this.router.url == '/vl-view-southsudan') {
       if (this.privilegeService.canVLRequestEdit) {
         this.showEdit = true;
       } if (this.privilegeService.canVLRequestView) {
         this.showView = true;
       }
     } 
-    else if (this.router.url == '/enter-vl-result' || this.router.url == '/vl-result-drc') {
+    else if (this.router.url == '/enter-vl-result') {
        if (this.privilegeService.canVLRequestEdit) {
         this.showEdit = true;
       } if (this.privilegeService.canVLRequestView) {

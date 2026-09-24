@@ -9,7 +9,6 @@ import { Events } from '../providers';
   providedIn: 'root',
 })
 export class MultilevelService {
-  // path = '../../../assets/multi-accordion-with drc.json';
   path = '../../../assets/multi-accordion.json';
   pagesArray: any = [];
   formId: any;
@@ -62,10 +61,6 @@ export class MultilevelService {
                          if (this.formId=='1'||this.formId==1) {
                           crud.url='/covid19-add-southsudan'
                           // console.log('covid19-add-southsudan');
-                        }else if (this.formId=='3'||this.formId==3) {
-                          crud.url='/mohdrc-add-new-request'
-                          // console.log('mohdrc-add-new-request');
-
                         }
                       }
                        if (crud.name == 'View Test Request') {
@@ -75,10 +70,6 @@ export class MultilevelService {
                         if (this.formId=='1'||this.formId==1) {
                           crud.url='/covid19-view-southsudan'
                           // console.log('covid19-view-southsudan');
-                        }else if (this.formId=='3'||this.formId==3) {
-                          crud.url='/mohdrc-view-test-request'
-                          // console.log('mohdrc-view-test-request');
-
                         }
                       }
                     });
@@ -121,11 +112,6 @@ export class MultilevelService {
                          if (this.formId=='1'||this.formId==1) {
                           crud.url='/add-new-request'
                           // console.log('add-new-request');
-
-                        }else if (this.formId=='3'||this.formId==3) {
-                          crud.url='/new-eid-drc'
-                          // console.log('new-eid-drc');
-
                         }
                       }
                        if (crud.name == 'View Test Request') {
@@ -135,11 +121,6 @@ export class MultilevelService {
                         if (this.formId=='1'||this.formId==1) {
                           crud.url='/eid-view-southsudan'
                           // console.log('eid-view-southsudan');
-
-                        }else if (this.formId=='3'||this.formId==3) {
-                          crud.url='/eid-view-drc'
-                          // console.log('eid-view-drc');
-
                         }
                       }
                     });
@@ -186,11 +167,6 @@ export class MultilevelService {
                          if (this.formId=='1'||this.formId==1) {
                           crud.url='/vl-new-request'
                           // console.log('vl-new-request');
-
-                        }else if (this.formId=='3'||this.formId==3) {
-                          crud.url='/new-vl-drc'
-                          // console.log('new-vl-drc');
-
                         }
                       }
                        if (crud.name == 'View Test Request') {
@@ -200,11 +176,6 @@ export class MultilevelService {
                         if (this.formId=='1'||this.formId==1) {
                           crud.url='/vl-view-southsudan'
                           // console.log('vl-view-southsudan');
-
-                        }else if (this.formId=='3'||this.formId==3) {
-                          crud.url='/view-vl-drc'
-                          // console.log('view-vl-drc');
-
                         }
                       }
 

@@ -271,24 +271,9 @@ export class AlertService {
               if (alertName == 'localTestReqAlert') {
                 this.router.navigate(['/covid19-view-southsudan']);
               }
-            }  else if (
-              this.router.url.split(';')[0] == '/mohdrc-add-new-request'
-            ) {
-              if (alertName == 'localTestReqAlert') {
-                this.router.navigate(['/mohdrc-view-test-request']);
-              }
             }else if (this.router.url.split(';')[0] == '/vl-new-request') {
               if (alertName == 'localTestReqAlert') {
                 this.router.navigate(['/vl-view-southsudan']);
-              }
-            } else if (this.router.url.split(';')[0] == '/new-eid-drc') {
-              if (alertName == 'localTestReqAlert') {
-                this.router.navigate(['/eid-view-drc']);
-              }
-            }
-            else if (this.router.url.split(';')[0] == '/new-vl-drc') {
-              if (alertName == 'localTestReqAlert') {
-                this.router.navigate(['/view-vl-drc']);
               }
             }
           },
