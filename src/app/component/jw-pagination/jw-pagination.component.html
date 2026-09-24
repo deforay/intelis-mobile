@@ -2,7 +2,7 @@
   <!-- | filter:search  -->
   @for (item of itemsArray | paginate: { itemsPerPage: 5, currentPage: cp }; track item) {
     <div>
-      <mat-card class="vlsm_mat_card">
+      <mat-card class="intelis_mat_card">
         <mat-card-header class="mat-card-header-text" [ngStyle]="{'background':getColor(item.result ,item.isSampleRejected)}">
           @if (item.sampleCode || item.remoteSampleCode) {
             <span text-wrap class="headerName">

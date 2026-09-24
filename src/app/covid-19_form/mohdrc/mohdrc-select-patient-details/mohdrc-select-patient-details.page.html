@@ -24,7 +24,7 @@
 
   <!-- Display patient list -->
   @for (item of matchedPatientsArray; track item) {
-    <mat-card class="vlsm_mat_card">
+    <mat-card class="intelis_mat_card">
       <mat-card-content>
         <ion-grid>
           <ion-row>
@@ -99,7 +99,7 @@
 
   <!-- Display 'No match found' if no results are present -->
   @if (matchedPatientsArray.length == 0) {
-    <mat-card class="vlsm_mat_card">
+    <mat-card class="intelis_mat_card">
       <mat-card-content>
         <p class="noRecord">No match found</p>
       </mat-card-content>

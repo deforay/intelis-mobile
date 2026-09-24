@@ -1999,7 +1999,7 @@ export class NewVlDrcPage implements OnInit {
     if ((this.router.url === '/add-new-request' && (this.clinicInfoPanelForm.dirty || this.clinicInfoPanelForm.dirty || this.clinicInfoPanelForm.dirty || this.labResultPanelForm.dirty)) ||
       (routerSplitURL[1] == 'data_mode=edit' && (this.clinicInfoPanelForm.dirty || this.clinicInfoPanelForm.dirty || this.clinicInfoPanelForm.dirty || this.labResultPanelForm.dirty))) {
 
-      this.alertService.confirmAlert('VLSM', "Are you sure you want to go back? Because the data you have entered will be lost", 'addEditForm');
+      this.alertService.confirmAlert('InteLIS', "Are you sure you want to go back? Because the data you have entered will be lost", 'addEditForm');
 
     } else {
       this.router.navigate([this.previousPageURL], {

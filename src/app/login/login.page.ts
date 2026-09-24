@@ -160,14 +160,14 @@ export class LoginPage implements OnInit {
           if (res.version != undefined && res.version != null && res.version != '') {
             resolve(true);
           } else {
-            this.CrudService.alertWithSingleButton('Alert', 'OK', 'Please enter a valid cloud VLSM URL. Contact your VLSM system administrator for help or guidance', '');
+            this.CrudService.alertWithSingleButton('Alert', 'OK', 'Please enter a valid InteLIS server URL. Contact your InteLIS system administrator for help or guidance', '');
           }
         }
       }, async (err) => {
         console.log(err.status);
 
         // if (err.status == 401) {
-        this.CrudService.alertWithSingleButton('Alert', 'OK', 'Please enter a valid cloud VLSM URL. Contact your VLSM system administrator for help or guidance', '');
+        this.CrudService.alertWithSingleButton('Alert', 'OK', 'Please enter a valid InteLIS server URL. Contact your InteLIS system administrator for help or guidance', '');
         // await this.storage.set("isLoggedIn", false);
         // this.router.navigate(['/login']);
         // }
@@ -216,7 +216,7 @@ export class LoginPage implements OnInit {
 
     // if (this.network.type == 'none' || this.network.type == 'unknown') {
 
-    //   this.alertService.alertWithSingleButton('Alert', 'OK', "You need internet connection to login to the VLSM app for the first time. Please connect to the internet to proceed with one time setup process.");
+    //   this.alertService.alertWithSingleButton('Alert', 'OK', "You need internet connection to login to the InteLIS app for the first time. Please connect to the internet to proceed with one time setup process.");
 
     // } else {
 
@@ -338,7 +338,7 @@ export class LoginPage implements OnInit {
           }
         );
       } else {
-        this.CrudService.alertWithSingleButton('Alert', 'OK', 'Please enter a valid cloud VLSM URL. Contact your VLSM system administrator for help or guidance', '');
+        this.CrudService.alertWithSingleButton('Alert', 'OK', 'Please enter a valid InteLIS server URL. Contact your InteLIS system administrator for help or guidance', '');
       }
     }
     // }

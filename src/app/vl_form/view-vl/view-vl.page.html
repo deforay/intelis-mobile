@@ -28,7 +28,7 @@
   <ion-grid class="countGrid">
     <ion-row>
       <ion-col size="6">
-        <mat-card class="vlsm_mat_card count" (click)="filterTotalRequests()"
+        <mat-card class="intelis_mat_card count" (click)="filterTotalRequests()"
           [ngClass]="{'highlightedTotal' : totalToggle, 'NoHighlighted': !totalToggle}">
           <mat-card-header class="mat_header total">
             <p text-wrap class="countHeaderName">
@@ -41,7 +41,7 @@
         </mat-card>
       </ion-col>
       <ion-col size="6">
-        <mat-card class="vlsm_mat_card count" (click)="filterWithResults()"
+        <mat-card class="intelis_mat_card count" (click)="filterWithResults()"
           [ngClass]="{'highlightedWithResult' : withResultToggle, 'NoHighlighted': !withResultToggle}">
           <mat-card-header class="mat_header result">
             <p text-wrap class="countHeaderName">
@@ -56,7 +56,7 @@
     </ion-row>
     <ion-row class="countGrid">
       <ion-col size="6">
-        <mat-card class="vlsm_mat_card count" (click)="filterWithoutResults()"
+        <mat-card class="intelis_mat_card count" (click)="filterWithoutResults()"
           [ngClass]="{'highlightedWithoutResult' : withoutResultToggle, 'NoHighlighted': !withoutResultToggle}">
           <mat-card-header class="mat_header pending">
             <p text-wrap class="countHeaderName">
@@ -69,7 +69,7 @@
         </mat-card>
       </ion-col>
       <ion-col size="6">
-        <mat-card class="vlsm_mat_card count" (click)="filterRejectedResults()"
+        <mat-card class="intelis_mat_card count" (click)="filterRejectedResults()"
           [ngClass]="{'highlightedRejected' : rejectedToggle, 'NoHighlighted': !rejectedToggle}">
           <mat-card-header class="mat_header rejected">
             <p text-wrap class="countHeaderName">
@@ -112,7 +112,7 @@
   <ion-grid class="countGrid">
     <ion-row>
       <ion-col size="6">
-        <mat-card class="vlsm_mat_card count">
+        <mat-card class="intelis_mat_card count">
           <mat-card-header class="mat_header total">
             <p text-wrap class="countHeaderName">
               Total Requests
@@ -126,7 +126,7 @@
         </mat-card>
       </ion-col>
       <ion-col size="6">
-        <mat-card class="vlsm_mat_card count">
+        <mat-card class="intelis_mat_card count">
           <mat-card-header class="mat_header result">
             <p text-wrap class="countHeaderName">
               With Results
@@ -142,7 +142,7 @@
     </ion-row>
     <ion-row class="countGrid">
       <ion-col size="6">
-        <mat-card class="vlsm_mat_card count">
+        <mat-card class="intelis_mat_card count">
           <mat-card-header class="mat_header pending">
             <p text-wrap class="countHeaderName">
               Without Results
@@ -156,7 +156,7 @@
         </mat-card>
       </ion-col>
       <ion-col size="6">
-        <mat-card class="vlsm_mat_card count">
+        <mat-card class="intelis_mat_card count">
           <mat-card-header class="mat_header rejected">
             <p text-wrap class="countHeaderName">
               Rejected
@@ -183,7 +183,7 @@
 
 
 @for (item of skeltonArray; track item) {
-  <mat-card class="vlsm_mat_card">
+  <mat-card class="intelis_mat_card">
     <mat-card-header class="mat_header" [ngStyle]="{'background': getSkeletonColor()}">
       <p text-wrap class="headerName">
         <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
@@ -278,7 +278,7 @@
 
 
 @if (isNoRecord) {
-  <mat-card class="vlsm_mat_card">
+  <mat-card class="intelis_mat_card">
     <mat-card-content>
       <p class="noRecord">{{isNoRecordText}}</p>
     </mat-card-content>

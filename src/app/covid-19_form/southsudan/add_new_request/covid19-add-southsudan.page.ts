@@ -1562,7 +1562,7 @@ export class Covid19AddSouthsudanPage implements OnInit {
     if ( ( this.router.url === '/covid19-add-southsudan' && ( this.siteInfoPanelForm.dirty || this.caseDetailsPanelForm.dirty || this.specimenInfoPanelForm.dirty || this.labResultPanelForm.dirty ) ) ||
       ( routerSplitURL[1] == 'data_mode=edit' && ( this.siteInfoPanelForm.dirty || this.caseDetailsPanelForm.dirty || this.specimenInfoPanelForm.dirty || this.labResultPanelForm.dirty ) ) ) {
 
-      this.alertService.confirmAlert( 'VLSM', 'Are you sure you want to go back? Because the data you have entered will be lost', 'addEditForm' );
+      this.alertService.confirmAlert( 'InteLIS', 'Are you sure you want to go back? Because the data you have entered will be lost', 'addEditForm' );
 
     } else {
       this.router.navigate( [this.previousPageURL], {

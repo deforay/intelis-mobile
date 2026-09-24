@@ -1,6 +1,6 @@
 {
   "appId": "io.ionic.starter",
-  "appName": "VLSM",
+  "appName": "InteLIS",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",

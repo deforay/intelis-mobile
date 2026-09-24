@@ -2130,7 +2130,7 @@ export class DRCAddNewRequestPage implements OnInit {
           this.labResultPanelForm.dirty))
     ) {
       this.alertService.confirmAlert(
-        'VLSM',
+        'InteLIS',
         'Are you sure you want to go back? Because the data you have entered will be lost',
         'addEditForm'
       );

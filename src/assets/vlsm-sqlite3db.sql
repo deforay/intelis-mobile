@@ -1393,7 +1393,7 @@ INSERT INTO "facility_type" VALUES (1,'Clinic');
 INSERT INTO "facility_type" VALUES (2,'Viral Load Lab');
 INSERT INTO "facility_type" VALUES (3,'Hub');
 INSERT INTO "facility_type" VALUES (4,'Lab');
-INSERT INTO "global_config" VALUES ('App Menu Name','app_menu_name','VLSM','app','no','2021-06-14 18:47:11',NULL,'active');
+INSERT INTO "global_config" VALUES ('App Menu Name','app_menu_name','InteLIS','app','no','2021-06-14 18:47:11',NULL,'active');
 INSERT INTO "global_config" VALUES ('Auto Approval','auto_approval','yes','general','no',NULL,NULL,'inactive');
 INSERT INTO "global_config" VALUES ('Barcode Format','barcode_format','C39','general','yes','2021-01-14 22:34:50','8fisqdpu-wpkn-jo19-jo19-ku9fk2207e89','active');
 INSERT INTO "global_config" VALUES ('Barcode Printing','bar_code_printing','off','general','no','2021-01-14 22:34:50','8fisqdpu-wpkn-jo19-jo19-ku9fk2207e89','active');
