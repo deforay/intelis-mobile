@@ -27,3 +27,19 @@ ion-item.failed h2 {
   color: var(--ion-color-medium);
   font-size: 0.9rem;
 }
+
+/* Palette: the steps sit in one card on the app background. */
+ion-content { --background: var(--app-bg); }
+.setup-wrapper {
+  max-width: 480px;
+  margin: 24px auto;
+  h1 { font-size: 22px; font-weight: 600; color: var(--app-text); margin: 0 0 4px; }
+  .lead { color: var(--app-text-muted); font-size: 14px; margin: 0 0 16px; }
+  ion-list { border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1); padding: 4px 0; background: var(--app-surface); }
+  ion-item { --background: var(--app-surface); }
+  ion-item h2 { font-size: 15px; font-weight: 600; color: var(--app-text); }
+  ion-item p { font-size: 13px; color: var(--app-text-muted); }
+  .hint { color: var(--app-text-muted); font-size: 14px; }
+  ion-button { --border-radius: 8px; --background: var(--app-primary); font-weight: 600; margin-top: 8px; }
+  ion-button[fill="outline"] { --background: transparent; --color: var(--app-primary); --border-color: var(--app-primary); }
+}
