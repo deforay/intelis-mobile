@@ -127,7 +127,9 @@ public CrudService: CrudOperationsService,
   // Sent with every save-request. The server then checks each sample against
   // the result version the app last pulled for it, and keeps the lab's result
   // when the post was made on an older one. Servers without it ignore it.
-  resultVersionCapabilities = { supports: ['result-version'] };
+  // request-form-fields: the server stores the web form's fields this app sends (clinician,
+  // location of collection, other PCR reason); a server without it ignores them.
+  resultVersionCapabilities = { supports: ['result-version', 'request-form-fields'] };
 
   // Records what a save-request answered for one sample. The save handlers are
   // not awaited, so the result pull can run before this does. That costs a sync,

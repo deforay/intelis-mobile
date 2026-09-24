@@ -539,10 +539,11 @@ export class DbService {
             eid_test_platform, import_machine_name, sample_tested_datetime, rapid_test_date, rejection_on,
             reason_for_changing, child_treatment, choice_of_feeding, is_cotrimoxazole_being_administered_to_the_infant,
             mother_treatment_other, mother_vl_result, mother_cd4, mother_dob, mother_marital_status, mother_name,
-            result_reviewed_by, result_reviewed_datetime, sample_dispatched_datetime
+            result_reviewed_by, result_reviewed_datetime, sample_dispatched_datetime,
+            clinician_name, location_of_sample_collection, reason_for_repeat_pcr_other
           ) VALUES (
             ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
-            ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+            ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
           )
           ON CONFLICT (app_sample_code) DO UPDATE SET
             user_id = EXCLUDED.user_id, vlsm_country_id = EXCLUDED.vlsm_country_id,
@@ -578,7 +579,9 @@ export class DbService {
             mother_cd4 = EXCLUDED.mother_cd4, mother_dob = EXCLUDED.mother_dob,
             mother_marital_status = EXCLUDED.mother_marital_status, mother_name = EXCLUDED.mother_name,
             result_reviewed_by = EXCLUDED.result_reviewed_by, result_reviewed_datetime = EXCLUDED.result_reviewed_datetime,
-            sample_dispatched_datetime = EXCLUDED.sample_dispatched_datetime
+            sample_dispatched_datetime = EXCLUDED.sample_dispatched_datetime,
+            clinician_name = EXCLUDED.clinician_name, location_of_sample_collection = EXCLUDED.location_of_sample_collection,
+            reason_for_repeat_pcr_other = EXCLUDED.reason_for_repeat_pcr_other
         `;
   
         let updateSQL = `
@@ -598,7 +601,8 @@ export class DbService {
             sample_tested_datetime = ?, rapid_test_date = ?, rejection_on = ?, reason_for_changing = ?,
             child_treatment = ?, choice_of_feeding = ?, is_cotrimoxazole_being_administered_to_the_infant = ?,
             mother_treatment_other = ?, mother_vl_result = ?, mother_cd4 = ?, mother_dob = ?, mother_marital_status = ?,
-            mother_name = ?, result_reviewed_by = ?, result_reviewed_datetime = ?, sample_dispatched_datetime = ?
+            mother_name = ?, result_reviewed_by = ?, result_reviewed_datetime = ?, sample_dispatched_datetime = ?,
+            clinician_name = ?, location_of_sample_collection = ?, reason_for_repeat_pcr_other = ?
           WHERE app_sample_code = ?
         `;
   
@@ -622,7 +626,8 @@ export class DbService {
           reasonForChangingString, saveEidSSJSON.childTreatment, saveEidSSJSON.choiceOfFeeding,
           saveEidSSJSON.isCotrimoxazoleBeingAdministered, saveEidSSJSON.motherTreatmentOther, saveEidSSJSON.motherViralLoad,
           saveEidSSJSON.mothercd4, saveEidSSJSON.mothersDob, saveEidSSJSON.mothersMaritalStatus,
-          saveEidSSJSON.mothersName, saveEidSSJSON.reviewedBy, saveEidSSJSON.reviewedOn, saveEidSSJSON.sampleDispatchedOn
+          saveEidSSJSON.mothersName, saveEidSSJSON.reviewedBy, saveEidSSJSON.reviewedOn, saveEidSSJSON.sampleDispatchedOn,
+          saveEidSSJSON.clinicianName, saveEidSSJSON.locationOfSampleCollection, saveEidSSJSON.reasonForRepeatPcrOther
         ];
   
         let updateValues = [
@@ -644,7 +649,9 @@ export class DbService {
           saveEidSSJSON.rejectionDate, reasonForChangingString, saveEidSSJSON.childTreatment, saveEidSSJSON.choiceOfFeeding,
           saveEidSSJSON.isCotrimoxazoleBeingAdministered, saveEidSSJSON.motherTreatmentOther, saveEidSSJSON.motherViralLoad,
           saveEidSSJSON.mothercd4, saveEidSSJSON.mothersDob, saveEidSSJSON.mothersMaritalStatus, saveEidSSJSON.mothersName,
-          saveEidSSJSON.reviewedBy, saveEidSSJSON.reviewedOn, saveEidSSJSON.sampleDispatchedOn, saveEidSSJSON.appSampleCode
+          saveEidSSJSON.reviewedBy, saveEidSSJSON.reviewedOn, saveEidSSJSON.sampleDispatchedOn,
+          saveEidSSJSON.clinicianName, saveEidSSJSON.locationOfSampleCollection, saveEidSSJSON.reasonForRepeatPcrOther,
+          saveEidSSJSON.appSampleCode
         ];
   
         return this.storage.executeSql(isAddOrUpdate === 'add' ? insertSQL : updateSQL, isAddOrUpdate === 'add' ? insertValues : updateValues)
@@ -720,9 +727,9 @@ export class DbService {
                 date_test_ordered_by_physician, is_patient_new, has_patient_changed_regimen, reason_for_regimen_change, 
                 regimen_change_date, reason_for_vl_testing, vl_test_number, last_viral_load_result, last_viral_load_date, 
                 date_dispatched_from_clinic_to_lab, result_reviewed_by, result_reviewed_datetime, result_value_hiv_detection, 
-                pregnancy_trimester, reason_for_failure
+                pregnancy_trimester, reason_for_failure, location_of_sample_collection
             ) VALUES (
-                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
             )
             ON CONFLICT (unique_id) DO UPDATE SET 
                 user_id = EXCLUDED.user_id, app_sample_code = EXCLUDED.app_sample_code, remote_sample_code = EXCLUDED.remote_sample_code, 
@@ -763,7 +770,7 @@ export class DbService {
                 date_dispatched_from_clinic_to_lab = EXCLUDED.date_dispatched_from_clinic_to_lab, 
                 result_reviewed_by = EXCLUDED.result_reviewed_by, result_reviewed_datetime = EXCLUDED.result_reviewed_datetime, 
                 result_value_hiv_detection = EXCLUDED.result_value_hiv_detection, pregnancy_trimester = EXCLUDED.pregnancy_trimester,
-                reason_for_failure = EXCLUDED.reason_for_failure
+                reason_for_failure = EXCLUDED.reason_for_failure, location_of_sample_collection = EXCLUDED.location_of_sample_collection
             `;
         const values = [
             saveVlSSJSON.user_id, saveVlSSJSON.uniqueId, saveVlSSJSON.appSampleCode, saveVlSSJSON.remoteSampleCode, 
@@ -787,7 +794,7 @@ export class DbService {
             saveVlSSJSON.dateOfArvRegimenChange, saveVlSSJSON.vlTestReason, saveVlSSJSON.viralLoadNo, 
             saveVlSSJSON.lastViralLoadResult, saveVlSSJSON.lastViralLoadTestDate, saveVlSSJSON.dateDispatchedFromClinicToLab, 
             saveVlSSJSON.reviewedBy, saveVlSSJSON.reviewedOn, saveVlSSJSON.resultValueHivDetection, saveVlSSJSON.trimester,
-            saveVlSSJSON.reasonForFailure
+            saveVlSSJSON.reasonForFailure, saveVlSSJSON.locationOfSampleCollection
         ];
 
         const res = await this.storage.executeSql(insertSQL, values);

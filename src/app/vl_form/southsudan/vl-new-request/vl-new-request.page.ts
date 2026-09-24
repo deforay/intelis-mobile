@@ -336,6 +336,10 @@ export class VlNewRequestPage implements OnInit {
           value: '',
           disabled: this.mode === 'view' || this.mode === 'result edit'
         }, []),
+        locationOfSampleCollection: new FormControl({
+          value: '',
+          disabled: this.mode === 'view' || this.mode === 'result edit'
+        }, []),
      
         sampleReceivedDateTimeAtHub: new FormControl({
           value: '',
@@ -695,7 +699,7 @@ export class VlNewRequestPage implements OnInit {
           reasons.forEach((item: any) => {
               this.reasonArray.push(item);
           });
-          this.labResultPanelForm.get('reasonForChanging').setValue(reasons[reasons.length - 1]?.reason || reasons[reasons.length - 1]?.msg || '');
+          // Not pre-filled: a changed result needs its own reason, which the form then requires.
       }
   }
     if (this.getSelectedTestReqForm.sampleCode) {
@@ -789,6 +793,7 @@ export class VlNewRequestPage implements OnInit {
 
     this.sampleInfoPanelForm.get('sampleCollectionDateTime').setValue(this.dateTimeFormat2(new Date(this.getSelectedTestReqForm.sampleCollectionDate)));
     this.sampleInfoPanelForm.get('sampleDispatchedOn').setValue(this.dateTimeFormat2(new Date(this.getSelectedTestReqForm.sampleDispatchedOn)));
+    this.sampleInfoPanelForm.get('locationOfSampleCollection').setValue(this.getSelectedTestReqForm.locationOfSampleCollection || '');
     this.sampleInfoPanelForm.get('specimenType').setValue(this.getSelectedTestReqForm.specimenType);
     this.treatmentInfoPanelForm.get('doTreatmentInit').setValue(this.getSelectedTestReqForm.doTreatmentInit ? new Date(this.getSelectedTestReqForm.doTreatmentInit) : '');
     this.treatmentInfoPanelForm.get('currentRegimen').setValue(this.getSelectedTestReqForm.currentRegimen ? this.getSelectedTestReqForm.currentRegimen : "");
@@ -1488,9 +1493,8 @@ export class VlNewRequestPage implements OnInit {
     // reasonForChangingArray.push(reasonForChangingObj);
     array.push(reasonForChangingObj)
     
-    // The field is pre-filled with the last reason, so a reason is a new change only when the
-    // user typed it, even if it repeats the last one. Marking it pristine keeps a second save
-    // attempt from recording it twice.
+    // A reason is a new change only when the user typed it, even if it repeats the last one.
+    // Marking it pristine keeps a second save attempt from recording it twice.
     const reasonControl = this.labResultPanelForm.get('reasonForChanging');
     if (String(reasonForChangingObj.reason).trim() !== '' && reasonControl.dirty) {
       this.reasonArray.push(reasonForChangingObj);
@@ -1513,6 +1517,7 @@ export class VlNewRequestPage implements OnInit {
 
         "sampleReordered": this.sampleReordered,
         "communitySample": this.clinicInfoPanelForm.controls.CommunitySample.value,
+        "locationOfSampleCollection": this.sampleInfoPanelForm.controls.locationOfSampleCollection.value,
         "provinceName": this.clinicInfoPanelForm.controls.POEState.value,
         "provinceId": this.provinceID,
         "district": this.clinicInfoPanelForm.controls.POECounty.value,
@@ -1837,6 +1842,19 @@ export class VlNewRequestPage implements OnInit {
     const received = this.sampleInfoPanelForm.get('sampleReceivedDateTimeAtTestLab');
     if (this.isTestingUser == 'yes' && received && !received.value) {
       received.setValue(collected);
+    }
+  }
+
+  // As on the web form: a community sample was collected in the community, and the other way round.
+  onChangeCommunitySample() {
+    if (this.clinicInfoPanelForm.get('CommunitySample').value == 'yes') {
+      this.sampleInfoPanelForm.get('locationOfSampleCollection').setValue('community');
+    }
+  }
+
+  onChangeLocationOfSampleCollection() {
+    if (this.sampleInfoPanelForm.get('locationOfSampleCollection').value == 'community') {
+      this.clinicInfoPanelForm.get('CommunitySample').setValue('yes');
     }
   }
 

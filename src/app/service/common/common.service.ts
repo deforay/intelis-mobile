@@ -416,6 +416,9 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleCollectionDate": item.sample_collection_date,
         "specimenType": item.specimen_type,
         "sampleDispatchedOn": item.sample_dispatched_datetime,
+        "clinicianName": item.clinician_name,
+        "locationOfSampleCollection": item.location_of_sample_collection,
+        "reasonForRepeatPcrOther": item.reason_for_repeat_pcr_other,
         "requestingOfficer": item.sample_requestor_name,
         "requestingOfficerPhone": item.sample_requestor_phone,
 
@@ -510,6 +513,9 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleCollectionDate": item.sample_collection_date,
         "specimenType": specimenTypeId(item.specimen_type),
         "sampleDispatchedOn": item.sample_dispatched_datetime,
+        "clinicianName": item.clinician_name,
+        "locationOfSampleCollection": item.location_of_sample_collection,
+        "reasonForRepeatPcrOther": item.reason_for_repeat_pcr_other,
         "sampleRequestorName": item.sample_requestor_name,
         "sampleRequestorPhone": item.sample_requestor_phone,
 
@@ -574,6 +580,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleCollectionDate": item.sample_collection_date,
         "specimenType": item.sample_type,
         "reasonForFailure": item.reason_for_failure,
+        "locationOfSampleCollection": item.location_of_sample_collection,
 
         "doTreatmentInit": item.treatment_initiated_date,
         "currentRegimen": item.current_regimen,
@@ -680,6 +687,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
         "sampleDispatchedOn": item.sample_dispatched_datetime,
         "specimenType": item.sample_type,
         "reasonForFailure": item.reason_for_failure,
+        "locationOfSampleCollection": item.location_of_sample_collection,
 
         "dateOfArtInitiation": item.treatment_initiated_date,
         "artRegimen": item.current_regimen,

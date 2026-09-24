@@ -230,6 +230,10 @@ export class AddNewRequestPage implements OnInit {
           value: '',
           disabled: this.mode === 'view'
         }, [Validators.required]),
+        clinicianName: new FormControl({
+          value: '',
+          disabled: this.mode === 'view' || this.mode === 'result edit'
+        }, []),
         
     
     
@@ -320,6 +324,10 @@ export class AddNewRequestPage implements OnInit {
           value: '',
           disabled: this.mode === 'view' || this.mode === 'result edit'
         }, []),
+        locationOfSampleCollection: new FormControl({
+          value: '',
+          disabled: this.mode === 'view' || this.mode === 'result edit'
+        }, []),
        
       
     
@@ -370,6 +378,10 @@ export class AddNewRequestPage implements OnInit {
           disabled: this.mode === 'view' || this.mode === 'result edit'
         }, []),
         reasonPcr2Test: new FormControl({
+          value: '',
+          disabled: this.mode === 'view' || this.mode === 'result edit'
+        }, []),
+        reasonForRepeatPcrOther: new FormControl({
           value: '',
           disabled: this.mode === 'view' || this.mode === 'result edit'
         }, []),
@@ -657,7 +669,7 @@ export class AddNewRequestPage implements OnInit {
           reasons.forEach((item: any) => {
               this.reasonArray.push(item);
           });
-          this.labResultPanelForm.get('reasonForChanging').setValue(reasons[reasons.length - 1]?.reason || reasons[reasons.length - 1]?.msg || '');
+          // Not pre-filled: a changed result needs its own reason, which the form then requires.
       }
   }
     if (this.getSelectedTestReqForm.sampleCode) {
@@ -787,6 +799,8 @@ export class AddNewRequestPage implements OnInit {
     this.infantMotherHealthInfoPanelForm.get('pcrTest').setValue(this.getSelectedTestReqForm.pcrTest);
     this.infantMotherHealthInfoPanelForm.get('previousPcrResult').setValue(this.getSelectedTestReqForm.previousPcrResult);
     this.infantMotherHealthInfoPanelForm.get('reasonPcr2Test').setValue(this.getSelectedTestReqForm.reasonPcr2Test);
+    this.infantMotherHealthInfoPanelForm.get('reasonForRepeatPcrOther').setValue(this.getSelectedTestReqForm.reasonForRepeatPcrOther || '');
+    this.siteInfoPanelForm.get('clinicianName').setValue(this.getSelectedTestReqForm.clinicianName || '');
     this.infantMotherHealthInfoPanelForm.get('previousTestDate').setValue(this.getSelectedTestReqForm.previousTestDate ? new Date(this.getSelectedTestReqForm.previousTestDate) : '');
     this.infantMotherHealthInfoPanelForm.get('testDate').setValue(this.getSelectedTestReqForm.testDate ? new Date(this.getSelectedTestReqForm.testDate) : '');
 
@@ -798,6 +812,7 @@ export class AddNewRequestPage implements OnInit {
     this.specimenInfoPanelForm.get('sampleDispatchedOn').setValue(this.getSelectedTestReqForm.sampleDispatchedOn ? this.dateTimeFormat2(new Date(this.getSelectedTestReqForm.sampleDispatchedOn)) : '');
     this.specimenInfoPanelForm.get('requestingOfficer').setValue(this.getSelectedTestReqForm.requestingOfficer);
     this.specimenInfoPanelForm.get('requestingOfficerPhone').setValue(this.getSelectedTestReqForm.requestingOfficerPhone);
+    this.specimenInfoPanelForm.get('locationOfSampleCollection').setValue(this.getSelectedTestReqForm.locationOfSampleCollection || '');
 
 
     this.labResultPanelForm.get('sampleReceivedDateTime').setValue(this.getSelectedTestReqForm.sampleReceivedDate ? this.dateTimeFormat2(new Date(this.getSelectedTestReqForm.sampleReceivedDate)) : "");
@@ -1443,9 +1458,8 @@ export class AddNewRequestPage implements OnInit {
     // reasonForChangingArray.push(reasonForChangingObj);
     array.push(reasonForChangingObj)
     
-    // The field is pre-filled with the last reason, so a reason is a new change only when the
-    // user typed it, even if it repeats the last one. Marking it pristine keeps a second save
-    // attempt from recording it twice.
+    // A reason is a new change only when the user typed it, even if it repeats the last one.
+    // Marking it pristine keeps a second save attempt from recording it twice.
     const reasonControl = this.labResultPanelForm.get('reasonForChanging');
     if (String(reasonForChangingObj.reason).trim() !== '' && reasonControl.dirty) {
       this.reasonArray.push(reasonForChangingObj);
@@ -1497,12 +1511,15 @@ export class AddNewRequestPage implements OnInit {
         "previousPcrResult": this.infantMotherHealthInfoPanelForm.controls.previousPcrResult.value,
         "previousTestDate": this.infantMotherHealthInfoPanelForm.controls.previousTestDate.value ? this.dateFormat(new Date(this.infantMotherHealthInfoPanelForm.controls.previousTestDate.value)) : '',
         "reasonPcr2Test": this.infantMotherHealthInfoPanelForm.controls.reasonPcr2Test.value,
+        "reasonForRepeatPcrOther": this.infantMotherHealthInfoPanelForm.controls.reasonPcr2Test.value == 'Other' ? this.infantMotherHealthInfoPanelForm.controls.reasonForRepeatPcrOther.value : '',
+        "clinicianName": this.siteInfoPanelForm.controls.clinicianName.value,
 
         "sampleCollectionDate": this.dateTimeFormat(this.specimenInfoPanelForm.controls.sampleCollectionDateTime.value),
         "sampleDispatchedOn": this.specimenInfoPanelForm.controls.sampleDispatchedOn.value ? this.dateTimeFormat(new Date(this.specimenInfoPanelForm.controls.sampleDispatchedOn.value)) : '',
         "specimenType": this.specimenInfoPanelForm.controls.specimenType.value,
         "requestingOfficer": this.specimenInfoPanelForm.controls.requestingOfficer.value,
         "requestingOfficerPhone": this.specimenInfoPanelForm.controls.requestingOfficerPhone.value,
+        "locationOfSampleCollection": this.specimenInfoPanelForm.controls.locationOfSampleCollection.value,
 
         "sampleReceivedDate": this.labResultPanelForm.controls.sampleReceivedDateTime.value ? this.dateTimeFormat(new Date(this.labResultPanelForm.controls.sampleReceivedDateTime.value)) : '',
         "testPlatform": this.labResultPanelForm.controls.testPlatform.value ? this.labResultPanelForm.controls.testPlatform.value : '',

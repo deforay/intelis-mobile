@@ -158,6 +158,10 @@
             </mat-error>
           }
         </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Requesting Clinician Name</mat-label>
+          <input [readonly]="mode=='view' || mode=='result edit'" matInput formControlName="clinicianName">
+        </mat-form-field>
         <mat-action-row>
           <button mat-button color="primary" (click)="nextStepSiteInfo(siteInfoPanelForm.valid)">Next</button>
         </mat-action-row>
@@ -406,6 +410,16 @@
       </mat-select>
     </mat-form-field>
   }
+  @if (infantMotherHealthInfoPanelForm.controls.pcrTest.value=='yes' && infantMotherHealthInfoPanelForm.controls.reasonPcr2Test.value=='Other') {
+    <mat-form-field appearance="fill">
+      <mat-label>Other Reason for Repeat PCR</mat-label>
+      <input [readonly]="mode=='view' || mode=='result edit'" matInput formControlName="reasonForRepeatPcrOther" required
+        [errorStateMatcher]="matcher">
+      @if (infantMotherHealthInfoPanelForm.controls.reasonForRepeatPcrOther.hasError('required')) {
+        <mat-error>Please enter the reason for repeat PCR</mat-error>
+      }
+    </mat-form-field>
+  }
   <mat-action-row>
     <button mat-button class="previousButton" (click)="prevStep()">Previous</button>
     <button mat-button color="primary"
@@ -519,6 +533,14 @@
         Please enter Specimen Type
       </mat-error>
     }
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Location of Sample Collection</mat-label>
+    <mat-select [readonly]="mode=='view' || mode=='result edit'" formControlName="locationOfSampleCollection">
+      <mat-option value="facility" [disabled]="isOptionDisabled()">Facility</mat-option>
+      <mat-option value="community" [disabled]="isOptionDisabled()">Community</mat-option>
+      <mat-option value="unreported" [disabled]="isOptionDisabled()">Unreported</mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>Requesting Officer</mat-label>

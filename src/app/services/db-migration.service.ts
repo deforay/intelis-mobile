@@ -38,7 +38,7 @@ export class DbMigrationService {
       ,'0.3',
       '0.4',
       '0.5',
-      '0.6',
+      '0.6', // not yet released: final only once a build carrying it ships
       // '0.7',
     ];
     this.migrationVersion = 0.6;
