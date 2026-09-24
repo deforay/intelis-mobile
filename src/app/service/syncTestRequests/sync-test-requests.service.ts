@@ -129,9 +129,14 @@ public CrudService: CrudOperationsService,
   // when the post was made on an older one. Servers without it ignore it.
   resultVersionCapabilities = { supports: ['result-version'] };
 
-  // Records what a save-request answered for one sample. The server names the
-  // sample by its own unique id, not the app's, so that id is kept to ask
-  // fetch-results about the sample and to match its result back.
+  // Records what a save-request answered for one sample. The save handlers are
+  // not awaited, so the result pull can run before this does. That costs a sync,
+  // not a result: this runs before the handler marks the sample sent, and the
+  // pull leaves unsent samples alone, so it never stores a version over a stale
+  // local result.
+  //
+  // The server names the sample by its own unique id, not the app's, so that id
+  // is kept to ask fetch-results about the sample and to match its result back.
   //
   // It also holds the result version the server answered with. When the server
   // kept the lab's newer result instead of ours (resultKept), the local result is
@@ -225,10 +230,14 @@ public CrudService: CrudOperationsService,
     }
     const held = before.rows.item( 0 );
     const names = Object.keys( columns );
-    await db.executeSql(
+    const updated = await db.executeSql(
       `UPDATE ${table} SET ${names.map( ( name ) => name + ' = ?' ).join( ', ' )} WHERE ${where}`,
       [...names.map( ( name ) => columns[name] ?? null ), item.uniqueId, item.uniqueId]
     );
+    // An edit saved since the SELECT keeps the sample out of the UPDATE.
+    if ( updated.rowsAffected == 0 ) {
+      return null;
+    }
     // The result version also moves when the lab edits a tester, an approver or
     // the like, so the result and the rejection themselves decide what is new.
     const decided = ( item.result ?? '' ) !== '' || columns.is_sample_rejected == 'yes';

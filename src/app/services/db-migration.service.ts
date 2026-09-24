@@ -3,7 +3,7 @@ import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { SQLitePorter } from '@awesome-cordova-plugins/sqlite-porter/ngx';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { Platform } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -105,35 +105,18 @@ export class DbMigrationService {
               // dynamic path of the file based on iteration f the for loop
               let text = 'assets/v(' + item + ').sql';
 
-              this.httpClient.get(text, {
-                responseType: 'text',
-              }).subscribe(
-                async (subData) => {
-                  await this.sqlPorter.importSqlToDb(this.storage, subData).then(
-                    async (subResponse) => {
-                      this.isDbReady.next(true);
-                      // after successful exceution of the migration file we need to insert it into version history table
-                      await this.storage.executeSql(`INSERT INTO version_history (versionNumber,updatedAt) VALUES ("${item}","${date}")`).then(
-                        async (result) => {
-                          const data = await this.storage.executeSql('SELECT * FROM version_history', []);
-                        },
-                        async (error) => {
-                          const data = await this.storage.executeSql('SELECT * FROM version_history', []);
-                          for (let i = 0; i < data.rows.length; i++) {
-                            // this.currentVersion = data.rows.item(i).maxVersion
-                          }
-                        }
-                      );
-                    },
-                    (error) => {
-                      console.log(error);
-                    }
-                  );
-                },
-                (error) => {
-                  console.log(error);
-                }
-              );
+              // Awaited, one file at a time, so the next migration and any sync that
+              // follows see this one's columns. A file that fails is logged and the
+              // run carries on, as it always has: an install stuck on an old file
+              // still gets the newer ones.
+              try {
+                const subData = await lastValueFrom(this.httpClient.get(text, { responseType: 'text' }));
+                await this.sqlPorter.importSqlToDb(this.storage, subData);
+                this.isDbReady.next(true);
+                await this.storage.executeSql(`INSERT INTO version_history (versionNumber,updatedAt) VALUES ("${item}","${date}")`);
+              } catch (error) {
+                console.log(error);
+              }
               console.log('app version is updated', date);
             }
           }
