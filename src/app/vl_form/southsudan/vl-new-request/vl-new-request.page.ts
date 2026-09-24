@@ -1480,11 +1480,13 @@ export class VlNewRequestPage implements OnInit {
     // reasonForChangingArray.push(reasonForChangingObj);
     array.push(reasonForChangingObj)
     
-    // The field is pre-filled with the last reason, so only a new, different reason is a new change.
-    const lastReason = this.reasonArray.length ? this.reasonArray[this.reasonArray.length - 1] : null;
-    const lastReasonText = lastReason ? (lastReason.reason ?? lastReason.msg ?? '') : '';
-    if (String(reasonForChangingObj.reason).trim() !== '' && reasonForChangingObj.reason !== lastReasonText) {
+    // The field is pre-filled with the last reason, so a reason is a new change only when the
+    // user typed it, even if it repeats the last one. Marking it pristine keeps a second save
+    // attempt from recording it twice.
+    const reasonControl = this.labResultPanelForm.get('reasonForChanging');
+    if (String(reasonForChangingObj.reason).trim() !== '' && reasonControl.dirty) {
       this.reasonArray.push(reasonForChangingObj);
+      reasonControl.markAsPristine();
     }
 
       let saveVlSSJSON =
