@@ -103,8 +103,9 @@ export class JwPaginationComponent implements OnInit {
     }
     this.itemsArray.forEach(element => {
       // Kept for the card's colour: the lookup below does not know VL copy numbers.
+      // COVID-19 lists carry the result as testResult.
       if (element.rawResult === undefined) {
-        element.rawResult = element.result;
+        element.rawResult = element.result ?? element.testResult;
       }
       if (this.resultArray) {
         this.resultArray.forEach(Object => {
@@ -209,7 +210,7 @@ export class JwPaginationComponent implements OnInit {
     if (item.isSampleRejected === 'yes') {
       return 'rejected';
     }
-    const result = item.rawResult ?? item.result;
+    const result = item.rawResult ?? item.result ?? item.testResult;
     return result !== null && result !== undefined && String(result).trim() !== '' ? 'result' : 'waiting';
   }
 
