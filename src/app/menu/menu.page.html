@@ -18,6 +18,13 @@
   </mat-toolbar>
 
   <ion-content>
+    @if (isFormUnsupported) {
+      <div class="unsupportedForm">
+        <mat-icon class="unsupportedFormIcon">info</mat-icon>
+        <h2>Your country's forms are not supported yet</h2>
+        <p>This app cannot create or view test requests for your InteLIS server yet. Please reach out to Technical Support.</p>
+      </div>
+    }
     <ion-list lines="full">
       @for (p of appPages; track p; let i = $index) {
         @if (p.access) {

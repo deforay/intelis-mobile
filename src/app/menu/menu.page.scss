@@ -103,3 +103,20 @@
     fill: currentColor;
     font-size: 23px;
 }
+
+.unsupportedForm {
+  margin: 24px 16px;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--ion-color-light, #f4f5f8);
+  text-align: center;
+  color: #344054;
+  h2 { font-size: 17px; font-weight: 600; margin: 8px 0; }
+  p { font-size: 14px; line-height: 1.5; margin: 0; }
+}
+.unsupportedFormIcon {
+  color: var(--ion-color-primary);
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}

@@ -52,6 +52,12 @@ export class MenuPage implements OnInit {
   appVersionNumber: any;
   authToken: any;
   formId: any;
+  // The country forms this app has: South Sudan only for now.
+  readonly supportedFormIds = [1];
+
+  get isFormUnsupported(): boolean {
+    return this.formId != null && this.formId !== '' && !this.supportedFormIds.includes(Number(this.formId));
+  }
   initArray: any;
   tmpPg: any = [];
 
