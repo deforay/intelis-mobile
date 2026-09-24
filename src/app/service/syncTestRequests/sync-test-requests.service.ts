@@ -286,7 +286,7 @@ public CrudService: CrudOperationsService,
       for ( const test of item.c19Tests || [] ) {
         tx.executeSql(
           'INSERT INTO covid19_tests (unique_id, covid19_id, facility_id, test_name, tested_by, sample_tested_datetime, testing_platform, kitLotNo, kitExpiryDate, result) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-          [sample.unique_id, sample.covid19_id, item.facilityId, test.testName, item.testedByName, test.testDate, test.testingPlatform, test.kitLotNo, test.kitExpiryDate, test.testResult ?? test.result].map( ( value ) => value ?? null )
+          [sample.unique_id, sample.covid19_id, test.facilityId ?? item.facilityId, test.testName, item.testedByName, test.testDate, test.testingPlatform, test.kitLotNo, test.kitExpiryDate, test.testResult ?? test.result].map( ( value ) => value ?? null )
         );
       }
     } );
