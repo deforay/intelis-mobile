@@ -100,8 +100,8 @@ export class AppPasswordPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.storage.get( 'participantLogin' ).then( ( participantLogin ) => {
-      // this.participantName = participantLogin.name;
+    this.storage.get( 'loginDetails' ).then( ( loginDetails ) => {
+      this.participantName = loginDetails?.user?.user_name || '';
     } );
 
     // this.events.subscribe("loggedPartiName", (result) => {

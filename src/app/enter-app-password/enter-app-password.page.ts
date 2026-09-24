@@ -80,9 +80,8 @@ export class EnterAppPasswordPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.storage.get('participantLogin').then((participantLogin) => {
-      // console.log(participantLogin, 'participantLogin');
-      // this.participantName = participantLogin.name;
+    this.storage.get('loginDetails').then((loginDetails) => {
+      this.participantName = loginDetails?.user?.user_name || '';
     });
     this.storage.get('appPin').then((pin) => {
       // console.log('apppin', this.appPin);
