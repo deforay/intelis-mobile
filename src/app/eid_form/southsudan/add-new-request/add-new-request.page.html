@@ -24,7 +24,7 @@
           hideToggle>
           <mat-expansion-panel-header>
             <mat-panel-title>
-              SITE INFORMATION
+              Site information
             </mat-panel-title>
             <mat-icon>keyboard_arrow_down</mat-icon>
           </mat-expansion-panel-header>
@@ -170,7 +170,7 @@
       <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
         <mat-expansion-panel-header class="matHeader">
           <mat-panel-title>
-            CHILD AND MOTHER INFORMATION
+            Child and mother
           </mat-panel-title>
           <mat-icon>keyboard_arrow_down</mat-icon>
         </mat-expansion-panel-header>
@@ -283,7 +283,7 @@
     <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
       <mat-expansion-panel-header class="matHeader">
         <mat-panel-title>
-          INFANT AND MOTHER'S HEALTH INFORMATION
+          Infant and mother health
         </mat-panel-title>
         <mat-icon>keyboard_arrow_down</mat-icon>
       </mat-expansion-panel-header>
@@ -432,7 +432,7 @@
     <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
       <mat-expansion-panel-header class="matHeader">
         <mat-panel-title>
-          SAMPLE INFORMATION
+          Sample information
         </mat-panel-title>
         <mat-icon>keyboard_arrow_down</mat-icon>
       </mat-expansion-panel-header>
@@ -502,6 +502,7 @@
       required
       [errorStateMatcher]="matcher"
       />
+    <mat-datepicker-toggle matSuffix [disabled]="mode === 'view' || mode === 'result edit'"></mat-datepicker-toggle>
     <ion-icon name="close" class="clearDateIcon"
       ios="ios-close"
       [ngClass]="{'disabled-icon': mode === 'view' || mode === 'result edit'}"
@@ -582,7 +583,7 @@
       (opened)="setStep(4)" hideToggle>
       <mat-expansion-panel-header class="matHeader">
         <mat-panel-title>
-          RESERVED FOR LABORATORY USE
+          Laboratory information
         </mat-panel-title>
         <mat-icon>keyboard_arrow_down</mat-icon>
       </mat-expansion-panel-header>
@@ -933,7 +934,7 @@ Please enter the Approved On
   <mat-expansion-panel class="matPanel" [expanded]="step === 5" (opened)="setStep(5)" hideToggle>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        VIEW RESULT
+        Result
       </mat-panel-title>
       <mat-icon>keyboard_arrow_down</mat-icon>
     </mat-expansion-panel-header>
