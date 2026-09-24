@@ -439,6 +439,13 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
     })
   }
   async eidSyncArray(items) {
+    // Requests saved before the sample type was stored by id hold its name; send the id.
+    const initArray = await this.storage.get('initArray');
+    const specimenTypes = (initArray && initArray.eid && initArray.eid.specimenTypeList) || [];
+    const specimenTypeId = (saved) => {
+      const match = specimenTypes.find(type => type.show == saved);
+      return match ? match.value : saved;
+    };
     return this.eidItemsArray = items.map(function (item) {
       return {
         "user_id": item.user_id,
@@ -501,7 +508,7 @@ async getc19SymptomsKeysArray(c19SymptomsArray){
 
 
         "sampleCollectionDate": item.sample_collection_date,
-        "specimenType": item.specimen_type,
+        "specimenType": specimenTypeId(item.specimen_type),
         "sampleDispatchedOn": item.sample_dispatched_datetime,
         "sampleRequestorName": item.sample_requestor_name,
         "sampleRequestorPhone": item.sample_requestor_phone,
