@@ -260,6 +260,10 @@ export class MenuPage implements OnInit {
       return;
     }
     const play = await playUpdates.state();
+    // A download started while Play was being asked is newer than its answer.
+    if (this.playUpdate === 'downloading') {
+      return;
+    }
     // A download already downloaded stays as it is when a recheck fails.
     if (this.playUpdate === 'ready' && play === null) {
       return;
@@ -292,7 +296,8 @@ export class MenuPage implements OnInit {
   });
 
   restartIntoUpdate() {
-    playUpdates.complete().catch(() => this.zone.run(() => { this.playUpdate = 'available'; }));
+    // Play keeps the downloaded package, so a failed restart leaves Restart in place to try again.
+    playUpdates.complete().catch(() => this.zone.run(() => { this.playUpdate = 'ready'; }));
   }
 
   dismissNewerVersion() {

@@ -53,6 +53,9 @@ public class PlayAppUpdate extends CordovaPlugin {
                     if (done) {
                         stopListening();
                     }
+                }).addOnFailureListener(e -> {
+                    stopListening();
+                    callback.error(String.valueOf(e.getMessage()));
                 });
                 return true;
             default: return false;
