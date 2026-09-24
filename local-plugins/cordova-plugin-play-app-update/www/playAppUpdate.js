@@ -13,6 +13,9 @@ module.exports = {
     startImmediate: function () {
         return new Promise(function (resolve, reject) { exec(resolve, reject, 'PlayAppUpdate', 'startImmediate', []); });
     },
+    listen: function (onEvent, onError) {
+        exec(onEvent, onError, 'PlayAppUpdate', 'listen', []);
+    },
     complete: function () {
         return new Promise(function (resolve, reject) { exec(resolve, reject, 'PlayAppUpdate', 'complete', []); });
     }

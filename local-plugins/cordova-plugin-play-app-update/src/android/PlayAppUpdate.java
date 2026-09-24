@@ -41,6 +41,8 @@ public class PlayAppUpdate extends CordovaPlugin {
             case "startFlexible": start(AppUpdateType.FLEXIBLE, callback); return true;
             case "startImmediate": start(AppUpdateType.IMMEDIATE, callback); return true;
             case "complete": complete(callback); return true;
+            // Reattach to a flexible download started before the app was restarted.
+            case "listen": listenForProgress(callback); return true;
             default: return false;
         }
     }

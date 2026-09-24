@@ -255,6 +255,9 @@ export class MenuPage implements OnInit {
     const keep = this.playUpdate === 'downloading' || (this.playUpdate === 'ready' && play === null);
     if (!keep) {
       this.playUpdate = play;
+      if (play === 'downloading') {
+        playUpdates.listen(this.onPlayUpdateEvent, () => this.zone.run(() => { this.playUpdate = 'available'; }));
+      }
     }
     // Later may have been tapped while the lookup ran.
     this.newerVersion = this.appUpdate.dismissed ? null : newer;
@@ -267,16 +270,19 @@ export class MenuPage implements OnInit {
   startPlayUpdate() {
     this.playUpdate = 'downloading';
     this.playProgress = 0;
-    playUpdates.start((e) => this.zone.run(() => {
-      if (e.status === 'downloading' && e.total > 0) {
-        this.playProgress = Math.round((e.bytes / e.total) * 100);
-      } else if (e.status === 'downloaded') {
-        this.playUpdate = 'ready';
-      } else if (e.status === 'canceled' || e.status === 'failed') {
-        this.playUpdate = 'available';
-      }
-    }), () => this.zone.run(() => { this.playUpdate = 'available'; }));
+    playUpdates.start(this.onPlayUpdateEvent, () => this.zone.run(() => { this.playUpdate = 'available'; }));
   }
+
+  private onPlayUpdateEvent = (e) => this.zone.run(() => {
+    if (e.status === 'downloading' && e.total > 0) {
+      this.playUpdate = 'downloading';
+      this.playProgress = Math.round((e.bytes / e.total) * 100);
+    } else if (e.status === 'downloaded') {
+      this.playUpdate = 'ready';
+    } else if (e.status === 'canceled' || e.status === 'failed') {
+      this.playUpdate = 'available';
+    }
+  });
 
   restartIntoUpdate() {
     playUpdates.complete().catch(() => this.zone.run(() => { this.playUpdate = 'available'; }));

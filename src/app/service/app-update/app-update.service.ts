@@ -54,7 +54,7 @@ export const playUpdates = {
 
   // 'ready' when an update was already downloaded, 'available' when Play offers one we can
   // download in the background, null otherwise.
-  async state(): Promise<'available' | 'ready' | null> {
+  async state(): Promise<'available' | 'downloading' | 'ready' | null> {
     if (!this.plugin) {
       return null;
     }
@@ -62,6 +62,10 @@ export const playUpdates = {
       const info = await this.plugin.check();
       if (info && info.installStatus === 'downloaded') {
         return 'ready';
+      }
+      // A download started before the app was restarted is still running.
+      if (info && ['pending', 'downloading', 'installing'].includes(info.installStatus)) {
+        return 'downloading';
       }
       return info && info.available && info.flexibleAllowed ? 'available' : null;
     } catch (e) {
@@ -71,6 +75,10 @@ export const playUpdates = {
 
   start(onEvent: (e: PlayUpdateEvent) => void, onError: (e: any) => void) {
     this.plugin.startFlexible(onEvent, onError);
+  },
+
+  listen(onEvent: (e: PlayUpdateEvent) => void, onError: (e: any) => void) {
+    this.plugin.listen(onEvent, onError);
   },
 
   complete(): Promise<void> {
