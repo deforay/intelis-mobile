@@ -607,8 +607,8 @@ export class AddNewRequestPage implements OnInit {
 
       this.childMotherDetailsPanelForm.get('child_id').setValue(this.selectedPatientDetail.child_id);
       // this.childMotherDetailsPanelForm.get('DHIS2CaseID').setValue(this.selectedPatientDetail.externalSampleCode);
-      this.childMotherDetailsPanelForm.get('firstName').setValue(this.selectedPatientDetail.child_name);
-      this.childMotherDetailsPanelForm.get('lastName').setValue(this.selectedPatientDetail.child_surname);
+      this.childMotherDetailsPanelForm.get('firstName').setValue(this.infantName(this.selectedPatientDetail.child_name, this.selectedPatientDetail.child_surname));
+      this.childMotherDetailsPanelForm.get('lastName').setValue('');
       this.childMotherDetailsPanelForm.get('dob').setValue(this.selectedPatientDetail.child_dob ? new Date(this.selectedPatientDetail.child_dob) : '');
       this.childMotherDetailsPanelForm.get('age').setValue(this.selectedPatientDetail.child_age);
       this.childMotherDetailsPanelForm.get('gender').setValue(this.selectedPatientDetail.child_gender);
@@ -759,8 +759,8 @@ export class AddNewRequestPage implements OnInit {
 
     // this.siteInfoPanelForm.get('testingLab').setValue(this.getSelectedTestReqForm.testingLab);
     this.childMotherDetailsPanelForm.get('child_id').setValue(this.getSelectedTestReqForm.patientId);
-    this.childMotherDetailsPanelForm.get('firstName').setValue(this.getSelectedTestReqForm.firstName);
-    this.childMotherDetailsPanelForm.get('lastName').setValue(this.getSelectedTestReqForm.lastName);
+    this.childMotherDetailsPanelForm.get('firstName').setValue(this.infantName(this.getSelectedTestReqForm.firstName, this.getSelectedTestReqForm.lastName));
+    this.childMotherDetailsPanelForm.get('lastName').setValue('');
     this.childMotherDetailsPanelForm.get('dob').setValue(this.getSelectedTestReqForm.patientDob ? new Date(this.getSelectedTestReqForm.patientDob) : '');
     this.childMotherDetailsPanelForm.get('age').setValue(this.getSelectedTestReqForm.childAge);
     this.childMotherDetailsPanelForm.get('gender').setValue(this.getSelectedTestReqForm.patientGender);
@@ -1664,6 +1664,11 @@ export class AddNewRequestPage implements OnInit {
     if (!this.specimenInfoPanelForm.get('sampleDispatchedOn').value) {
       this.specimenInfoPanelForm.get('sampleDispatchedOn').setValue(collected);
     }
+  }
+
+  // The web form has one infant name field; older requests split it into name and surname.
+  infantName(name, surname) {
+    return [name, surname].filter(part => part && String(part).trim() !== '').join(' ');
   }
 
   clearSampleDispatchedOn() {

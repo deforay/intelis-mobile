@@ -206,18 +206,8 @@
         <input [readonly]="mode=='view' || mode=='result edit'" [disabled]="mode=='view' || mode=='result edit'" matInput formControlName="DHIS2CaseID">
       </mat-form-field> -->
       <mat-form-field appearance="fill">
-        <mat-label>First Name </mat-label>
-        <input [readonly]="mode=='view' "  matInput formControlName="firstName"
-          [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted }">
-        @if (childMotherDetailsPanelForm.controls.firstName.hasError('required')) {
-          <mat-error>
-            Please enter First Name
-          </mat-error>
-        }
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Last name</mat-label>
-        <input [readonly]="mode=='view' "  matInput formControlName="lastName">
+        <mat-label>Infant Name</mat-label>
+        <input [readonly]="mode=='view' "  matInput formControlName="firstName">
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Date of Birth</mat-label>
@@ -632,7 +622,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Testing Platform</mat-label>
       <mat-select [readonly]="mode=='view'"  formControlName="testPlatform"
-        [required]="labResultPanelForm.controls.sampleRejected.value=='yes' || labResultPanelForm.controls.sampleRejected.value=='no'"
+        [required]="labResultPanelForm.controls.sampleRejected.value=='no'"
         [errorStateMatcher]="matcher"
         [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
         @for (item of eidInitArray['testPlatformList']; track item) {
@@ -652,7 +642,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Machine used to test</mat-label>
       <mat-select [readonly]="mode=='view'"  formControlName="machineUsed"
-        [required]="labResultPanelForm.controls.sampleRejected.value=='yes' || labResultPanelForm.controls.sampleRejected.value=='no'"
+        
         [errorStateMatcher]="matcher"
         [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
         @for (item of eidInitArray['testPlatformList']; track item) {
@@ -807,7 +797,7 @@
   <mat-label>Tested By</mat-label>
   <input [readonly]="mode=='view'"  type="text" matInput formControlName="testedBy"
     [matAutocomplete]="autoTestedBy"
-    [required]="labResultPanelForm.controls.sampleRejected.value=='yes' || labResultPanelForm.controls.sampleRejected.value=='no'"
+    
     [errorStateMatcher]="matcher"
     [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
   <mat-autocomplete #autoTestedBy="matAutocomplete">
@@ -826,7 +816,7 @@
   <mat-label>Reviewed By</mat-label>
   <input [readonly]="mode=='view'"  matInput formControlName="reviewedBy"
     [matAutocomplete]="reviewedBy"
-    [errorStateMatcher]="matcher" [required]="labResultPanelForm.controls.sampleRejected.value=='no'"
+    [errorStateMatcher]="matcher" 
     [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
   <mat-autocomplete #reviewedBy="matAutocomplete">
     @for (option of reviewedByFilteredOptions | async; track option) {
@@ -844,7 +834,7 @@
   <mat-label>Reviewed On</mat-label>
   <input [readonly]="mode=='view'"  matInput type="datetime-local"
     [min]="maxSampleReceivedDate" [max]="maxDatetime" formControlName="reviewedOn"
-    [required]="labResultPanelForm.controls.sampleRejected.value=='no'"
+    
     [errorStateMatcher]="matcher"
     [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
   <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
@@ -862,7 +852,7 @@
   <mat-label>Approved By</mat-label>
   <input [readonly]="mode=='view'"  matInput formControlName="approvedBy"
     [matAutocomplete]="approvedBy"
-    [errorStateMatcher]="matcher" [required]="labResultPanelForm.controls.sampleRejected.value=='no'"
+    [errorStateMatcher]="matcher" 
     [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
   <mat-autocomplete #approvedBy="matAutocomplete">
     @for (option of approvedByFilteredOptions | async; track option) {
@@ -880,7 +870,7 @@
   <mat-label>Approved On</mat-label>
   <input [readonly]="mode=='view'"  matInput type="datetime-local"
     [min]="maxSampleReceivedDate" [max]="maxDatetime" formControlName="approvedOn"
-    [required]="labResultPanelForm.controls.sampleRejected.value=='no'"
+    
     [errorStateMatcher]="matcher"
     [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
   <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
@@ -900,7 +890,7 @@
 <!-- <mat-form-field appearance="fill">
 <mat-label>Approved On</mat-label>
 <input [readonly]="mode=='view'" [disabled]="mode=='view'" matInput type="datetime-local" [matDatepicker]="approvedOnPicker"
-  formControlName="approvedOn" [max]="maxDatetime"  [required]="labResultPanelForm.controls.sampleRejected.value=='no'"
+  formControlName="approvedOn" [max]="maxDatetime"  
   [errorStateMatcher]="matcher"
   [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
 <mat-datepicker-toggle matSuffix [for]="approvedOnPicker"></mat-datepicker-toggle>
