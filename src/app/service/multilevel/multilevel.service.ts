@@ -12,6 +12,7 @@ export class MultilevelService {
   path = '../../../assets/multi-accordion.json';
   pagesArray: any = [];
   formId: any;
+  isTestingUser = false;
   constructor(
     private httpClient: HttpClient,
     private privilegeService: PrivilegeService,
@@ -36,6 +37,8 @@ export class MultilevelService {
     await this.storage.get('loginDetails').then(async (loginDetails) => {
       if (loginDetails) {
         this.formId = loginDetails['form'];
+        // Only testing-lab users enter results, as on the server; collection sites can view them.
+        this.isTestingUser = loginDetails['user'] && loginDetails['user'].testing_user == 'yes';
       }else{
         this.router.navigate(['/login']);
        }
@@ -79,7 +82,7 @@ export class MultilevelService {
                     types.access = true;
                     types["item"].map((crud) => {
                       if (crud.name == 'Enter Test Result') {
-                        if (this.privilegeService.canCovidResultEnterResultManually) {
+                        if (this.privilegeService.canCovidResultEnterResultManually && this.isTestingUser) {
                           crud.access = true;
                         }
                       }
@@ -134,7 +137,7 @@ export class MultilevelService {
                     types.access = true;
                     types["item"].map((crud) => {
                       if (crud.name == 'Enter Test Result') {
-                        if (this.privilegeService.canEIDResultsEnterResultManually) {
+                        if (this.privilegeService.canEIDResultsEnterResultManually && this.isTestingUser) {
                           crud.access = true;
                         }
                       }
@@ -189,7 +192,7 @@ export class MultilevelService {
                     types.access = true;
                     types["item"].map((crud) => {
                       if (crud.name == 'Enter Test Result') {
-                        if (this.privilegeService.canVLResultEnterManually) {
+                        if (this.privilegeService.canVLResultEnterManually && this.isTestingUser) {
                           crud.access = true;
                         }
                       }

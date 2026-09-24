@@ -98,7 +98,7 @@
             <mat-label>Health Facility/POE</mat-label>
             <input [readonly]="mode=='view' || mode=='result edit'"  type="text" matInput formControlName="POE" required
               [matAutocomplete]="autoPOE" [errorStateMatcher]="matcher" [ngClass]="{'mat-form-field-invalid':submitted }">
-            <mat-autocomplete #autoPOE="matAutocomplete">
+            <mat-autocomplete #autoPOE="matAutocomplete" (optionSelected)="fillDatesWhenLabIsClinic()">
               @for (option of POEFilteredOptions | async; track option) {
                 <mat-option [value]="option">
                   {{option}}
@@ -143,7 +143,7 @@
           <input [readonly]="mode=='view' "  type="text" matInput formControlName="testingLab"
             [matAutocomplete]="autoTestingLab" required
             [ngClass]="{ 'mat-form-field-invalid':submitted }" [errorStateMatcher]="matcher">
-          <mat-autocomplete #autoTestingLab="matAutocomplete">
+          <mat-autocomplete #autoTestingLab="matAutocomplete" (optionSelected)="fillDatesWhenLabIsClinic()">
             @for (item of initArray['testingLabsList']; track item) {
               @if (item.test_type == 'eid') {
                 <mat-option [value]="item.show" [disabled]="isOptionDisableds()">
@@ -207,7 +207,7 @@
       </mat-form-field> -->
       <mat-form-field appearance="fill">
         <mat-label>First Name </mat-label>
-        <input [readonly]="mode=='view' "  matInput formControlName="firstName" required
+        <input [readonly]="mode=='view' "  matInput formControlName="firstName"
           [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted }">
         @if (childMotherDetailsPanelForm.controls.firstName.hasError('required')) {
           <mat-error>
@@ -217,7 +217,7 @@
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Last name</mat-label>
-        <input [readonly]="mode=='view' "  matInput formControlName="lastName" required>
+        <input [readonly]="mode=='view' "  matInput formControlName="lastName">
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Date of Birth</mat-label>
@@ -460,7 +460,7 @@
         required
         [errorStateMatcher]="matcher"
         [ngClass]="{ 'mat-form-field-invalid': submitted }"
-        (change)="setMaxSampleReceivedDate()"
+        (change)="setMaxSampleReceivedDate(); fillDatesWhenLabIsClinic()"
         />
       <mat-datepicker-toggle
         matSuffix

@@ -248,11 +248,11 @@ export class AddNewRequestPage implements OnInit {
         firstName: new FormControl({
           value: '',
           disabled: this.mode === 'view' 
-        }, [Validators.required]),
+        }, []),
         lastName: new FormControl({
           value: '',
           disabled: this.mode === 'view' 
-        }, [Validators.required]),
+        }, []),
         dob: new FormControl({
           value: '',
           disabled: this.mode === 'view' || this.mode === 'result edit'
@@ -1645,6 +1645,26 @@ export class AddNewRequestPage implements OnInit {
 
 
 
+
+  // As on the web form: a lab entering a sample from its own facility collected, dispatched
+  // it at once, so those dates start at the collection date.
+  fillDatesWhenLabIsClinic() {
+    if (this.mode == 'view' || this.mode == 'result edit' || !this.initArray) {
+      return;
+    }
+    const lab = (this.initArray['testingLabsList'] || []).find(item => item.show == this.siteInfoPanelForm.get('testingLab').value);
+    const facilityName = this.siteInfoPanelForm.get('POE').value;
+    const facility = (this.initArray['districtList'] || [])
+      .map(district => (district.facilityDetails || []).find(item => item.show === facilityName))
+      .find(Boolean);
+    const collected = this.specimenInfoPanelForm.get('sampleCollectionDateTime').value;
+    if (!lab || !facility || lab.value != facility.value || !collected) {
+      return;
+    }
+    if (!this.specimenInfoPanelForm.get('sampleDispatchedOn').value) {
+      this.specimenInfoPanelForm.get('sampleDispatchedOn').setValue(collected);
+    }
+  }
 
   clearSampleDispatchedOn() {
     this.specimenInfoPanelForm.get('sampleDispatchedOn').setValue('');

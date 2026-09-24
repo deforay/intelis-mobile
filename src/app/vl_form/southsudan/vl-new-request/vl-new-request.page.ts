@@ -1806,6 +1806,31 @@ export class VlNewRequestPage implements OnInit {
     this.isVisible = this.indication4VlTestingPanelForm.get('VLTesting').value;
   }
 
+  // As on the web form: a lab entering a sample from its own facility collected, dispatched and received
+  // it at once, so those dates start at the collection date.
+  fillDatesWhenLabIsClinic() {
+    if (this.mode == 'view' || this.mode == 'result edit' || !this.initArray) {
+      return;
+    }
+    const lab = (this.initArray['testingLabsList'] || []).find(item => item.show == this.clinicInfoPanelForm.get('labName').value);
+    const facilityName = this.clinicInfoPanelForm.get('POE').value;
+    const facility = (this.initArray['districtList'] || [])
+      .map(district => (district.facilityDetails || []).find(item => item.show === facilityName))
+      .find(Boolean);
+    const collected = this.sampleInfoPanelForm.get('sampleCollectionDateTime').value;
+    if (!lab || !facility || lab.value != facility.value || !collected) {
+      return;
+    }
+    const dispatched = this.sampleInfoPanelForm.get('sampleDispatchedOn');
+    if (!dispatched.value) {
+      dispatched.setValue(collected);
+    }
+    const received = this.sampleInfoPanelForm.get('sampleReceivedDateTimeAtTestLab');
+    if (this.isTestingUser == 'yes' && received && !received.value) {
+      received.setValue(collected);
+    }
+  }
+
   // The server calls it unreported; older app requests saved notrecorded, the web form once not_record.
   serverGender(gender) {
     return gender == 'notrecorded' || gender == 'not_record' ? 'unreported' : (gender || '');

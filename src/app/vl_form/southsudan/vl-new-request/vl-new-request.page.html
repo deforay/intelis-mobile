@@ -112,7 +112,7 @@
             <input [readonly]="mode=='view' || mode=='result edit'"
               type="text" matInput formControlName="POE" required [matAutocomplete]="autoPOE"
               [errorStateMatcher]="matcher" [ngClass]="{'mat-form-field-invalid':submitted }">
-            <mat-autocomplete #autoPOE="matAutocomplete">
+            <mat-autocomplete #autoPOE="matAutocomplete" (optionSelected)="fillDatesWhenLabIsClinic()">
               @for (option of POEFilteredOptions | async; track option) {
                 <mat-option [value]="option">
                   {{option}}
@@ -151,7 +151,7 @@
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>Testing Lab</mat-label>
-            <mat-select [readonly]="mode=='view'" formControlName="labName" required
+            <mat-select [readonly]="mode=='view'" formControlName="labName" required (selectionChange)="fillDatesWhenLabIsClinic()"
               [errorStateMatcher]="matcher">
               @for (item of initArray['testingLabsList']; track item) {
                 @if (item.test_type == 'vl') {
@@ -318,7 +318,7 @@
           [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null" matInput type="datetime-local"
           [max]="maxDatetime" [min]="maxSampleCollectionDate" formControlName="sampleCollectionDateTime" required
           [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted }"
-          (change)="onSampleCollectionDateChange()">
+          (change)="onSampleCollectionDateChange(); fillDatesWhenLabIsClinic()">
         <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
         <!-- <ion-icon
         name="close"
@@ -535,7 +535,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Current Regimen</mat-label>
       <mat-select [readonly]="mode=='view' || mode=='result edit'"
-        formControlName="currentRegimen" required [errorStateMatcher]="matcher"
+        formControlName="currentRegimen" [errorStateMatcher]="matcher"
         [ngClass]="{ 'mat-form-field-invalid':submitted }">
         @for (item of vlInitArray['currentRegimenList']; track item) {
           <mat-option [value]="item.value"
