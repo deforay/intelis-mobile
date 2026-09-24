@@ -1,6 +1,6 @@
 # InteLIS Mobile
 
-Android and iOS companion app for [InteLIS](https://github.com/deforay/intelis), the open-source lab information system by Deforay.
+Android companion app for [InteLIS](https://github.com/deforay/intelis), the open-source lab information system by Deforay.
 
 ![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue)
 
@@ -15,7 +15,6 @@ Built with Ionic 9, Angular 22 and Apache Cordova.
 - [Run in a browser](#run-in-a-browser)
 - [Build and run on Android](#build-and-run-on-android)
 - [Build a signed Android release](#build-a-signed-android-release)
-- [Build for iOS](#build-for-ios)
 - [Run tests and lint](#run-tests-and-lint)
 - [Project layout](#project-layout)
 - [Server compatibility](#server-compatibility)
@@ -31,7 +30,6 @@ Built with Ionic 9, Angular 22 and Apache Cordova.
 | JDK | 17 | Required by Android Gradle Plugin 8.10 |
 | Android SDK | Platform 36, build-tools 36.0.0 | Install through Android Studio SDK Manager |
 | Gradle | 8.x on `PATH` | cordova-android uses it once to create the Gradle wrapper |
-| Xcode | 16 or later | iOS builds only |
 
 Set `ANDROID_HOME` to the SDK root and `JAVA_HOME` to the JDK 17 install.
 
@@ -112,15 +110,6 @@ Release builds produce an Android App Bundle (AAB) for Google Play.
 To produce a signed APK instead, run `npx cordova build android --release -- --packageType=apk` after step 2, then use the `appjarsign` and `appzipalign` scripts.
 
 Before uploading to Google Play, raise the `version` attribute in `config.xml`. Cordova derives the Android `versionCode` from it, and Google Play rejects a bundle whose `versionCode` is not higher than the previous upload.
-
-## Build for iOS
-
-```sh
-npx cordova platform add ios
-npx cordova build ios
-```
-
-To sign and archive, open `platforms/ios/App.xcworkspace` in Xcode.
 
 ## Run tests and lint
 

@@ -44,9 +44,7 @@
     "@ionic/cordova-builders": "^13.0.0",
     "@ionic/storage": "^4.0.0",
     "@ionic/storage-angular": "^4.0.0",
-    "cordova-ios": "^8.1.1",
     "cordova-plugin-app-version": "^0.1.14",
-    "cordova-plugin-splashscreen": "^6.0.2",
     "cordova-plugin-statusbar": "^4.0.0",
     "cordova-sqlite-storage": "^7.0.0",
     "ionicons": "^8.1.0",
@@ -92,7 +90,6 @@
     "plugins": {
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
-      "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-app-version": {},
@@ -102,7 +99,6 @@
       "cordova-plugin-fingerprint-aio": {}
     },
     "platforms": [
-      "ios",
       "browser",
       "android"
     ]
