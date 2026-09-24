@@ -58,8 +58,8 @@
       </div>
 
       @for (p of visibleModules; track p.name) {
-        <div class="moduleCard" [class.compact]="compactModules" [class.open]="isModuleOpen(p)">
-          <div class="moduleHeader" (click)="toggleModule(p)">
+        <div class="moduleCard" [class.compact]="compactModules" [class.open]="isModuleOpen(p)" (click)="!isModuleOpen(p) && toggleModule(p)">
+          <div class="moduleHeader" (click)="$event.stopPropagation(); toggleModule(p)">
             <div class="moduleIcon">
               @if (p.name == 'VL') { <ion-icon name="flask"></ion-icon> }
               @if (p.name == 'EID') { <mat-icon>child_care</mat-icon> }

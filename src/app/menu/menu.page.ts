@@ -148,7 +148,8 @@ export class MenuPage implements OnInit {
 
     this.events.subscribe('syncDateTimeChanged', (result: any) => {
       // The sync marks samples sent in handlers it does not wait for, so count again once they
-      // have had time to finish.
+      // have usually finished. A slower one shows on the next visit to this screen, which
+      // counts again; awaiting those handlers is a separate change to the sync.
       this.loadCounts();
       setTimeout(() => this.loadCounts(), 4000);
       if (result) {

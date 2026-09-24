@@ -246,7 +246,7 @@
                 </ion-col>
               </ion-row>
             }
-            @if (item.result || item.result=='' && item.isSampleRejected=='yes') {
+            @if (item.rawResult || item.isSampleRejected=='yes') {
               <ion-row class="resultRow">
                 <ion-col size="5">
                   <p text-wrap>
@@ -260,10 +260,10 @@
                 </ion-col>
                 <ion-col size="6">
                   <p text-wrap class="patientValues resultValue">
-                    @if (item.result) {
-                      <span>{{ item.result }}</span>
+                    @if (item.rawResult) {
+                      <span>{{ item.showResult || item.rawResult }}</span>
                     }
-                    @if (item.result=='' && item.isSampleRejected=='yes') {
+                    @if (!item.rawResult && item.isSampleRejected=='yes') {
                       <span>Rejected</span>
                     }
                   </p>
