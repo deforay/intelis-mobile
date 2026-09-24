@@ -109,7 +109,9 @@ export class JwPaginationComponent implements OnInit {
       }
       if (this.resultArray) {
         this.resultArray.forEach(Object => {
-          if (parseInt(element.result) === Object.value) {
+          // The result list's value is an id or a key such as "negative"; match either form.
+          if (parseInt(element.result) === Object.value
+            || (element.rawResult !== null && element.rawResult !== undefined && element.rawResult !== '' && String(element.rawResult) === String(Object.value))) {
             element.showResult = Object.show;
           }
         });
