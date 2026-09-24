@@ -57,8 +57,10 @@
 // Step buttons: Next and Save solid, Previous quiet.
 :host ::ng-deep .mat-action-row {
   gap: 8px;
-  padding: 12px 0 0 !important;
+  margin: 0 !important;
+  padding: 12px 16px 16px !important;
   border-top: none !important;
+  box-sizing: border-box;
 }
 :host ::ng-deep .mat-action-row button {
   min-width: 96px;

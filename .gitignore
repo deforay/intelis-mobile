@@ -57,3 +57,6 @@ UserInterfaceState.xcuserstate
 
 # Local working notes
 TODO.md
+
+# Local Cordova plugins keep their JavaScript bridge in www/.
+!local-plugins/*/www/
