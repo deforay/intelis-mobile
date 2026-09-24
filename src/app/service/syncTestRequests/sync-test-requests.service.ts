@@ -124,6 +124,152 @@ public CrudService: CrudOperationsService,
     public sql: SQLite
   ) { }
 
+  // Sent with every save-request. The server then checks each sample against
+  // the result version the app last pulled for it, and keeps the lab's result
+  // when the post was made on an older one. Servers without it ignore it.
+  resultVersionCapabilities = { supports: ['result-version'] };
+
+  // Records what a save-request answered for one sample. The server names the
+  // sample by its own unique id, not the app's, so that id is kept to ask
+  // fetch-results about the sample and to match its result back.
+  //
+  // It also holds the result version the server answered with. When the server
+  // kept the lab's newer result instead of ours (resultKept), the local result is
+  // out of date: holding the new version would let the next post overwrite the
+  // lab's result with it. Forget the version and the status instead, so the
+  // result pull fetches the sample again.
+  async recordSaveResponse( db: SQLiteObject, table: string, resultAPI: any ) {
+    if ( !resultAPI.appSampleCode ) {
+      return;
+    }
+    const sample = [this.userID, resultAPI.appSampleCode];
+    try {
+      if ( resultAPI.uniqueId ) {
+        await db.executeSql( `UPDATE ${table} SET server_unique_id = ? WHERE user_id = ? AND app_sample_code = ?`, [resultAPI.uniqueId, ...sample] );
+      }
+      if ( resultAPI.resultVersion === undefined ) {
+        return;
+      }
+      if ( resultAPI.resultKept ) {
+        await db.executeSql( `UPDATE ${table} SET result_version = NULL, result_status = NULL WHERE user_id = ? AND app_sample_code = ?`, sample );
+      } else {
+        await db.executeSql( `UPDATE ${table} SET result_version = ? WHERE user_id = ? AND app_sample_code = ?`, [resultAPI.resultVersion, ...sample] );
+      }
+    } catch ( e ) {
+      console.log( e );
+    }
+  }
+
+  // Samples to ask the lab about, by the server's unique id: sent, with no local
+  // edit waiting to be posted, and not yet accepted (7) or rejected (4). Until
+  // then the lab can still revise the result.
+  async samplesAwaitingResult( table: string, sentCondition: string ): Promise<string[]> {
+    const db = await this.sql.create( { name: 'vlsm_mobile.db', location: 'default' } );
+    const rows = await db.executeSql(
+      `SELECT IFNULL(server_unique_id, unique_id) AS unique_id FROM ${table} WHERE ${sentCondition} AND (is_synced IS NULL OR is_synced != "false") AND (result_status IS NULL OR result_status NOT IN (4, 7))`,
+      []
+    );
+    const uniqueIds = [];
+    for ( let i = 0; i < rows.rows.length; i++ ) {
+      uniqueIds.push( rows.rows.item( i ).unique_id );
+    }
+    return uniqueIds;
+  }
+
+  // Asks fetch-results about the samples 100 at a time, the server's default
+  // page size, and stores each row returned. Returns the rows that brought a
+  // lab decision new to this device.
+  async pullResults( endpoint: string, uniqueIds: string[], postData: string, store: ( db: SQLiteObject, item: any ) => Promise<any> ): Promise<any[]> {
+    const received = [];
+    if ( uniqueIds.length == 0 ) {
+      return received;
+    }
+    const db = await this.sql.create( { name: 'vlsm_mobile.db', location: 'default' } );
+    for ( let i = 0; i < uniqueIds.length; i += 100 ) {
+      let result;
+      try {
+        result = await this.CrudService[postData]( endpoint, { uniqueId: uniqueIds.slice( i, i + 100 ), facility: [], sampleCollectionDate: [] }, this.authToken, true );
+      } catch ( e ) {
+        console.log( e );
+        break;
+      }
+      if ( result['token'] != null ) {
+        this.authToken = result['token'];
+        this.commonservice.tokenUpdate( result['token'] );
+      }
+      if ( result['status'] != 'success' ) {
+        continue;
+      }
+      for ( const item of result['data'] || [] ) {
+        try {
+          if ( ( await store( db, item ) )?.isNew ) {
+            received.push( item );
+          }
+        } catch ( e ) {
+          console.log( e );
+        }
+      }
+    }
+    this.sampleResultSuccessCount += received.length;
+    return received;
+  }
+
+  // Writes a pulled result to the local sample, unless the sample has an edit
+  // not yet posted. Returns the local sample as it was, and whether it brings a
+  // lab decision this device had not seen; null when the sample was not stored.
+  async storePulledResult( db: SQLiteObject, table: string, item: any, columns: { [column: string]: any } ): Promise<any> {
+    const where = '(server_unique_id = ? OR unique_id = ?) AND (is_synced IS NULL OR is_synced != "false")';
+    const before = await db.executeSql( `SELECT * FROM ${table} WHERE ${where}`, [item.uniqueId, item.uniqueId] );
+    if ( before.rows.length == 0 ) {
+      return null;
+    }
+    const held = before.rows.item( 0 );
+    const names = Object.keys( columns );
+    await db.executeSql(
+      `UPDATE ${table} SET ${names.map( ( name ) => name + ' = ?' ).join( ', ' )} WHERE ${where}`,
+      [...names.map( ( name ) => columns[name] ?? null ), item.uniqueId, item.uniqueId]
+    );
+    // The result version also moves when the lab edits a tester, an approver or
+    // the like, so the result and the rejection themselves decide what is new.
+    const decided = ( item.result ?? '' ) !== '' || columns.is_sample_rejected == 'yes';
+    const changed = ( held.result ?? '' ) !== ( item.result ?? '' ) || held.is_sample_rejected !== columns.is_sample_rejected;
+    return { sample: held, isNew: decided && changed };
+  }
+
+  // A COVID-19 result also carries its test rows, replaced as a whole.
+  async storeCovid19Result( db: SQLiteObject, item: any ): Promise<any> {
+    const stored = await this.storePulledResult( db, 'form_covid19', item, {
+      sample_received_at_vl_lab_datetime: item.sampleReceivedDate,
+      lab_id: item.labId,
+      lab_name: item.labName,
+      sample_condition: item.sampleCondition,
+      lab_technician: item.labTechnician,
+      lab_technician_name: item.labTechnicianName,
+      is_sample_rejected: item.sampleRejected,
+      reason_for_sample_rejection: item.rejectionReason,
+      rejection_on: item.rejectionDate,
+      tested_by: item.testedBy,
+      tested_by_name: item.testedByName,
+      is_result_authorised: item.isAuthorised,
+      authorized_by: item.authorisedBy,
+      authorized_on: item.authorisedOn,
+      result: item.result,
+      result_status: item.resultStatus,
+      result_version: item.resultVersion,
+    } );
+    if ( stored ) {
+      const sample = stored.sample;
+      await db.executeSql( 'DELETE FROM covid19_tests WHERE unique_id = ?', [sample.unique_id] );
+      for ( const test of item.c19Tests || [] ) {
+        await db.executeSql(
+          'INSERT INTO covid19_tests (unique_id, covid19_id, facility_id, test_name, tested_by, sample_tested_datetime, testing_platform, kitLotNo, kitExpiryDate, result) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          [sample.unique_id, sample.covid19_id, item.facilityId, test.testName, item.testedByName, test.testDate, test.testingPlatform, test.kitLotNo, test.kitExpiryDate, test.testResult ?? test.result].map( ( value ) => value ?? null )
+        );
+      }
+    }
+    return stored;
+  }
+
   async ionViewWillEnter( param ) {
     this.networkType = this.network.type;
     await this.storage.create();
@@ -417,6 +563,7 @@ public CrudService: CrudOperationsService,
       if ( this.syncDataCount == 1 ) {
         this.syncTestRequestJSON = {
           appVersion: this.appVersionNumber,
+          capabilities: this.resultVersionCapabilities,
           data: this.UnSyncedOriginalKeyArray,
         };
 
@@ -439,6 +586,7 @@ public CrudService: CrudOperationsService,
                   } )
                   .then( ( db: SQLiteObject ) => {
                     return new Promise( async ( resolve, reject ) => {
+                      await this.recordSaveResponse( db, 'form_covid19', resultAPI );
 
                       await db.executeSql( `UPDATE form_covid19 set is_synced = "true" where user_id="${this.userID}" and remote_sample_code="${resultAPI.sampleCode}"`, [] ).then( async ( result ) => {
                         // tslint:disable-next-line: no-debugger
@@ -536,6 +684,7 @@ public CrudService: CrudOperationsService,
           if ( this.testRequestSubListArray.length != 0 ) {
             this.syncTestRequestJSON = {
               appVersion: this.appVersionNumber,
+              capabilities: this.resultVersionCapabilities,
               data: this.testRequestSubListArray,
             };
 
@@ -555,6 +704,7 @@ public CrudService: CrudOperationsService,
                       location: 'default',
                     } ).then( ( db: SQLiteObject ) => {
                       return new Promise( async ( resolve, reject ) => {
+                        await this.recordSaveResponse( db, 'form_covid19', resultAPI );
                         await db.executeSql( `UPDATE form_covid19 set is_synced= "true" where user_id="${this.userID}" and sample_code="${resultAPI.sampleCode}"`, [] ).then( async ( res ) => {
                           await db.executeSql( 'SELECT * FROM form_covid19 where user_id=? and sample_code=?', [this.userID, resultAPI.sampleCode] ).then( async ( result ) => {
                             this.editedTestReq = [];
@@ -677,6 +827,7 @@ public CrudService: CrudOperationsService,
       if ( this.syncDataEidCount == 1 ) {
         this.syncTestEidJSON = {
           appVersion: this.appVersionNumber,
+          capabilities: this.resultVersionCapabilities,
           data: this.UnSyncedOriginalEidArray,
         };
 
@@ -704,6 +855,7 @@ public CrudService: CrudOperationsService,
                     } )
                     .then( ( db: SQLiteObject ) => {
                       return new Promise( async ( resolve, reject ) => {
+                        await this.recordSaveResponse( db, 'eid_form', resultAPI );
                         await db.executeSql( `UPDATE eid_form set is_synced= "true" where user_id="${this.userID}" and sample_code="${resultAPI.sampleCode}"`, [] ).then( async ( result ) => {
                           for ( let i = 0; i < result.rows.length; i++ ) {
                             let item = result.rows.item( i );
@@ -794,6 +946,7 @@ public CrudService: CrudOperationsService,
           if ( this.testRqstEidSubListArray.length != 0 ) {
             this.syncTestEidJSON = {
               appVersion: this.appVersionNumber,
+              capabilities: this.resultVersionCapabilities,
               data: this.testRqstEidSubListArray,
             };
 
@@ -816,6 +969,7 @@ public CrudService: CrudOperationsService,
                       location: 'default',
                     } ).then( ( db: SQLiteObject ) => {
                       return new Promise( async ( resolve, reject ) => {
+                        await this.recordSaveResponse( db, 'eid_form', resultAPI );
                         await db.executeSql( `UPDATE eid_form set is_synced= "true" where user_id="${this.userID}" and sample_code="${resultAPI.sampleCode}"`, [] ).then( ( res ) => {
                           db.executeSql( 'SELECT * FROM eid_form where user_id=? and sample_code=?', [this.userID, resultAPI.sampleCode] ).then( async ( result ) => {
                             this.editedTestEid = [];
@@ -931,6 +1085,7 @@ public CrudService: CrudOperationsService,
       if ( this.syncDataVlCount == 1 ) {
         this.syncTestVlJSON = {
           appVersion: this.appVersionNumber,
+          capabilities: this.resultVersionCapabilities,
           data: this.UnSyncedOriginalVlArray,
         };
 
@@ -958,6 +1113,7 @@ public CrudService: CrudOperationsService,
                     location: 'default',
                   } ).then( ( db: SQLiteObject ) => {
                     return new Promise( async ( resolve, reject ) => {
+                      await this.recordSaveResponse( db, 'vl_request_form', resultAPI );
                       await db.executeSql( `UPDATE vl_request_form set is_synced= "true" where user_id="${this.userID}" and sample_code="${resultAPI.sampleCode}"`, [] ).then( async ( result ) => {
                         for ( let i = 0; i < result.rows.length; i++ ) {
                           let item = result.rows.item( i );
@@ -1036,7 +1192,7 @@ public CrudService: CrudOperationsService,
         Array.from( { length: this.syncDataVlCount } ).forEach( () => {
           this.testRqstVlSubListArray = this.copylocalStorageUnSyncedVl.splice( 0, this.syncLimit );
           if ( this.testRqstVlSubListArray.length != 0 ) {
-            this.syncTestVlJSON = { appVersion: this.appVersionNumber, data: this.testRqstVlSubListArray, };
+            this.syncTestVlJSON = { appVersion: this.appVersionNumber, capabilities: this.resultVersionCapabilities, data: this.testRqstVlSubListArray, };
 
             console.log(this.authToken,'this.authToken');
             this.CrudService[postData]( '/api/v1.1/vl/save-request.php', this.syncTestVlJSON, this.authToken, true ).then( ( mainVlResult ) => {
@@ -1057,6 +1213,7 @@ public CrudService: CrudOperationsService,
                       location: 'default',
                     } ).then( ( db: SQLiteObject ) => {
                       return new Promise( async ( resolve, reject ) => {
+                        await this.recordSaveResponse( db, 'vl_request_form', resultAPI );
                         await db.executeSql( `UPDATE vl_request_form set is_synced= "true" where user_id="${this.userID}" and sample_code="${resultAPI.sampleCode}"`, [] ).then( async ( res ) => {
                           await db.executeSql( 'SELECT * FROM vl_request_form where user_id=? and sample_code=?', [this.userID, resultAPI.sampleCode] ).then( async ( result ) => {
                             this.editedTestVl = [];
@@ -1148,275 +1305,38 @@ public CrudService: CrudOperationsService,
     } else {
       var postData = 'postDataWithoutLoader';
     }
-    this.sql
-      .create( {
-        name: 'vlsm_mobile.db',
-        location: 'default',
-      } )
-      .then( async ( db: SQLiteObject ) => {
-        // AND (sample_code<>"" OR remote_sample_code<>"")
-        await db
-          .executeSql(
-            'SELECT unique_id FROM form_covid19 WHERE (is_sample_rejected=="" || is_sample_rejected == null)',
-            []
-          )
-          .then( async ( data ) => {
+    this.unSyncedSampleResultArray = await this.samplesAwaitingResult( 'form_covid19', '(IFNULL(sample_code, "") != "" OR IFNULL(remote_sample_code, "") != "")' );
+    this.sampleResultArray = await this.pullResults( '/api/v1.1/covid-19/fetch-results.php', this.unSyncedSampleResultArray, postData, ( db, item ) => this.storeCovid19Result( db, item ) );
 
-            this.unSyncedSampleResultArray = [];
-            for ( let i = 0; i < data.rows.length; i++ ) {
-              let item = data.rows.item( i );
-              this.unSyncedSampleResultArray.push( item );
-            }
+    this.unSyncedEidResultArray = await this.samplesAwaitingResult( 'eid_form', 'sample_code != ""' );
+    this.eidSampleResultArray = await this.pullResults( '/api/v1.1/eid/fetch-results.php', this.unSyncedEidResultArray, postData, ( db, item ) =>
+      this.storePulledResult( db, 'eid_form', item, {
+        sample_received_at_vl_lab_datetime: item.sampleReceivedDate,
+        lab_id: item.labId,
+        is_sample_rejected: item.isSampleRejected,
+        reason_for_sample_rejection: item.rejectionReason ?? item.sampleRejectionReason ?? '',
+        tested_by: item.testedBy,
+        result_approved_by: item.approvedBy,
+        result_approved_datetime: item.approvedOn,
+        result: item.result,
+        result_status: item.status,
+        result_version: item.resultVersion,
+      } ) );
 
-            if ( this.unSyncedSampleResultArray.length != 0 ) {
-
-              this.c19UniqueIDArray = [];
-
-              this.unSyncedSampleResultArray.forEach( ( element, index ) => {
-                this.c19UniqueIDArray.push( element.unique_id );
-              } );
-
-              let checkSampleResultJSON = {
-                uniqueId: this.c19UniqueIDArray,
-                facility: [],
-                sampleCollectionDate: [],
-              };
-
-              await this.CrudService[postData](
-                '/api/v1.1/covid-19/fetch-results.php',
-                checkSampleResultJSON,
-                this.authToken, true
-              ).then( ( result ) => {
-                if ( result['token'] != null ) {
-                  this.authToken = result['token'];
-                  this.commonservice.tokenUpdate( result['token'] );
-                }
-                this.sampleResultArray = [];
-
-                if ( result['status'] == 'success' ) {
-                  this.sampleResultArray = result['data'];
-
-
-                  if ( this.sampleResultArray.length != 0 ) {
-                    this.sql.create( {
-                      name: 'vlsm_mobile.db',
-                      location: 'default',
-                    } ).then( ( db: SQLiteObject ) => {
-                      this.sampleResultArray.forEach( async ( item ) => {
-                        await db.executeSql( `UPDATE form_covid19 set sample_received_at_vl_lab_datetime="${item.sampleReceivedDate}",lab_id="${item.labId}",lab_name="${item.labName}",sample_condition="${item.sampleCondition}",lab_technician="${item.labTechnician}",lab_technician_name="${item.labTechnicianName}",is_sample_rejected="${item.sampleRejected}",reason_for_sample_rejection="${item.rejectionReason}",rejection_on="${item.rejectionDate}",tested_by="${item.testedBy}",tested_by_name="${item.testedByName}",is_result_authorised="${item.isAuthorised}",authorized_by="${item.authorisedBy}",authorized_on="${item.authorisedOn}",result= "${item.result}" where sample_code="${item.sampleCode}"`, [] ).then( async ( res ) => {
-                          this.sampleResultSuccessCount = this.sampleResultSuccessCount + 1;
-                          await db.executeSql( 'SELECT * FROM form_covid19 WHERE sample_code=?', [item.sampleCode] ).then( ( data ) => {
-                            this.testresults = [];
-                            for ( let i = 0; i < data.rows.length; i++ ) {
-                              let item = data.rows.item( i );
-                              this.testresults.push( item );
-                            }
-                          } );
-                        } );
-                      } );
-
-                      this.dbStorage = db;
-                      let data = [];
-                      let rowArgs = [];
-
-                      var query =
-                        'INSERT INTO covid19_tests (covid19_id,facility_id,test_name,tested_by,sample_tested_datetime,testing_platform,kitLotNo,kitExpiryDate,result) VALUES ';
-
-                      this.sampleResultArray.forEach( function ( item ) {
-                        if ( item.c19Tests.length > 0 ) {
-                          for ( var i = 0; i < item.c19Tests.length; i++ ) {
-                            rowArgs.push( '(?, ?, ?, ?, ?, ?, ?, ?, ?)' );
-                            data.push( item.c19Tests[i].covid19Id );
-                            data.push( item.c19Tests[i].facilityId );
-                            data.push( item.c19Tests[i].testName );
-                            data.push( item.testedByName );
-                            data.push( item.c19Tests[i].testDate );
-                            data.push( item.c19Tests[i].testingPlatform );
-                            data.push( item.c19Tests[i].kitLotNo );
-                            data.push( item.c19Tests[i].kitExpiryDate );
-                            data.push( ( item.c19Tests[i].testResult ?? item.c19Tests[i].result ) );
-                          }
-                        }
-                      } );
-                      query += rowArgs.join( ', ' );
-                      // console.log( query );
-
-                      return this.dbStorage
-                        .executeSql( query, data )
-                        .then( ( res ) => {
-
-                          return this.dbStorage
-                            .executeSql( 'SELECT * FROM covid19_tests', [] )
-                            .then( ( data ) => {
-
-                              this.testresults = [];
-                              for ( let i = 0; i < data.rows.length; i++ ) {
-                                let item = data.rows.item( i );
-                                this.testresults.push( item );
-                              }
-
-                            } );
-                        } )
-                        .catch( ( error ) => {
-                          console.log( error );
-                        } );
-                    } );
-                  }
-                }
-              } );
-            }
-          } )
-          .catch( ( error ) => {
-            console.log( error );
-          } );
-      } );
-
-    this.sql
-      .create({
-        name: 'vlsm_mobile.db',
-        location: 'default',
-      })
-      .then(async (db: SQLiteObject) => {
-        await db
-          .executeSql(
-            'SELECT * FROM eid_form where sample_code != "" and is_sample_rejected != "yes" and result=""',
-            []
-          )
-          .then(async (result) => {
-            this.unSyncedEidResultArray = [];
-            for (let i = 0; i < result.rows.length; i++) {
-              let item = result.rows.item(i);
-              this.unSyncedEidResultArray.push(item);
-            }
-            if (this.unSyncedEidResultArray.length > 0) {
-              this.eidUniqueIDArray = [];
-
-              this.unSyncedEidResultArray.forEach((element, index) => {
-                this.eidUniqueIDArray.push(element.unique_id);
-              });
-
-              let checkEidSampleResultJSON = {
-                uniqueId: this.eidUniqueIDArray,
-                // "sampleCode": ["REID0821006"],
-                facility: [],
-                sampleCollectionDate: [],
-              };
-              // console.log(checkEidSampleResultJSON, 'checkEidSampleResultJSON', this.authToken);
-
-              this.CrudService[postData](
-                '/api/v1.1/eid/fetch-results.php',
-                checkEidSampleResultJSON,
-                this.authToken, true
-              ).then( ( result ) => {
-                if ( result['token'] != null ) {
-                  this.authToken = result['token'];
-                  this.commonservice.tokenUpdate(result['token']);
-                }
-                this.eidSampleResultArray = [];
-                if (result['status'] == 'success') {
-                  this.eidSampleResultArray = result['data'];
-
-
-                  if ( this.eidSampleResultArray.length != 0 ) {
-                    this.sql.create( {
-                      name: 'vlsm_mobile.db',
-                      location: 'default',
-                    } ).then( ( db: SQLiteObject ) => {
-                      this.eidSampleResultArray.forEach( async ( item ) => {
-                        await db.executeSql( `UPDATE eid_form set sample_received_at_vl_lab_datetime="${item.sampleReceivedDate}",lab_id="${item.labId}",is_sample_rejected="${item.isSampleRejected}",reason_for_sample_rejection="${item.rejectionReason ?? item.sampleRejectionReason ?? ''}",tested_by="${item.testedBy}",result_approved_by="${item.approvedBy}",result_approved_datetime="${item.approvedOn}",result= "${item.result}" where sample_code="${item.sampleCode}"`, [] ).then( async ( res ) => {
-                          this.sampleResultSuccessCount = this.sampleResultSuccessCount + 1;
-                          await db.executeSql( 'SELECT * FROM eid_form WHERE sample_code=?', [item.sampleCode] ).then( ( data ) => {
-                            this.eidtestresults = [];
-                                  for (let i = 0; i < data.rows.length; i++) {
-                                    let item = data.rows.item(i);
-                                    this.eidtestresults.push(item);
-                            }
-                                });
-                            });
-                        });
-                      });
-                  }
-                }
-              } );
-            }
-          } ).catch( ( e ) => {
-            console.log( e );
-          } );
-      } );
-
-    this.sql
-      .create({
-        name: 'vlsm_mobile.db',
-        location: 'default',
-      })
-      .then(async (db: SQLiteObject) => {
-        await db
-          .executeSql(
-            'SELECT * FROM vl_request_form where sample_code != "" and is_sample_rejected != "yes" and result=""',
-            []
-          )
-          .then(async (result) => {
-            this.unSyncedVlResultArray = [];
-            for (let i = 0; i < result.rows.length; i++) {
-              let item = result.rows.item(i);
-              this.unSyncedVlResultArray.push(item);
-            }
-            if ( this.unSyncedVlResultArray.length > 0 ) {
-
-              this.vlUniqueIDArray = [];
-
-              this.unSyncedVlResultArray.forEach((element, index) => {
-                this.vlUniqueIDArray.push(element.unique_id);
-              });
-
-              let checkVlSampleResultJSON = {
-                uniqueId: this.vlUniqueIDArray,
-                facility: [],
-                sampleCollectionDate: [],
-              };
-              // console.log(checkVlSampleResultJSON, 'checkVlSampleResultJSON');
-
-              this.CrudService[postData](
-                '/api/v1.1/vl/fetch-results.php',
-                checkVlSampleResultJSON,
-                this.authToken, true
-              ).then( ( result ) => {
-                if ( result['token'] != null ) {
-                  this.authToken = result['token'];
-                  this.commonservice.tokenUpdate(result['token']);
-                }
-                this.vlSampleResultArray = [];
-
-                if (result['status'] == 'success') {
-                  this.vlSampleResultArray = result['data'];
-                  if ( this.vlSampleResultArray.length != 0 ) {
-                    this.sql.create( {
-                      name: 'vlsm_mobile.db',
-                      location: 'default',
-                    } ).then( ( db: SQLiteObject ) => {
-                      this.vlSampleResultArray.forEach( async ( item ) => {
-                        await db.executeSql( `UPDATE vl_request_form set sample_received_at_vl_lab_datetime="${item.sampleReceivedDate}",lab_id="${item.labId}",is_sample_rejected="${item.isSampleRejected}",reason_for_sample_rejection="${item.rejectionReason}",tested_by="${item.testedBy}",result_approved_by="${item.approvedBy}",result_approved_datetime="${item.approvedOn}",result= "${item.result}" where sample_code="${item.sampleCode}"`, [] ).then( async ( res ) => {
-                          this.sampleResultSuccessCount = this.sampleResultSuccessCount + 1;
-                          await db.executeSql( 'SELECT * FROM vl_request_form WHERE sample_code=?', [item.sampleCode] ).then( ( data ) => {
-                            this.vltestresults = [];
-                            for ( let i = 0; i < data.rows.length; i++ ) {
-                              let item = data.rows.item( i );
-                              this.vltestresults.push( item );
-                            }
-                          } );
-                        } );
-                      } );
-                    } );
-                  }
-                }
-              });
-            }
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      });
-
+    this.unSyncedVlResultArray = await this.samplesAwaitingResult( 'vl_request_form', 'sample_code != ""' );
+    this.vlSampleResultArray = await this.pullResults( '/api/v1.1/vl/fetch-results.php', this.unSyncedVlResultArray, postData, ( db, item ) =>
+      this.storePulledResult( db, 'vl_request_form', item, {
+        sample_received_at_vl_lab_datetime: item.sampleReceivedDate,
+        lab_id: item.labId,
+        is_sample_rejected: item.isSampleRejected,
+        reason_for_sample_rejection: item.rejectionReason,
+        tested_by: item.testedBy,
+        result_approved_by: item.approvedBy,
+        result_approved_datetime: item.approvedOn,
+        result: item.result,
+        result_status: item.resultStatus,
+        result_version: item.resultVersion,
+      } ) );
     console.log( this.sampleResultArray, this.eidSampleResultArray, 'check sample Result Alert', this.vlSampleResultArray );
     if ( this.sampleResultArray.length > 0 || this.eidSampleResultArray.length > 0 || this.vlSampleResultArray.length > 0 ) {
       if ( param == 'menu' || param == 'syncall' ) {

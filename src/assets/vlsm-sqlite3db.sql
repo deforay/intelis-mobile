@@ -191,6 +191,8 @@ CREATE TABLE IF NOT EXISTS "eid_form" (
 	"result_status"	int DEFAULT NULL,
 	"locked"	TEXT NOT NULL DEFAULT 'no',
 	"result"	TEXT DEFAULT NULL,
+	"result_version"	TEXT DEFAULT NULL,
+	"server_unique_id"	TEXT DEFAULT NULL,
 	"rejection_on"	date DEFAULT NULL,
 	"reason_for_changing"	text,
 	"tested_by"	TEXT DEFAULT NULL,
@@ -427,6 +429,8 @@ CREATE TABLE IF NOT EXISTS "form_covid19" (
 	"patientEmail" TEXT DEFAULT NULL,
 	"asymptomatic" TEXT DEFAULT NULL,
 	"sample_dispatched_datetime" datetime DEFAULT NULL,	
+	"result_version"	TEXT DEFAULT NULL,
+	"server_unique_id"	TEXT DEFAULT NULL,
 	FOREIGN KEY("user_id") REFERENCES "user_details"("user_id"),
 	PRIMARY KEY("covid19_id" AUTOINCREMENT)
 );
@@ -1371,6 +1375,8 @@ CREATE TABLE IF NOT EXISTS "vl_request_form" (
 	"result_value_hiv_detection" TEXT DEFAULT NULL,
 	"community_sample" TEXT DEFAULT NULL,
 	"sample_dispatched_datetime" datetime DEFAULT NULL,
+	"result_version"	TEXT DEFAULT NULL,
+	"server_unique_id"	TEXT DEFAULT NULL,
 	FOREIGN KEY("result_status") REFERENCES "r_sample_status"("status_id"),
 	FOREIGN KEY("funding_source") REFERENCES "r_funding_sources"("funding_source_id"),
 	PRIMARY KEY("vl_sample_id")

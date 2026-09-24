@@ -37,11 +37,11 @@ export class DbMigrationService {
       ,'0.2'
       ,'0.3',
       '0.4',
-      // '0.5',
+      '0.5',
       // '0.6',
       // '0.7',
     ];
-    this.migrationVersion = 0.4;
+    this.migrationVersion = 0.5;
     await this.checkVersion(from);
   }
   async checkVersion(from) {
