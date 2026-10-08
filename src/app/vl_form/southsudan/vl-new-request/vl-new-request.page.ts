@@ -1480,7 +1480,7 @@ export class VlNewRequestPage implements OnInit {
         this.result = this.labResultPanelForm.controls.vlResult.value;
       }
 
-      let currentDateTime = new Date().toISOString().slice(0, 16).replace('T', ' ');
+      let currentDateTime = localDatetime().replace('T', ' ');
       await this.storage.get('loginDetails').then(async (loginDetails) => {
         if (loginDetails) {
          

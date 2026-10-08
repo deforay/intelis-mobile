@@ -1443,7 +1443,7 @@ export class AddNewRequestPage implements OnInit {
         this.reviewedByID = filteredReviewedByRecord[0] ? filteredReviewedByRecord[0].value : '';
       }
 
-      let currentDateTime = new Date().toISOString().slice(0, 16).replace('T', ' ');
+      let currentDateTime = localDatetime().replace('T', ' ');
       await this.storage.get('loginDetails').then(async (loginDetails) => {
         if (loginDetails) {
          
