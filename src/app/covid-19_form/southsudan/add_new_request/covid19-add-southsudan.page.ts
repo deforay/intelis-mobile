@@ -49,7 +49,8 @@ import {
   DbService
 } from '../../../services/db.service';
 import {
-  CommonService
+  CommonService,
+  localDatetime
 } from '../../../service/common/common.service';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState( control: FormControl | null, form: FormGroupDirective | NgForm | null ): boolean {
@@ -139,7 +140,10 @@ export class Covid19AddSouthsudanPage implements OnInit {
   testDetailsArray: any = [];
   previousPageURL: any;
   maxDate;
-  maxDatetime;
+  // The latest date a picker allows: now, read each time so a form left open keeps up.
+  get maxDatetime(): string {
+    return localDatetime();
+  }
   covid19_id: any;
   keyItemsArray: any = [];
   formcovid19Length: any;
@@ -1577,12 +1581,6 @@ export class Covid19AddSouthsudanPage implements OnInit {
   }
   maxmindate() {
     this.maxDate = new Date();
-    const month = this.formatDate( this.maxDate.getMonth() + 1 );
-    const day = this.formatDate( this.maxDate.getDate() );
-    const hour = this.maxDate.getHours();
-    const minute = this.maxDate.getMinutes();
-    this.maxDatetime = this.maxDate.getFullYear() + '-' + month + '-' + day + 'T' + hour + ':' + minute;
-    console.log( this.maxDatetime, 'maxDateTime' );
     // this.maxDate = new Date();
     // var month = this.formatDate(this.maxDate.getMonth());
     // var day = this.formatDate(this.maxDate.getDate());

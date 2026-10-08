@@ -40,7 +40,7 @@ import { Storage } from '@ionic/storage-angular';
 import { LocalTestRequestFormService } from '../../../service/localTestRequestForm/local-Test-Request-Form.service';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from '../../../services/db.service';
-import { CommonService } from '../../../service/common/common.service';
+import { CommonService, localDatetime } from '../../../service/common/common.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { ChangeDetectorRef } from '@angular/core';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -148,7 +148,10 @@ export class VlNewRequestPage implements OnInit {
   testDetailsArray: any = [];
   previousPageURL: any;
   maxDate;
-  maxDatetime;
+  // The latest date a picker allows: now, read each time so a form left open keeps up.
+  get maxDatetime(): string {
+    return localDatetime();
+  }
   vl_id: any;
   keyItemsArray: any = [];
   formEidLength: any;
@@ -194,7 +197,6 @@ export class VlNewRequestPage implements OnInit {
     private db: DbService,
     public CommonService: CommonService
   ) {
-    this.maxDatetime = new Date().toISOString().slice(0, 16);
     // this.minSampleCollectionDate = '2020-01-01T00:00'; // Example min date
     this.minSampleDispatchedDate = '';
     actRoute.params.subscribe(val => {
@@ -520,7 +522,6 @@ export class VlNewRequestPage implements OnInit {
       this.mode = 'add';
       this.titleHeader = this.formTitle('VL');
     }
-    this.setMaxDatetime();
   }
 
   // The header: what the user is doing with which test.
@@ -1802,10 +1803,6 @@ export class VlNewRequestPage implements OnInit {
       });
     }
   }
-  setMaxDatetime() {
-    const now = new Date();
-    this.maxDatetime = now.toISOString().slice(0, 16);
-  }
 
 
   private formatDate(nmbr: number): string {
@@ -2012,7 +2009,7 @@ export class VlNewRequestPage implements OnInit {
       nextDay.setDate(nextDay.getDate()); // Add one day
 
       // Format the next day date as YYYY-MM-DDTHH:MM
-      this.minSampleDispatchedDate = nextDay.toISOString().slice(0, 16);
+      this.minSampleDispatchedDate = localDatetime(nextDay);
       console.log(this.minSampleDispatchedDate, 'Updated minSampleDispatchedDate');
     }
   }
@@ -2025,7 +2022,7 @@ export class VlNewRequestPage implements OnInit {
       nextDay.setDate(nextDay.getDate());
 
       // Format the next day date as YYYY-MM-DDTHH:MM
-      this.minSampleDispatchedDate = nextDay.toISOString().slice(0, 16);
+      this.minSampleDispatchedDate = localDatetime(nextDay);
       console.log(this.minSampleDispatchedDate, 'Initial minSampleDispatchedDate');
     }
   }

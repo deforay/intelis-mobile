@@ -9,6 +9,17 @@ import {
 import {
   Storage
 } from '@ionic/storage-angular';
+// A date as a datetime-local input value (YYYY-MM-DDTHH:mm) in the device's own time zone,
+// or '' when it is not a date. toISOString() gives UTC, which in South Sudan (UTC+2) set the
+// latest pickable time two hours in the past, so the picker would not move to the real time.
+export function localDatetime(date: Date = new Date()): string {
+  if (isNaN(date.getTime())) {
+    return '';
+  }
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate()) + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes());
+}
+
 // For the request-form-fields keys the server writes whatever key is present, and an empty
 // one clears the field. get-request does not return these fields, so a downloaded request
 // holds them empty here; sending that would wipe what the web form saved. Send a value only.

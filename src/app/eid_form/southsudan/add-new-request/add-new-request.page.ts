@@ -49,7 +49,8 @@ import {
   DbService
 } from '../../../services/db.service';
 import {
-  CommonService
+  CommonService,
+  localDatetime
 } from '../../../service/common/common.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -154,7 +155,10 @@ export class AddNewRequestPage implements OnInit {
   testDetailsArray: any = [];
   previousPageURL: any;
   maxDate;
-  maxDatetime;
+  // The latest date a picker allows: now, read each time so a form left open keeps up.
+  get maxDatetime(): string {
+    return localDatetime();
+  }
   eid_id: any;
   keyItemsArray: any = [];
   formEidLength: any;
@@ -545,7 +549,6 @@ export class AddNewRequestPage implements OnInit {
   }
 
   ngOnInit() {
-    this.setMaxDatetime();
     let testingLabs = [];
     if (this.initArray && Array.isArray(this.initArray['testingLabsList'])) {
       testingLabs = this.initArray['testingLabsList'].filter(item => item.value == this.getSelectedTestReqForm.labId);
@@ -1048,7 +1051,7 @@ export class AddNewRequestPage implements OnInit {
     const sampleCollectionDate = this.specimenInfoPanelForm.controls.sampleCollectionDateTime.value;
     const selectedDate = new Date(sampleCollectionDate);
     selectedDate.setDate(selectedDate.getDate());
-    this.minSampleReceivedDate = selectedDate.toISOString().slice(0, 16);
+    this.minSampleReceivedDate = localDatetime(selectedDate);
     // const maxSampleDate = new Date(this.maxSampleCollectionDate);
     console.log(this.minSampleReceivedDate, 'setMinSampleReceivedDate', sampleCollectionDate);
   }
@@ -1061,7 +1064,7 @@ export class AddNewRequestPage implements OnInit {
     const selectedDate = new Date(sampleReceivedDate);
   
     // Format the date to YYYY-MM-DDTHH:mm for the input max attribute
-    this.maxSampleTestDate = selectedDate.toISOString().slice(0, 16);
+    this.maxSampleTestDate = localDatetime(selectedDate);
   
     // Log the calculated max date for debugging
     console.log(this.maxSampleTestDate, 'setMaxSampleTestDate', this.maxDate);
@@ -1072,10 +1075,6 @@ export class AddNewRequestPage implements OnInit {
   //   return dateNumber < 10 ? '0' + dateNumber : dateNumber.toString();
   // }
 
-  setMaxDatetime() {
-    const now = new Date();
-    this.maxDatetime = now.toISOString().slice(0, 16);
-  }
 
   clearDateOfTesting() {
     this.labResultPanelForm.get('sampleTestDate')?.setValue('');
@@ -1740,11 +1739,6 @@ export class AddNewRequestPage implements OnInit {
   }
   maxmindate() {
     this.maxDate = new Date();
-    var month = this.formatDate(this.maxDate.getMonth()+1);
-    var day = this.formatDate(this.maxDate.getDate());
-    var hour = this.maxDate.getHours();
-    var minute = this.maxDate.getMinutes();
-    this.maxDatetime = this.maxDate.getFullYear() + "-" + month + "-" + day + "T" + hour + ":" + minute;
   }
 
   private formatDate(nmbr: number): string {
