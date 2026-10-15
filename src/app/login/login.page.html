@@ -17,7 +17,8 @@
           <mat-form-field appearance="fill">
             <mat-label>Server URL</mat-label>
             <input matInput [formControl]="serverHostFormControl" [errorStateMatcher]="matcher"
-              [ngClass]="{ 'mat-form-field-invalid':submitted }" autocomplete="off" oninput="this.value?this.value=this.value.replace(/(^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$)./gmi,''):''" >
+              [ngClass]="{ 'mat-form-field-invalid':submitted }" autocomplete="off" inputmode="url" autocapitalize="off" spellcheck="false"
+              (input)="cleanServerUrl($any($event.target))">
               <mat-icon matSuffix class="matIcons" >language</mat-icon>
               @if (serverHostFormControl.hasError('required')) {
                 <mat-error>

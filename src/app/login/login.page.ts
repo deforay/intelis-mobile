@@ -115,6 +115,19 @@ export class LoginPage implements OnInit {
 
   ngOnInit() { }
 
+  // Keep only characters a URL can hold, so spaces, quotes, <, >, {, }, |, \, ^ and ` cannot
+  // be typed or pasted into the server URL.
+  cleanServerUrl(input: HTMLInputElement) {
+    const clean = input.value.replace(/[^A-Za-z0-9\-._~:/?#\[\]@!$&'()*+,;=%]/g, '');
+    if (clean === input.value) {
+      return;
+    }
+    const caret = Math.max(0, (input.selectionStart ?? clean.length) - (input.value.length - clean.length));
+    input.value = clean;
+    this.serverHostFormControl.setValue(clean);
+    input.setSelectionRange(caret, caret);
+  }
+
   async ionViewDidEnter() {
     // the root left menu should be disabled on this page
     this.menu.enable(false);
