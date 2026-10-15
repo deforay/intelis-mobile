@@ -7,6 +7,7 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { IonCol, IonContent, IonGrid, IonIcon, IonMenuButton, IonRow, IonSearchbar } from '@ionic/angular';
 import { MaterialModule } from '../../../material.module';
 import { MomentModule } from '../../../moment.module';
+import { DateFieldTapDirective, DatetimeFieldDirective } from '../../../component/datetime-field/datetime-field';
 
 
 @NgModule({
@@ -18,6 +19,8 @@ import { MomentModule } from '../../../moment.module';
     ReactiveFormsModule,
     MaterialModule,
     MomentModule,
+    DatetimeFieldDirective,
+    DateFieldTapDirective,
     AddNewRequestPageRoutingModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

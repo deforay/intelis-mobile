@@ -5,6 +5,7 @@ import { IonCol, IonContent, IonGrid, IonIcon, IonMenuButton, IonRow, IonSearchb
 import { VlNewRequestPageRoutingModule } from './vl-new-request-routing.module';
 import { VlNewRequestPage } from './vl-new-request.page';
 import { MomentModule } from '../../../moment.module';
+import { DateFieldTapDirective, DatetimeFieldDirective } from '../../../component/datetime-field/datetime-field';
 import { MaterialModule } from '../../../material.module';
 
 
@@ -18,6 +19,8 @@ import { MaterialModule } from '../../../material.module';
     ReactiveFormsModule,
     MaterialModule,
     MomentModule,
+    DatetimeFieldDirective,
+    DateFieldTapDirective,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   declarations: [VlNewRequestPage]

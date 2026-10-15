@@ -569,7 +569,7 @@
               [readonly]="mode=='view' || mode=='result edit'"
               [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null"
               matInput
-              type="datetime-local"
+              appDatetime
               [min]="maxSampleCollectionDate"
               [max]="maxDatetime"
               formControlName="sampleCollectionDateTime"
@@ -699,7 +699,7 @@
             [readonly]="mode=='view' "
             [attr.readonly]="mode === 'view'  ? true : null"
             matInput
-            type="datetime-local"
+            appDatetime
             [min]="maxSampleReceivedDate"
             [max]="maxDatetime"
             formControlName="sampleReceivedDateTime"

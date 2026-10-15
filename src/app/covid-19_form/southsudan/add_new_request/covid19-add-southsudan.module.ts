@@ -6,6 +6,7 @@ import { Covid19AddSouthsudanPageRoutingModule } from './covid19-add-southsudan-
 import { Covid19AddSouthsudanPage } from './covid19-add-southsudan.page';
 import { MaterialModule } from '../../../material.module';
 import { MomentModule } from '../../../moment.module';
+import { DateFieldTapDirective, DatetimeFieldDirective } from '../../../component/datetime-field/datetime-field';
 import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
@@ -19,6 +20,8 @@ import { SharedModule } from '../../../shared/shared.module';
     IonCol, IonContent, IonGrid, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonRow, IonSearchbar, IonToggle,
     MaterialModule,
     MomentModule,
+    DatetimeFieldDirective,
+    DateFieldTapDirective,
     Covid19AddSouthsudanPageRoutingModule, SharedModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

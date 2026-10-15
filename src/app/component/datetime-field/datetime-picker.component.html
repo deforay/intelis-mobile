@@ -1,0 +1,46 @@
+<div class="dtp">
+  <div class="dtp-head">
+    @if (data.label) {
+      <div class="dtp-label">{{ data.label }}</div>
+    }
+    <div class="dtp-tabs">
+      <button type="button" class="dtp-tab" [class.active]="step === 'date'" (click)="step = 'date'">{{ dateText }}</button>
+      <button type="button" class="dtp-tab" [class.active]="step === 'time'" [disabled]="!day" (click)="step = 'time'">{{ timeText }}</button>
+    </div>
+  </div>
+
+  @if (step === 'date') {
+    <mat-calendar [selected]="day" [startAt]="startAt" [minDate]="data.min" [maxDate]="data.max"
+      (selectedChange)="pickDay($event)"></mat-calendar>
+  } @else {
+    <div class="dtp-time">
+      <div class="dtp-section">Hour</div>
+      <div class="dtp-grid">
+        @for (h of hours; track h) {
+          <button type="button" [class.on]="h === hour" [disabled]="!hourAllowed(h)" (click)="pickHour(h)">{{ pad(h) }}</button>
+        }
+      </div>
+      <div class="dtp-section">
+        Minute
+        <span class="dtp-nudge">
+          <button type="button" aria-label="One Minute Earlier" (click)="nudge(-1)">−1</button>
+          <b>{{ pad(minute) }}</b>
+          <button type="button" aria-label="One Minute Later" (click)="nudge(1)">+1</button>
+        </span>
+      </div>
+      <div class="dtp-grid">
+        @for (m of minutes; track m) {
+          <button type="button" [class.on]="m === minute" [disabled]="!minuteAllowed(m)" (click)="pickMinute(m)">:{{ pad(m) }}</button>
+        }
+      </div>
+    </div>
+  }
+
+  <div class="dtp-actions">
+    <button mat-button type="button" (click)="ref.close(null)">Clear</button>
+    <button mat-button type="button" (click)="now()">Now</button>
+    <span class="dtp-spacer"></span>
+    <button mat-button type="button" (click)="ref.close()">Cancel</button>
+    <button mat-flat-button type="button" [disabled]="!day" (click)="set()">Set</button>
+  </div>
+</div>

@@ -1,0 +1,125 @@
+:host {
+  display: block;
+  --mat-datepicker-calendar-date-selected-state-background-color: var(--app-primary, #1f6fb2);
+  --mat-datepicker-calendar-date-selected-state-text-color: #fff;
+  --mat-datepicker-calendar-date-today-outline-color: var(--app-primary, #1f6fb2);
+  --mat-datepicker-calendar-date-focus-indicator-color: var(--app-primary, #1f6fb2);
+  --mat-button-text-label-text-color: var(--app-primary, #1f6fb2);
+  --mat-button-filled-container-color: var(--app-primary, #1f6fb2);
+  --mat-button-filled-label-text-color: #fff;
+}
+
+.dtp-head {
+  padding: 16px 16px 8px;
+  background: var(--app-primary, #1f6fb2);
+  color: #fff;
+}
+
+.dtp-label {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+
+.dtp-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.dtp-tab {
+  flex: 1;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font: inherit;
+  font-size: 20px;
+  font-weight: 600;
+
+  &.active {
+    background: #fff;
+    color: var(--app-primary, #1f6fb2);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.dtp-time {
+  padding: 8px 16px 0;
+}
+
+.dtp-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.dtp-nudge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  b {
+    min-width: 24px;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  button {
+    min-width: 44px;
+    height: 36px;
+    border: 1px solid #c7ccd4;
+    border-radius: 8px;
+    background: #fff;
+    color: #111827;
+    font: inherit;
+    font-size: 15px;
+  }
+}
+
+.dtp-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+
+  button {
+    height: 40px;
+    border: 1px solid #c7ccd4;
+    border-radius: 8px;
+    background: #fff;
+    color: #111827;
+    font: inherit;
+    font-size: 15px;
+
+    &.on {
+      background: var(--app-primary, #1f6fb2);
+      border-color: var(--app-primary, #1f6fb2);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    &:disabled {
+      color: #b6bcc6;
+      border-color: #e5e7eb;
+      background: #f9fafb;
+    }
+  }
+}
+
+.dtp-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px 8px;
+}
+
+.dtp-spacer {
+  flex: 1;
+}

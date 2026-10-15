@@ -457,7 +457,7 @@
         [readonly]="mode=='view' || mode=='result edit'"
         [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null"
         matInput
-        type="datetime-local"
+        appDatetime
         [max]="maxDatetime"
         [min]="maxSampleCollectionDate"
         formControlName="sampleCollectionDateTime"
@@ -499,7 +499,7 @@
     <input
       [attr.readonly]="mode === 'view' || mode === 'result edit' ? true : null"
       matInput
-      type="datetime-local"
+      appDatetime
       [max]="maxDatetime"
       [min]="specimenInfoPanelForm.controls.sampleCollectionDateTime.value"
       formControlName="sampleDispatchedOn"
@@ -604,7 +604,7 @@
         <input
           [readonly]="mode=='view'"
           matInput
-          type="datetime-local"
+          appDatetime
           [min]="minSampleReceivedDate"
           [max]="maxDatetime"
           formControlName="sampleReceivedDateTime"
@@ -739,7 +739,7 @@
   <!--
   <mat-form-field appearance="fill" class="caseID" *ngIf="labResultPanelForm.controls.sampleRejected.value=='no'">
     <mat-label>Sample Test Date</mat-label>
-    <input [readonly]="mode=='view'" [disabled]="mode=='view'" matInput type="datetime-local" [min]="maxSampleTestDate" [max]="maxDatetime" formControlName="sampleTestDate" [required]="labResultPanelForm.controls.sampleRejected.value=='no'" [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
+    <input [readonly]="mode=='view'" [disabled]="mode=='view'" matInput appDatetime [min]="maxSampleTestDate" [max]="maxDatetime" formControlName="sampleTestDate" [required]="labResultPanelForm.controls.sampleRejected.value=='no'" [errorStateMatcher]="matcher" [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
     <ion-icon name="close" *ngIf="mode!='view'" class="clearDateTimeIcon" ios="ios-close"
     (click)="clearDateOfTesting()"></ion-icon>
     <mat-error
@@ -752,7 +752,7 @@
       <mat-label>Sample Test Date</mat-label>
       <input
         matInput
-        type="datetime-local"
+        appDatetime
         [min]="maxSampleTestDate"
         [max]="maxDatetime"
         formControlName="sampleTestDate"
@@ -854,7 +854,7 @@
 </mat-form-field>
 <mat-form-field appearance="fill" class="caseID">
   <mat-label>Reviewed On</mat-label>
-  <input [readonly]="mode=='view'"  matInput type="datetime-local"
+  <input [readonly]="mode=='view'"  matInput appDatetime
     [min]="maxSampleReceivedDate" [max]="maxDatetime" formControlName="reviewedOn"
     
     [errorStateMatcher]="matcher"
@@ -890,7 +890,7 @@
 </mat-form-field>
 <mat-form-field appearance="fill" class="caseID">
   <mat-label>Approved On</mat-label>
-  <input [readonly]="mode=='view'"  matInput type="datetime-local"
+  <input [readonly]="mode=='view'"  matInput appDatetime
     [min]="maxSampleReceivedDate" [max]="maxDatetime" formControlName="approvedOn"
     
     [errorStateMatcher]="matcher"
@@ -911,7 +911,7 @@
 </mat-form-field>
 <!-- <mat-form-field appearance="fill">
 <mat-label>Approved On</mat-label>
-<input [readonly]="mode=='view'" [disabled]="mode=='view'" matInput type="datetime-local" [matDatepicker]="approvedOnPicker"
+<input [readonly]="mode=='view'" [disabled]="mode=='view'" matInput appDatetime [matDatepicker]="approvedOnPicker"
   formControlName="approvedOn" [max]="maxDatetime"  
   [errorStateMatcher]="matcher"
   [ngClass]="{ 'mat-form-field-invalid':submitted && labResultPanelForm.controls.sampleRejected.value}">
